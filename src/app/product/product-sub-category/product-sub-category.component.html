@@ -1,0 +1,94 @@
+<div class="container">
+	<h2>产品分类子类</h2>
+	<div class="form-group">
+		<label for="productCategoies">产品分类</label>
+		<select class="form-control" id="productCategoies" (change)="onSelect($event)" required>
+			<option *ngFor="let productCategory of productCategories; let i = index;" value="{{productCategory.id}}">
+				<span  *ngIf="productCategory.name != '全部产品'">{{productCategory.name}}</span>
+			</option>
+		</select>
+	</div>
+
+	<button class="btn btn-primary" (click)="add()" [disabled]="addBtnDisabled">新增产品分类子类</button>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Sort Order</th>
+				<th>Edit</th>
+				<th>Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let productSubCategory of productSubCategories; let i = index;" class="active" [class.active]="rowSelected && (selectedItems.indexOf(i)) >= 0">
+				<td><input type="checkbox" #checkbox (change)="selectionChange($event, i)"></td>
+				<td>{{productSubCategory.name}}</td>
+				<td>{{productSubCategory.description}}</td>
+				<td>{{productSubCategory.sort_order}}</td>
+				<td><i class="material-icons" data-content="edit" (click)="edit(i)">edit</i></td>
+				<td><i class="material-icons" data-content="delete" data-toggle="modal" (click)="delete(i)" data-target="#deleteConfirm">delete</i></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<button class="btn btn-primary" (click)="swap()" [disabled]="swapBtnDisabled">交换排序序号</button>
+	<button class="btn btn-primary" (click)="update()" [disabled]="updateBtnDisabled">保存更新</button>
+</div>
+
+
+<!--Modal-->
+<div class="modal deleteConfirm-modal-sm" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialo modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteConfirmModalCenterTitle">确认删除</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				请确认是否真的要删除该产品分类？
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<style>
+
+	.container button {
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+		margin-right: 2rem;
+	}
+
+	.active {
+		background-color: #ff4832;
+		color: white;
+	}
+
+	[data-content="edit"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+
+	[data-content="delete"]:hover {
+		color: #ff4832;
+		cursor: pointer;
+	}
+
+	.modal {
+		width: 30rem;
+		margin-left: 30%;
+	}
+
+</style>

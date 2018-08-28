@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductCategory } from '../models/product-category';
+import { ProductSubCategory } from '../models/product-sub-category';
 import { API_BASE_URL } from '../models/Constants';
 
 @Injectable()
@@ -27,6 +28,9 @@ export class VJAPI {
 		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
 	}
 
+	/**
+	 * Product Category Related API
+	 */
 	public getProductCategory(): Observable<ProductCategory[]> {
 		let headers = new Headers();
 		this.initAuthHeader(headers);
@@ -41,4 +45,44 @@ export class VJAPI {
 
 		return this.http.post(API_BASE_URL + 'api/product/categories/swap', JSON.stringify(body), {headers: headers});
 	}
-}
+
+	public getProductCategoryById(id: number): Observable<ProductCategory> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/product/categories/' + id, {headers: headers})
+			.pipe(map((data) => data.json()));		
+	}
+
+	public updateProductCategory(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/product/categories/update', body, {headers: headers});		
+	}
+
+	public deleteProductCategoryById(productId): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.delete(API_BASE_URL + 'api/product/categories/delete/' + productId, {headers: headers});		
+	}
+
+	/**
+	 * Product SubCategory Related API
+	 */
+
+	public getProductSubCategoriesByProductCategoryId(categoryId: number): Observable<ProductSubCategory[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+
+		return this.http.get(API_BASE_URL + 'api/product/subcategories/categoryid/' + categoryId, {headers: headers})
+			.pipe(map((data) => data.json()));
+	}
+
+		public swapProductSubCategorySortOrder(body):Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+
+		return this.http.post(API_BASE_URL + 'api/product/subcategories/swap', JSON.stringify(body), {headers: headers});
+	}

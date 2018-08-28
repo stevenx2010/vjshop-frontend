@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { ProductCategory } from '../../../models/product-category';
 import { VJAPI } from '../../../services/vj.services';
@@ -19,9 +19,10 @@ export class ProductCategoryComponent implements AfterViewInit {
   productCategoryIdSwapList: number[];
   rowSelected: boolean = false;
   rowIndexSelected: number;
+  currentDeleteIndex: number;
 
 
-  constructor(private vjApi: VJAPI, private router: Router) {
+  constructor(private vjApi: VJAPI, private router: Router, private route: ActivatedRoute) {
   	this.productCategories = new Array<ProductCategory>();
   	this.selectedItems = [];
   	this.productCategoryIdSwapList =[];
@@ -29,7 +30,7 @@ export class ProductCategoryComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-
+    this.populateData();
   }
 
   ngOnInit() {
@@ -45,9 +46,7 @@ export class ProductCategoryComponent implements AfterViewInit {
     (err) => (console.log(err)));   
   }
 
-  add() {
-  	this.router.navigate(['product/category/add']);
-  }
+
 
   selectionChange(event, index): void {
   //	console.log(index);
@@ -104,6 +103,25 @@ export class ProductCategoryComponent implements AfterViewInit {
   	this.updateBtnDisabled = true;
 
   	this.vjApi.swapProductCategorySortOrder(this.productCategoryIdSwapList).subscribe((data) => console.log(data));
+    this.populateData();
+  }
+
+  add() {
+    this.router.navigate(['./add'], {relativeTo: this.route});
+  }
+
+  edit(index: number) {
+    this.router.navigate(['edit/' + this.productCategories[index].id], {relativeTo: this.route});
+  }
+
+  delete(index: number) {
+    this.currentDeleteIndex = index;
+  }
+
+  deleteConfirmed() {
+   // console.log(this.productCategories[this.currentDeleteIndex]);
+   // console.log(this.productCategories[this.currentDeleteIndex].id);
+    this.vjApi.deleteProductCategoryById(this.productCategories[this.currentDeleteIndex].id).subscribe((data)=>console.log(data));
     this.populateData();
   }
 }

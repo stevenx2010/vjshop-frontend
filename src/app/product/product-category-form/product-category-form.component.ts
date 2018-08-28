@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { ProductCategory } from '../../../models/product-category';
+import { VJAPI } from '../../../services/vj.services';
 
 @Component({
   selector: 'app-product-category-form',
@@ -10,10 +11,13 @@ import { ProductCategory } from '../../../models/product-category';
   styleUrls: ['./product-category-form.component.css']
 })
 export class ProductCategoryFormComponent implements OnInit {
+  title: string = '新增产品分类';
+  formFunction: string = 'add';
   form: FormGroup;
   productCategory = new ProductCategory();
+  productId: number = 0;
 
-  constructor(private fb: FormBuilder, private router: Router) { 
+  constructor(private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute, private vjApi: VJAPI) { 
 
   }
 
@@ -21,17 +25,44 @@ export class ProductCategoryFormComponent implements OnInit {
   	this.form = this.fb.group({
   		name: ['', Validators.required],
   		description: [''],
-  		sort_order: [99, Validators.required]
+  		sort_order: [99, Validators.compose([Validators.required, Validators.min(2), Validators.pattern('^[0-9]{1,3}')])]
   	});
 
+    // get parameters transfer: if no parameter, adding a new, otherwise, edit current
+    this.productId = this.activatedRoute.snapshot.params['id'];
+    if(this.productId) {
+      this.vjApi.getProductCategoryById(this.productId).subscribe((data) => {
+        if(data) {
+          this.title = '编辑产品分类';
+          this.formFunction = 'edit';
+          this.productCategory = data;
+          console.log(this.productCategory);
+          this.form.get('name').setValue(this.productCategory[0].name);
+          this.form.get('description').setValue(this.productCategory[0].description);
+          this.form.get('sort_order').setValue(this.productCategory[0].sort_order);
+        } else {
+          this.title = '新增产品分类';
+        }
+      })
+    } 
   }
 
   submit() {
-  	this.productCategory.name = this.form.controls.name.value;
-  	this.productCategory.description = this.form.controls.description.value;
-  	console.log(this.productCategory);
-  	this.router.navigate(['product/category']);
 
+    if(this.formFunction == 'edit') {
+      this.productCategory[0].name = this.form.controls.name.value;
+      this.productCategory[0].description = this.form.controls.description.value;
+      this.productCategory[0].sort_order = this.form.controls.sort_order.value;
+      this.vjApi.updateProductCategory(JSON.stringify(this.productCategory[0])).subscribe((data)=>console.log(data));
+    }
+    else {
+      this.productCategory.name = this.form.controls.name.value;
+      this.productCategory.description = this.form.controls.description.value;
+      this.productCategory.sort_order = this.form.controls.sort_order.value;     
+      this.vjApi.updateProductCategory(JSON.stringify(this.productCategory)).subscribe((data)=>console.log(data));   
+     }
+  	
+  	this.router.navigate(['product/category']);
   }
 
 }
