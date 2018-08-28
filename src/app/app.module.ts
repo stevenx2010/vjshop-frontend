@@ -1,16 +1,32 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { HttpModule } from '@angular/http';
+
+import { VJAPI } from '../services/vj.services';
 
 import { AppComponent } from './app.component';
 
+import { appRoutes } from './ap.routing';
+
+import { ProductModule } from './product/product.module';
+
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ProductModule,
+    RouterModule.forRoot(appRoutes),
+    HttpModule,
   ],
-  providers: [],
+  providers: [
+  	VJAPI
+  ],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }
