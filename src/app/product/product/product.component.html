@@ -1,0 +1,116 @@
+<div class="container">
+	<h2>产品清单</h2>
+
+	<div class="form-row">
+		<div class="form-group col-md-6">
+			<label for="productCategory">产品分类</label>
+			<select id="productCategory" class="form-control" (change)="categorySelected($event)" (click)="categorySelected($event)">
+				<option value="{{productCategory?.id}}" *ngFor="let productCategory of productCategories">{{productCategory?.name}}</option>
+			</select>
+		</div>
+		<div class="form-group col-md-6">
+			<label for="productSubCategory">产品分类子类</label>
+			<select id="productSubCategory"  class="form-control" (change)="subCategorySelected($event)" (click)="subCategorySelected($event)">
+				<option value="{{productSubCategory?.id}}"*ngFor="let productSubCategory of productSubCategories">{{productSubCategory?.name}}</option>
+			</select>
+		</div>
+	</div>
+
+	<table class="table table-bordered">
+		<thead>
+			<th></th>
+			<th>产品名称</th>
+			<th>产品型号</th>
+			<th>产品描述</th>
+			<th>包装单位</th>
+			<th>重量</th>
+			<th>重量单位</th>
+			<th>价格</th>
+			<th>品牌</th>
+			<th>库存</th>
+			<th>销量</th>
+			<th>排序序号</th>
+			<th>小图</th>
+			<th>编辑</th>
+			<th>删除</th>
+			<th>产品图</th>
+		</thead>
+		<tbody>
+
+			<tr *ngFor="let product of products; let i = index;" [class.active]="(selectedItemSet.has(i))">
+				<td><input type="checkbox" (change)="checkboxChecked($event, i)" #checkbox></td>
+				<td>{{product?.name}}</td>
+				<td>{{product?.model}}</td>
+				<td>{{product?.description}}</td>
+				<td>{{product?.package_unit}}</td>
+				<td>{{product?.weight}}</td>
+				<td>{{product?.weight_unit}}</td>
+				<td>{{product?.price}}</td>
+				<td>{{product?.brand}}</td>
+				<td>{{product?.inventory}}</td>
+				<td>{{product?.sold_amount}}</td>
+				<td>{{product?.sort_order}}</td>
+				<td><img src="{{image_url}}{{product?.thumbnail_url}}" width="100"></td>
+				<td><i class="material-icons" data-content="edit">edit</i></td>
+				<td><i class="material-icons" data-content="delete" (click)="delete(i)" data-toggle="modal" data-target="#deleteConfirm">delete</i></td>
+				<td><input type="radio" name="imageRadioBtn"></td>
+			</tr>
+
+		</tbody>
+	</table>
+
+	<button type="button" class="btn btn-outline-primary" (click)="swap()" [disabled]="swapBtnDisabled">交换排序序号</button>
+	<button type="button" class="btn btn-outline-success" (click)="update()" [disabled]="updateBtnDisabled">保存更新</button>
+
+</div>
+
+	<!--Modal-->
+	<div class="modal deleteConfirm-modal-sm" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialo modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteConfirmModalCenterTitle">确认删除</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					请确认是否真的要删除该产品？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" (click)="deleteConfirmed()" data-dismiss="modal"><i class="material-icons">event</i>确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<style>
+	[data-content="edit"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+
+	[data-content="delete"]:hover {
+		color: #ff4832;
+		cursor: pointer;
+	}
+
+	.hilightBackground {
+		background-color: 
+	} 
+
+	.active {
+		background-color: #c1c1c1;
+		color: white;
+	}
+
+	.modal {
+		width: 30rem;
+		margin-left: 30%;
+	}
+</style>

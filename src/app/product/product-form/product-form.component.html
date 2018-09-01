@@ -1,0 +1,184 @@
+
+<div class="container " >
+	<h3 class="title">{{title}}</h3>
+
+	<form [formGroup]="form">
+
+
+		<div class="form-row seperator">
+			<div class="col-md-12"><h4>产品基本信息</h4>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-6" >
+				<label for="productCategories">产品分类</label>
+				<select id="productCategories" class="form-control" formControlName="category_id" (change)="categorySelected($event)">
+					<option value="{{productCategory?.id}}" *ngFor="let productCategory of productCategories" >{{productCategory?.name}}</option>
+				</select>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="productSubCategories">产品分类子类</label>
+				<select id="productSubCategories" class="form-control" formControlName="sub_category_id" (change)="subCategorySelected($event)" required minlength="1">
+					<option value="{{productSubCategory?.id}}" *ngFor="let productSubCategory of productSubCategories">{{productSubCategory?.name}}</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="productName">产品名称</label>
+				<input type="text" id="productName" class="form-control" formControlName="name" required>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="model">产品型号</label>
+				<input type="text" id="model" class="form-control" formControlName="model" required>
+				<div *ngIf="form.controls.model.touched && form.controls.model.errors" class="alert alert-danger">
+					<div *ngIf="form.controls.model.errors.required">
+						必须填写产品型号！
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="description">产品描述</label>
+			<textarea id="description" rows="3" class="form-control" formControlName="description" required></textarea>
+			<div *ngIf="form.controls.description.touched && form.controls.description.errors" class="alert alert-danger">
+				<div *ngIf="form.controls.description.errors.required">
+					必须填写产品描述!
+				</div>
+				<div *ngIf="form.controls.description.errors.maxlength">
+					产品描述的字数不能超过300个汉字，或者600个英文字母。
+				</div>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-3">
+				<label for="package_unit">产品包装单位</label>
+				<select id="package_unit" class="form-control" formControlName="package_unit" required>
+					<option value="盒" selected>盒</option>
+					<option value="箱">箱</option>
+					<option valeu="块">块</option>
+					<option value="条">条</option>
+				</select>
+			</div>
+			<div class="form-group col-md-3">
+				<label for="weight">产品重量</label>
+				<input type="text" id="weight" class="form-control" formControlName="weight" required>
+			</div>
+			<div class="form-group col-md-3">
+				<label for="weight_unit">重量单位</label>
+				<select id="weight_unit" class="form-control" formControlName="weight_unit" required>
+					<option value="kg" selected>公斤</option>
+					<option value="吨">吨</option>
+				</select>
+			</div>
+		
+			<div class="form-group col-md-3">
+				<label for="price">价格</label>
+				<div class="input-group">
+					<input type="text" id="price" class="form-control" formControlName="price" required>
+					<div class="input-group-append">
+						<span class="input-group-text">元</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-4">
+				<label for="brand">品牌</label>
+				<input type="text" id="brand" class="form-control" formControlName="brand">
+			</div>
+			<div class="form-group col-md-4">
+				<label for="inventory">库存</label>
+				
+				<input type="number" id="inventory" class="form-control" formControlName="inventory" required>
+
+				
+			</div>
+			<div class="form-group col-md-4">
+				<label for="sort_order">排序序号</label>
+				<input type="text" id="sort_order" class="form-control" formControlName="sort_order" required>
+			</div>
+		</div>
+
+	
+
+		<div class="form-row seperator">
+			<div class="col-md-12"><h4>产品相关图片</h4>
+			</div>
+		</div>
+
+	
+		<div class="form-row">
+			<div class="form-group col-md-8">
+				<label for="thunmbnail">产品缩略图</label>
+				<input type="file" name="thumbnail" id="thunmbnail" class="form-control" required (change)="previewImages($event, 'thumbnail')" #fileInput>				
+			</div>
+			<div class="col-md-4">
+				<div #previewThumbnail><span></span></div>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="topImages">产品详细页顶部图片(多选)</label>
+				<input type="file" name="topImages" id="topImages" multiple class="form-control" required (change)="previewImages($event, 'top')" #topImageInput>
+			</div>
+		</div>
+		<div class="form-row col-md-12">
+			<div #previewTopImages></div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<label for="bottomImages">产品详细页底部图片(多选)</label>
+				<input type="file" name="bottomImages" id="bottomImages" multiple class="form-control" required (change)="previewImages($event, 'bottom')">
+			</div>
+		</div>
+		<div class="form-row col-md-12">
+			<div #previewBottomImages></div>
+		</div>
+
+		<button class="btn btn-outline-primary" (click)="submitData()" [disabled]="!form.valid">保存以上产品数据</button>
+	
+
+	</form>
+</div>	
+
+<style>
+	.ng-valid[required], .ng-valid.required {
+		border-left: 5px solid #42A948;
+	}
+
+	.ng-invalid:not(form) {
+		border-left: 5px solid #a94442;
+	}
+
+	img {
+		border: 1px green solid;
+		margin: 1rem;
+	}
+
+	.image-section {
+		margin-top: 2rem;
+	}
+
+	.title {
+		margin-bottom: 2rem;
+	}
+
+	.seperator {
+		margin-top: 3rem;
+		margin-bottom: 2rem;
+		background-color: #efefef;
+
+	}
+
+	.button {
+		margiin-top: 2rem;
+	}
+
+</style>

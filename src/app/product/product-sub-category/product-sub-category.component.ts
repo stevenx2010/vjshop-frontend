@@ -27,6 +27,7 @@ export class ProductSubCategoryComponent implements OnInit {
   productSubCategoryIdSwapList: number[];
 
   currentSelectedCategoryId: number = 0;
+  currentDeleteIndex: number;
 
   constructor(private vjApi: VJAPI, private router: Router, private route: ActivatedRoute) {
   	this.productCategories = new Array<ProductCategory>();
@@ -68,15 +69,20 @@ export class ProductSubCategoryComponent implements OnInit {
 
   add() {
   	console.log(this.currentSelectedCategoryId);
-  	this.router.navigate(['./add'], {relativeTo: this.route});
+  	this.router.navigate(['./add/' + this.currentSelectedCategoryId], {relativeTo: this.route});
   }
 
   edit(index: number) {
-	this.router.navigate(['edit/' + this.productCategories[index].id], {relativeTo: this.route});
+	  this.router.navigate(['edit/' + this.productSubCategories[index].id], {relativeTo: this.route});
   }
 
-  delete(i) {
+  delete(index: number) {
+    this.currentDeleteIndex = index;
+  }
 
+  deleteConfirmed() {
+    this.vjApi.deleteProductSubCategoryById(this.productSubCategories[this.currentDeleteIndex].id).subscribe((data)=>console.log(data));
+    this.populateData();
   }
 
     selectionChange(event, index): void {
@@ -129,5 +135,7 @@ export class ProductSubCategoryComponent implements OnInit {
   	this.vjApi.swapProductSubCategorySortOrder(this.productSubCategoryIdSwapList).subscribe((data) => console.log(data));
     this.populateData();
   }
+
+
 
 }

@@ -1,7 +1,7 @@
 <div class="container">
 	<h2>产品分类</h2>
 
-	<button class="btn btn-primary" (click)="add()">新增产品分类</button>
+	<button type="button" class="btn btn-outline-primary" (click)="add()">新增产品分类</button>
 
 	<table class="table table-bordered">
 		<thead>
@@ -26,8 +26,8 @@
 		</tbody>
 	</table>
 
-	<button class="btn btn-primary" (click)="swap()" [disabled]="swapBtnDisabled">交换排序序号</button>
-	<button class="btn btn-primary" (click)="update()" [disabled]="updateBtnDisabled">保存更新</button>
+	<button type="button" class="btn btn-outline-primary" (click)="swap()" [disabled]="swapBtnDisabled">交换排序序号</button>
+	<button type="button" class="btn btn-outline-success" (click)="update()" [disabled]="updateBtnDisabled">保存更新</button>
 
 
 
@@ -49,7 +49,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" (click)="deleteConfirmed()" data-dismiss="modal"><i class="material-icons">event</i>确定</button>
 					<button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
 				</div>
 			</div>

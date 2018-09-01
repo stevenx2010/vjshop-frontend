@@ -1,38 +1,43 @@
 <div class="container">
 	<ol class="breadcrumb">
-		<li><a routerLink='/product/category'>产品分类</a></li>
-		<li><a class="active">新增产品分类</a></li>
+		<li class="breadcrumb-item"><a routerLink='/product/category'>产品分类</a></li>
+		<li class="breadcrumb-item active" aria-current="page"><a>新增产品分类</a></li>
 	</ol>
 	<h2>{{title}}</h2>
 	<form [formGroup]="form" (ngSubmit)="submit()">
-		<div class="form-group">
-			<label for="name">产品分类名称(Category Name)</label>
-			<input type="text" id="name" class="form-control" formControlName="name" required>
-			<div *ngIf="form.controls.name.touched && !form.controls.name.valid" class="alert alert-danger">
-				产品分类名称不能为空!
+		<div class="form-row">
+			<div class="form-group col-md-8">
+				<label for="name">产品分类名称</label>
+				<input type="text" id="name" class="form-control" formControlName="name" required>
+				<div *ngIf="form.controls.name.touched && !form.controls.name.valid" class="alert alert-danger">
+					产品分类名称不能为空!
+				</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<label for="description">描述(Description)</label>
-			<input type="text" id="description" class="form-control" formControlName="description">
-		</div>
-		<div class="form-grou">
-			<label for="sort_order">排序序号(Sort Order)</label>
-			<input type="text" id="sort_order" class="form-control" formControlName="sort_order" required>
-			<div *ngIf="form.controls.sort_order.touched && form.controls.sort_order.errors" class="alert alert-danger">
-				<div *ngIf="form.controls.sort_order.errors.required">
-					排序序号是必须字段, 不能为空!
-				</div>
-				<div *ngIf="form.controls.sort_order.errors.min">
-					排序序号必须大于1!
-				</div>
-				<div *ngIf="form.controls.sort_order.errors.pattern">
-					排序序号必须是3位以下的数字!
+
+			<div class="form-group col-md-4">
+				<label for="sort_order">排序序号</label>
+				<input type="text" id="sort_order" class="form-control" formControlName="sort_order" required>
+				<div *ngIf="form.controls.sort_order.touched && form.controls.sort_order.errors" class="alert alert-danger">
+					<div *ngIf="form.controls.sort_order.errors.required">
+						排序序号是必须字段, 不能为空!
+					</div>
+					<div *ngIf="form.controls.sort_order.errors.min">
+						排序序号必须大于1!
+					</div>
+					<div *ngIf="form.controls.sort_order.errors.pattern">
+						排序序号必须是2位以下的数字!
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<button class="btn btn-primary" type="submit" [disabled]="!form.valid">保存(Save)</button>
+		<div class="form-group">
+			<label for="description">产品分类描述</label>
+			<textarea id="description" rows="3" class="form-control" formControlName="description"></textarea>
+		</div>
+
+
+		<button type="button" class="btn btn-outline-primary" type="submit" [disabled]="!form.valid">保存以上数据</button>
 	</form>
 </div>
 

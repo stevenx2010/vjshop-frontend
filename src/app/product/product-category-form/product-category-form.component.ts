@@ -14,18 +14,18 @@ export class ProductCategoryFormComponent implements OnInit {
   title: string = '新增产品分类';
   formFunction: string = 'add';
   form: FormGroup;
-  productCategory = new ProductCategory();
+  productCategory: ProductCategory[];
   productId: number = 0;
 
   constructor(private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute, private vjApi: VJAPI) { 
-
+    this.productCategory = new Array<ProductCategory>();
   }
 
   ngOnInit() {
   	this.form = this.fb.group({
   		name: ['', Validators.required],
   		description: [''],
-  		sort_order: [99, Validators.compose([Validators.required, Validators.min(2), Validators.pattern('^[0-9]{1,3}')])]
+  		sort_order: [99, Validators.compose([Validators.required, Validators.min(2), Validators.pattern('^[0-9]{1,2}$')])]
   	});
 
     // get parameters transfer: if no parameter, adding a new, otherwise, edit current
@@ -56,10 +56,11 @@ export class ProductCategoryFormComponent implements OnInit {
       this.vjApi.updateProductCategory(JSON.stringify(this.productCategory[0])).subscribe((data)=>console.log(data));
     }
     else {
-      this.productCategory.name = this.form.controls.name.value;
-      this.productCategory.description = this.form.controls.description.value;
-      this.productCategory.sort_order = this.form.controls.sort_order.value;     
-      this.vjApi.updateProductCategory(JSON.stringify(this.productCategory)).subscribe((data)=>console.log(data));   
+      this.productCategory = new Array<ProductCategory>(new ProductCategory());
+      this.productCategory[0].name = this.form.controls.name.value;
+      this.productCategory[0].description = this.form.controls.description.value;
+      this.productCategory[0].sort_order = this.form.controls.sort_order.value;     
+      this.vjApi.updateProductCategory(JSON.stringify(this.productCategory[0])).subscribe((data)=>console.log(data));   
      }
   	
   	this.router.navigate(['product/category']);
