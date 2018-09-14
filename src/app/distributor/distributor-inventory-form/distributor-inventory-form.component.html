@@ -1,0 +1,146 @@
+<div class="container">
+	<h3>经销商库存管理</h3>
+
+	<div class="form-row">
+		<div class="col-md-4">
+			<input type="text" placeholder="经销商名称查询（*：查询全部）... " class="form-control" [(ngModel)]="keyword">
+		</div>
+
+		<div class="col-md-1">
+			<button class="btn btn-outline-primary" (click)="query()">查询</button>
+		</div>
+
+		<div class="input-group col-md-7">
+			<div class="input-group-prepend"><span class="input-group-text">选取的经销商：</span></div>
+			<input type="text" class="form-control" disabled="true" [(ngModel)]="distributorName">
+		</div>
+	</div>
+<!-- TABLE for query distributor -->
+	<div class="form-row" *ngIf="tableDisplay">
+		<table class="table table-bordered">
+			<thead>
+				<th>id</th>
+				<th>经销商名称</th>
+				<th>描述</th>
+				<th>选取</th>
+			</thead>
+			<tbody>
+				<tr *ngFor="let distributor of distributors; let i = index;">
+					<td>{{distributor?.id}}</td>
+					<td>{{distributor?.name}}</td>
+					<td>{{distributor?.description}}</td>
+					<td><input type="radio" name="select" (change)="selected($event, i)"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<!-- TABLE for display inventory -->
+	<h4>当前库存情况</h4>
+	<div class="form-row">
+		<table class="table table-bordered">
+			<thead>
+				<th>产品图片</th>
+				<th>产品子类</th>
+				<th>型号</th>
+				<th>包装单位</th>
+				<th>当前库存</th>
+			</thead>
+			<tbody>
+				<tr *ngFor="let inventory of productInventories">
+					<td><img src="{{baseUrl}}{{inventory?.thumbnail_url}}" width="100"></td>
+					<td>{{inventory?.product_sub_category_name}}</td>
+					<td>{{inventory?.model}}</td>
+					<td>{{inventory?.package_unit}}</td>
+					<td>{{inventory?.pivot.inventory}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<div class="products" *ngIf="productShow"> <!--"-->
+		<div class="form-row">
+			<div class="col-md-3">
+				<div class="form-group">
+					<label for="category">产品分类</label>
+					<select id="category" class="form-control" (change)="catSelected($event)">
+						<option *ngFor="let category of productCategories;" value="{{category?.id}}">{{category?.name}}</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="form-group">
+					<label for="subCategory">产品分类子类</label>
+					<select id="subCategory" class="form-control" (change)="subCatSelected($event)">
+						<option *ngFor="let subcat of productSubCategories;" value="{{subcat?.id}}">{{subcat?.name}}</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-md-5">
+				<div class="form-group">
+					<label for="kwq">产品查询（输入*查询全部）</label>
+					<input type="text" placeholder="产品名称关键字查询..." [disabled]="inputQueryDisabled" [(ngModel)]="keywordProduct" class="form-control">
+				</div>
+			</div>
+
+			<div class="col-md-1" >
+				<button class="btn btn-outline-primary" (click)="queryProduct()" style="margin-top: 2rem;">查询</button>
+			</div>
+		</div>
+
+	<!-- TABLE for query product -->
+		<div class="form-row" class="product-table">
+			<table class="table table-bordered">
+				<thead>
+					<th>产品图片</th>
+					<th>产品子类</th>
+					<th>型号</th>
+					<th>价格(元)</th>
+					<th>重量(Kg)</th>
+					<th>包装单位</th>
+					<th>为当前经销商增加库存量</th>
+					<th>保存</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let product of products; let i=index;">
+						<td><img src="{{baseUrl}}{{product?.thumbnail_url}}" width="100"></td>
+						<td>{{product?.product_sub_category_name}}</td>
+						<td>{{product?.model}}</td>
+						<td>{{product?.price}}</td>
+						<td>{{product?.weight}}</td>
+						<td>{{product?.package_unit}}</td>
+						<td>
+							<input type="text" id="name" #name="ngModel" class="form-control" [(ngModel)]="inventories[i]" (change)="inventoryChange(i)" pattern="^-?[0-9]*">
+							<div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+								<div *ngIf="name.erros.pattern">
+									只能输入正负数字！
+								</div>
+							</div>
+						</td>
+						<td><button class="btn btn-outline-primary"  (click)="increateInventory(i)" [disabled]="saveBtnDisabled"><i class="material-icons" data-content="save">save</i></button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</div>
+
+<style>
+	.form-row {
+		margin-top: 1.2rem;
+		margin-bottom: 1.2rem;
+	}
+
+	[data-content="save"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+	.product-table .ng-dirty, .inventory .ng-touched {
+		background-color: yellow;
+	}
+
+</style>

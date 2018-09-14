@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { appRoutes } from './ap.routing';
 
 import { ProductModule } from './product/product.module';
+import { DistributorModule } from './distributor/distributor.module';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ProductModule } from './product/product.module';
     ProductModule,
     RouterModule.forRoot(appRoutes),
     HttpModule,
+    DistributorModule,
   ],
   providers: [
   	VJAPI

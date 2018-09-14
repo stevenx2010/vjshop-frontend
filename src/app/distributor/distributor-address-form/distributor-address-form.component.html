@@ -1,0 +1,65 @@
+<div class="container">
+
+	<form [formGroup]="form">
+		<div class="form-row">
+			<div class="form-group col-md-4">
+				<label for="province">省</label>
+				<select id="province" class="form-control" formControlName="province" (change)="filterCities($event)">
+					<option *ngFor="let province of provinces" value="{{province.value}}">{{province.text}}</option>
+				</select>
+	      	</div>
+
+			<div class="form-group col-md-4">
+				<label for="city">市</label>
+				<select id="city" class="form-control" formControlName="city" (change)="filterDistricts($event)">
+					<option *ngFor="let city of filteredCities" value="{{city.value}}">{{city.text}}</option>
+				</select>
+	      	</div>
+
+			<div class="form-group col-md-4">
+				<label for="city">区</label>
+				<select id="city" class="form-control" formControlName="district" (change)="districtChange($event)">
+					<option *ngFor="let district of filteredDistricts" value="{{district.value}}">{{district.text}}</option>
+				</select>
+	      	</div>
+	    </div>
+
+	    <div class="form-row">
+	    	<div class="form-group col-md-12">
+	    		<label for="street">街道/门牌号详细地址</label>
+	    		<input type="text" id="street" class="form-control" formControlName="street" required>
+	    	</div>
+	    	<div *ngIf="form.controls.street.touched && form.controls.street.errors" class="alert alert-danger">
+				<div *ngIf="form.controls.street.errors.required">
+						必须填写街道/门牌号详细地址！
+				</div>
+			</div>
+	    </div>
+
+	    <div class="form-row">
+	    	<div class="form-group">
+	    		<label for="defaultAddress" style="margin-right: 2rem;">设置为缺省地址</label>
+	    		<input type="checkbox" id="defaultAddress" (change)="onChkBoxChange($event)" checked="isDefaultAddress">
+	    	</div>
+	    </div>
+
+	    <button class="btn btn-outline-primary" (click)="save()" [disabled]="!form.valid">保存地址信息</button>
+	</form>
+
+</div>
+
+
+<style>
+	.ng-valid[required], .ng-valid.required {
+		border-left: 5px solid #42A948;
+	}
+
+	.ng-invalid:not(form) {
+		border-left: 5px solid #a94442;
+	}
+
+	.form-row {
+		align-items: center;
+	}
+
+</style>

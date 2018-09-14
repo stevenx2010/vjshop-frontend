@@ -1,0 +1,69 @@
+<div class="container">
+	<form [formGroup]="form">
+		<div class="form-row">
+			<div class="form-group col-md-3">
+				<label for="name">联系人姓名</label>
+				<input type="text" id="name" class="form-control" formControlName="name" required>
+				<div *ngIf="form.controls.name.touched && form.controls.name.errors" class="alert alert-danger">
+					<div *ngIf="form.controls.name.errors.required">
+						必须填写联系人姓名！
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group col-md-4">
+				<label for="mobile">手机号码</label>
+				<input type="text" id="mobile" class="form-control" formControlName="mobile" required>
+				<div *ngIf="form.controls.mobile.touched && form.controls.mobile.errors" class="alert alert-danger">
+					<div *ngIf="form.controls.mobile.errors.required">
+						必须填写手机号码！
+					</div>
+					<div *ngIf="form.controls.mobile.errors.pattern">
+						手机号码必须是1抬头的11位数字
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group col-md-2">
+				<label for="area_code">电话区号</label>
+				<select id="area_code" class="form-control" formControlName="phoneAreaCode" (change)="selectCode($event)">
+					<option *ngFor="let code of areaCode" value="{{code.value}}">{{code.text}}</option>
+				</select>
+			</div>
+
+			<div class="form-group col-md-3">
+				<label for="tel">电话号码</label>
+				<input type="text" id="tel" class="form-control" formControlName="tel">
+				<div *ngIf="form.controls.tel.touched && form.controls.tel.errors" class="alert alert-danger">
+					<div *ngIf="form.controls.tel.errors.pattern">
+						电话号码必须是8位数字，或者不填！
+					</div>
+				</div>
+			</div>
+		</div>
+	    <div class="form-row">
+	    	<div class="form-group">
+	    		<label for="defaultContact" style="margin-right: 2rem;">设置为缺省联系人</label>
+	    		<input type="checkbox" id="defaultContact" (change)="onChkBoxChange($event)" checked="isDefaultContact">
+	    	</div>	
+	    </div>	
+
+	    <button class="btn btn-outline-primary" (click)="save()" [disabled]="!form.valid">保存联系人信息</button>
+	</form>
+</div>
+
+
+<style>
+	.ng-valid[required], .ng-valid.required {
+		border-left: 5px solid #42A948;
+	}
+
+	.ng-invalid:not(form) {
+		border-left: 5px solid #a94442;
+	}
+
+	.form-row {
+		align-items: center;
+	}
+
+</style>

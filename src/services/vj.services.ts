@@ -170,4 +170,57 @@ export class VJAPI {
 	
 		return this.http.post(API_BASE_URL + 'api/product/products/swap', body, {headers:headers});		
 	}
+
+	public queryProductByKeywordAndCatId(keyword, subCatId): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/product/query/keyword/' + keyword + '/' + subCatId,  {headers:headers});		
+	}
+
+	/**
+	 * Distributor  Related API
+	 */
+
+	public updateDistributorInfo(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/distributor/info/update', body, {headers:headers});				
+	}
+
+	public updateDistributorAddress(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/distributor/address/update', body, {headers:headers});					
+	}
+
+	public updateDistributorContact(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/distributor/contact/update', body, {headers:headers});					
+	}
+
+	public queryDistributorInfo(keyword): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/distributor/info/query/' + keyword, {headers:headers});				
+	}
+
+	public queryDistributorInventory(distributorId): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/distributor/inventory/query/' + distributorId, {headers:headers});			
+	}
+
+	public increateDistributorInventory(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/distributor/inventory/increase', body, {headers:headers});			
+	}
 }
