@@ -7,6 +7,8 @@ import { VJAPI } from '../../../services/vj.services';
 import { ProductCategory } from '../../../models/product-category';
 import { ProductSubCategory } from '../../../models/product-sub-category';
 import { Product } from '../../../models/product';
+import { ProductImage } from '../../../models/product-image-model';
+import { API_BASE_URL } from '../../../models/constants';
 
 @Component({
   selector: 'app-product-form',
@@ -32,7 +34,7 @@ export class ProductFormComponent implements OnInit {
 
   form: FormGroup;
 
-  title: string = '新增产品';
+  caption: string = '新增产品';
 
   topImageQueue: any[];
   bottomImageQueue: any[];
@@ -43,6 +45,10 @@ export class ProductFormComponent implements OnInit {
   thumbnailFile: File;
 
   formFunction: string = 'add';
+  images: ProductImage[];
+  topImages: ProductImage[];
+  bottomImages: ProductImage[];
+  baseUrl: string;
 
   constructor(private fb: FormBuilder, private renderer: Renderer2, private vjApi: VJAPI, private router: Router,
               private actRoute: ActivatedRoute) 
@@ -58,10 +64,18 @@ export class ProductFormComponent implements OnInit {
     this.topImageFiles = new Array<File>();
     this.bottomImageFiles = new Array<File>();
 
+    this.images = new Array<ProductImage>();
+    this.topImages = new Array<ProductImage>();
+    this.bottomImages = new Array<ProductImage>();
+
+    this.baseUrl = API_BASE_URL;
+
+    console.log(this.baseUrl);
+
     this.productId = this.actRoute.snapshot.params['id'];
     if(this.productId) {
       this.formFunction = 'edit';
-      this.title = '编辑产品';
+      this.caption = '编辑产品';
     }
 
   }
@@ -88,7 +102,19 @@ export class ProductFormComponent implements OnInit {
       }
     });
 
-    if(this.formFunction == 'edit'){
+    this.populateProductData();
+
+    console.log('--------------------');
+    console.log(this.thumbnailFile);
+    console.log(this.bottomImageQueue);
+  }
+
+  populateProductData() {
+    this.images = new Array<ProductImage>();
+    this.topImages = new Array<ProductImage>();
+    this.bottomImages = new Array<ProductImage>();
+
+    if(this.productId){
       this.vjApi.queryProductById(this.productId).subscribe((p) => {
         if(p.length > 0) {
           this.product  = p[0];
@@ -110,16 +136,33 @@ export class ProductFormComponent implements OnInit {
             this.form.controls['model'].setValue(this.product.model);
             this.form.controls['description'].setValue(this.product.description);
             this.form.controls['package_unit'].setValue(this.product.package_unit);
+            this.form.controls['weight'].setValue(this.product.weight);
+            this.form.controls['weight_unit'].setValue(this.product.weight_unit);
             this.form.controls['price'].setValue(this.product.price);
             this.form.controls['brand'].setValue(this.product.brand);
             this.form.controls['inventory'].setValue(this.product.inventory);
+            this.form.controls['sort_order'].setValue(this.product.sort_order);
+
+            // Get product images
+            this.vjApi.queryProductImagesByProductId(this.productId).subscribe((imgs) => {
+              console.log(imgs);
+              if(imgs.length > 0) {
+                this.images = imgs;
+                for(let img of this.images) {
+                  if(img.position == 1) {
+                    this.topImages.push(img);
+                    console.log(this.topImages);
+                  } else if(img.position == 2) {
+                    this.bottomImages.push(img);
+                  }
+                }
+              }
+            })
           });
         }
       })
-    }
+    }    
   }
-
-
   previewImages(event, position: string) {
     // clear previous pictures
 
@@ -188,7 +231,7 @@ export class ProductFormComponent implements OnInit {
 
   prepareFormData() {
     let body = new FormData();
-    if(this.formFunction == 'edit'){
+    if(this.productId){
       body.append('id', this.productId + '');
     }
     body.append('product_sub_category_id', this.product.product_sub_category_id + '');
@@ -203,37 +246,29 @@ export class ProductFormComponent implements OnInit {
     body.append('brand', this.form.get('brand').value);
     body.append('inventory', this.form.get('inventory').value);
     body.append('sort_order',  this.form.get('sort_order').value);
-    body.append('thumbnail', this.thumbnailFile);
-    for(let i = 0; i < this.topImageFiles.length; i++) {
-      body.append('topImage' + i, this.topImageFiles[i]);
+    if(this.thumbnailFile)
+      body.append('thumbnail', this.thumbnailFile);
+    else
+      body.append('thumbnail_url', this.product.thumbnail_url);
+
+    if(this.topImageFiles.length > 0) {
+      for(let i = 0; i < this.topImageFiles.length; i++) {
+        body.append('topImage' + i, this.topImageFiles[i]);
+      }
+      body.append('numOfTopImages', this.topImageFiles.length + '');
     }
 
-    for(let i = 0; i < this.bottomImageFiles.length; i++) {
-      body.append('bottomImage' + i, this.bottomImageFiles[i]);
+    if(this.bottomImageFiles.length > 0) {
+      for(let i = 0; i < this.bottomImageFiles.length; i++) {
+        body.append('bottomImage' + i, this.bottomImageFiles[i]);
+      }   
+      body.append('numOfBottomImages', this.bottomImageFiles.length + '');
     }
-
-    body.append('numOfTopImages', this.topImageFiles.length + '');
-    body.append('numOfBottomImages', this.bottomImageFiles.length + '');
 
     return body;
   }
 
   submitData() {
-    /*
-    this.form.disable();
-
-    this.product.name = this.form.controls.name.value;
-    this.product.description =this.form.get('description').value;
-    this.product.model =this.form.get('model').value;
-    this.product.package_unit =this.form.get('package_unit').value;
-    this.product.weight = this.form.get('weight').value;
-    this.product.weight_unit = this.form.get('weight_unit').value;
-    this.product.price = this.form.get('price').value;
-    this.product.brand =this.form.get('brand').value;
-    this.product.inventory = this.form.get('inventory').value;
-    this.product.sort_order = this.form.get('sort_order').value;
-
-    console.log(this.product);*/
 
     let body = this.prepareFormData();
 
@@ -243,11 +278,9 @@ export class ProductFormComponent implements OnInit {
       if(data) {
         this.productId = (data.json())['id'];
         console.log(this.productId);
+        this.populateProductData();
       }
     });
-
-    // get back the product id of this one
-
   }
 
   categorySelected(event) {

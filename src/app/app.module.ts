@@ -13,6 +13,7 @@ import { ProductModule } from './product/product.module';
 import { DistributorModule } from './distributor/distributor.module';
 import { NavbarComponent } from './ui/navbar/navbar.component';
 import { MenuComponent } from './ui/menu/menu.component';
+import { CouponModule } from './coupon/coupon.module';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { MenuComponent } from './ui/menu/menu.component';
     RouterModule.forRoot(appRoutes),
     HttpModule,
     DistributorModule,
+    CouponModule,
   ],
   providers: [
   	VJAPI

@@ -41,4 +41,8 @@ export class MenuComponent implements OnInit {
   toDistributorInventory() {
     this.router.navigate(['distributor/inventory']);
   }
+
+  toCouponType() {
+    this.router.navigate(['coupon/type']);
+  }
 }

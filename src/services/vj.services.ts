@@ -7,7 +7,9 @@ import { map } from 'rxjs/operators';
 import { ProductCategory } from '../models/product-category';
 import { ProductSubCategory } from '../models/product-sub-category';
 import { Product } from '../models/product';
-import { API_BASE_URL } from '../models/Constants';
+import { ProductImage } from '../models/product-image-model';
+import { API_BASE_URL } from '../models/constants';
+import { CouponType } from '../models/coupon-type.model';
 
 @Injectable()
 export class VJAPI {
@@ -225,6 +227,14 @@ export class VJAPI {
 			.pipe(map((data) => data.json()));				
 	}
 
+	public queryProductImagesByProductId(productId): Observable<ProductImage[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/product/images/id/' + productId,  {headers:headers})
+			.pipe(map((data) => data.json()));			
+	}
+
 
 	/**
 	 * Distributor  Related API
@@ -321,4 +331,16 @@ export class VJAPI {
 		return this.http.delete(API_BASE_URL + 'api/distributor/contact/delete/' + contactId, {headers:headers});		
 	}
 
+
+	/**
+	 *  Coupon  Related API
+	 */
+
+	public getCouponTypeAll(): Observable<CouponType[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/coupon/type/all', {headers:headers})
+				.pipe(map((data) => data.json()));				
+	}
 }

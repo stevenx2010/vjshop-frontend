@@ -6,7 +6,7 @@ import { ProductCategory } from '../../../models/product-category';
 import { ProductSubCategory } from '../../../models/product-sub-category';
 import { Product } from '../../../models/product';
 
-import { API_BASE_URL } from '../../../models/Constants';
+import { API_BASE_URL } from '../../../models/constants';
 
 @Component({
   selector: 'app-product',

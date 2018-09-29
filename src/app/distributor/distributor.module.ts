@@ -18,6 +18,13 @@ import { DistributorInventoryFormComponent } from './distributor-inventory-form/
     ReactiveFormsModule,
     FormsModule,
   ],
-  declarations: [DistributorComponent, DistributorFormComponent, DistributorAddressFormComponent, DistributorContactComponent, DistributorContactFormComponent, DistributorInventoryFormComponent]
+  declarations: [
+  	DistributorComponent, 
+  	DistributorFormComponent, 
+  	DistributorAddressFormComponent, 
+  	DistributorContactComponent, 
+  	DistributorContactFormComponent, 
+  	DistributorInventoryFormComponent
+  ]
 })
 export class DistributorModule { }
