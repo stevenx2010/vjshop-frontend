@@ -1,5 +1,9 @@
-<div class="container">
-	<h3 class="title">新增经销商</h3>
+<div>
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a routerLink="/distributor">经销商列表</a></li>
+		<li class="breadcrumb-item active" aria-current="page"><a>{{caption}}</a></li>
+	</ol>
+	<h3 class="title">{{caption}}</h3>
 
 	<form [formGroup]="form">
 		<div class="form-group">
@@ -23,22 +27,149 @@
 
 		<div class="form-row">
 			<div class="col-md-3">
-				<button class="btn btn-outline-primary" [disabled]="!form.valid" (click)="submitData()">保存经销商信息</button>
+				<button class="btn btn-success" [disabled]="!form.valid" (click)="submitData()">保存经销商信息</button>
 			</div>
 			<div class="col-md-3">
-				<button class="btn btn-outline-success" [disabled]="addAddressDisabled" (click)="addAddress()">增加经销商地址</button>
+				<button class="btn btn-primary" [disabled]="addAddressDisabled" (click)="addAddress()">增加经销商地址</button>
 			</div>
 			<div class="col-md-3">
-				<button class="btn btn-outline-success" [disabled]="addContactDisabled" (click)="addContact()">增加经销联系人</button>
+				<button class="btn btn-primary" [disabled]="addContactDisabled" (click)="addContact()">增加经销联系人</button>
 			</div>				
 		</div>
 		
 
-
 		<router-outlet></router-outlet>
 
+		<div class="form-row distributor-info">
+			<div class="col-md-12">
+				<div class="box success">
+		            <header>
+		                <div class="icons"><i class="fa fa-building-o"></i></div>
+		                <div align="center">
+		                	<h4>经销商信息</h4>
+		                </div>
+					</header>
+		        </div>
+		    </div>
+		</div>
+
+		<div class="form-row distributor">
+			<div class="col-md-12">
+				<table class="table table-hover table-thead-dark">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>经销商名称</th>
+							<th>描述</th>
+						</tr>
+					</thead>
+					<tbody>
+						<th scope="row">{{distributor?.id}}</th>
+						<td>{{distributor?.name}}</td>
+						<td>{{distributor?.description}}</td>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="form-row distributor-address">
+			<div class="col-md-12">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>城市</th>
+							<th>街道</th>
+							<th>默认地址</th>
+							<th>编辑</th>
+							<th>删除</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let address of distributor?.addresses; let i = index;">
+							<th scope="row">{{address?.id}}</th>
+							<td>{{address?.city}}</td>
+							<td>{{address?.street}}</td>
+							<td><i class="fa fa-check" *ngIf="address?.default_address"></i></td>
+							<td><i class="fa fa-edit" data-content="edit" (click)="editAddress(i)"></i></td>
+							<td><i class="fa fa-trash" data-content="delete" data-toggle="modal" data-target="#deleteConfirmAddress" (click)="deleteAddress(i)"></i></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="form-row distributor-contact">
+			<div class="col-md-12">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>姓名</th>
+							<th>手机</th>
+							<th>电话</th>
+							<th>默认联系人</th>
+							<th>编辑</th>
+							<th>删除</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let contact of distributor?.contacts; let j = index;">
+							<th scope="row">{{contact?.id}}</th>
+							<td>{{contact?.name}}</td>
+							<td>{{contact?.mobile}}</td>
+							<td>({{contact?.phone_area_code}}){{contact?.telephone}}</td>
+							<td><i class="fa fa-check" *ngIf="contact?.default_contact"></i></td>
+							<td><i class="fa fa-edit" data-content="edit" (click)="editContact(j)"></i></td>
+							<td><i class="fa fa-trash" data-content="delete" data-toggle="modal" data-target="#deleteConfirmContact" (click)="deleteContact(j)"></i></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</form>
-	
+
+	<!--Modal-->
+	<div class="modal fade" id="deleteConfirmAddress">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认删除</h4>					
+				</div>
+
+				<div class="modal-body">
+					请确认是否真的要删除该地址？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" (click)="deleteConfirmedAddress()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Modal-->
+	<div class="modal fade" id="deleteConfirmContact">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认删除</h4>					
+				</div>
+
+				<div class="modal-body">
+					请确认是否真的要删除该联系人？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" (click)="deleteConfirmedContact()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>	
 </div>
 
 <style>
@@ -52,6 +183,25 @@
 
 	.form-row {
 		align-items: center;
+	}
+
+	.distributor-info {
+		margin-top: 10rem;
+	}
+
+	.distributor, .distributor-address, .distributor-contact {
+		margin-top: 8rem;
+	}
+
+	[data-content="edit"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+
+	[data-content="delete"]:hover {
+		color: #ff4832;
+		cursor: pointer;
 	}
 
 </style>

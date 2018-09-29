@@ -30,6 +30,13 @@ export class DistributorInventoryFormComponent implements OnInit {
   inventories: number[];
   productInventories: Product[]
 
+  filterProductCategories: ProductCategory[];
+  filterProductSubCategories: ProductSubCategory[];
+  filterProductInventories: Product[];
+  filterProductCategoryId: number;
+  filterSubCategoryId: number;
+  filterKeyword: string;
+
   tableDisplay: boolean = false;
   productShow: boolean = false;
   inputQueryDisabled: boolean = true;
@@ -38,10 +45,14 @@ export class DistributorInventoryFormComponent implements OnInit {
   constructor(private vjApi: VJAPI) { 
   	this.distributors = new Array<Distributor>();
   	this.productCategories = new Array<ProductCategory>();
-  	this.productSubCategories = new Array<ProductSubCategory>();
+  	this.productSubCategories = new Array<ProductSubCategory>(new ProductSubCategory());
     this.products = new Array<Product>();
     this.inventories = new Array<number>();
     this.productInventories = new Array<Product>();
+
+    this.filterProductCategories = new Array<ProductCategory>();
+    this.filterProductSubCategories = new Array<ProductSubCategory>();   
+    this.filterProductInventories = new Array<Product>();
   }
 
   ngOnInit() {
@@ -49,6 +60,8 @@ export class DistributorInventoryFormComponent implements OnInit {
   		if(data) {
   			this.productCategories = data;
   			this.productCategories[0].name = '';
+
+        this.filterProductCategories = data;
   		}
   	});
   }
@@ -56,8 +69,10 @@ export class DistributorInventoryFormComponent implements OnInit {
   query() {
 
   	this.vjApi.queryDistributorInfo(this.keyword).subscribe((data) => {
+      this.distributors = [];
   		console.log(data.json());
   		if(data.json().length > 0) {
+
   			this.distributors = data.json();
         this.tableDisplay = true;
   		}
@@ -82,6 +97,7 @@ export class DistributorInventoryFormComponent implements OnInit {
     this.vjApi.queryDistributorInventory(this.distributorId).subscribe((data) => {
       if(data.json().length > 0) {
         this.productInventories = data.json();
+        this.filterProductInventories = this.productInventories;
       }
     });   
   }
@@ -91,24 +107,64 @@ export class DistributorInventoryFormComponent implements OnInit {
   		this.vjApi.getProductSubCategoriesByProductCategoryId(event.target.value).subscribe((data) => {
   			console.log(data);
   			if(data) {
-  				this.productSubCategories = data;
-          this.subCategoryId = this.productSubCategories[0].id;
-           console.log('xxxx', this.subCategoryId);
+          this.productSubCategories = new Array<ProductSubCategory>(new ProductSubCategory());
+          for(let d of data) {
+            this.productSubCategories.push(d);
+          }
+          this.filterSubCategoryId = this.productSubCategories[0].id;
           this.inputQueryDisabled = false;
   			}
   		})
   	} else {
   		this.productSubCategories = [];
   	}
-
   }
 
   subCatSelected(event) {
     this.subCategoryId = event.target.value;
   }
 
+  filterCatSelected(event) {
+    if(event.target.value > 1) {
+      this.vjApi.getProductSubCategoriesByProductCategoryId(event.target.value).subscribe((data) => {
+        console.log(data);
+        if(data) {
+          this.filterProductSubCategories = new Array<ProductSubCategory>(new ProductSubCategory());
+          for(let d of data) {
+            this.filterProductSubCategories.push(d);
+          }
+        }
+      })
+    } else {
+      this.filterProductSubCategories = [];
+    }
+  }
+
+  filterSubCatSelect(event) {
+      this.filterSubCategoryId = event.target.value;
+
+  }
+
+  filter() {
+
+      this.filterProductInventories = this.productInventories.filter((e, index, array) => {
+        console.log(this.filterSubCategoryId);
+        console.log(this.filterKeyword);
+        if((this.filterSubCategoryId == null || this.filterSubCategoryId == 0) && this.filterKeyword == null) return true;
+        else if((this.filterSubCategoryId == null || this.filterSubCategoryId == 0) && this.filterKeyword != null) {
+          return (e.name.toLowerCase().indexOf(this.filterKeyword.trim().toLowerCase()) >= 0);
+        }
+        else if(this.filterSubCategoryId != null && this.filterKeyword == null) {
+          return (e.product_sub_category_id == this.filterSubCategoryId );
+        } else {
+          return (e.product_sub_category_id == this.filterSubCategoryId) && 
+                    (e.name.toLowerCase().indexOf(this.filterKeyword.trim().toLowerCase()) >= 0);
+        }
+      })    
+  }
+
   queryProduct() {
-    this.vjApi.queryProductByKeywordAndCatId(this.keywordProduct,this.subCategoryId).subscribe((data) => {
+    this.vjApi.queryProductByKeywordAndSubCatId(this.keywordProduct,this.subCategoryId).subscribe((data) => {
       if(data.json()) {
         this.products = data.json();
         this.products.forEach((d) => {

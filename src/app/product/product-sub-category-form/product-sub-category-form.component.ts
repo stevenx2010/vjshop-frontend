@@ -46,7 +46,7 @@ export class ProductSubCategoryFormComponent implements OnInit {
   	// step 3: retrieve the related product category by id if it's 'add', else 
   	if(this.formFunction == 'add') {
 	  	this.productCategoryId = this.activatedRoute.snapshot.params['id'];
-		this.vjApi.getProductCategoryById(this.productCategoryId).subscribe((data) => {
+		  this.vjApi.getProductCategoryById(this.productCategoryId).subscribe((data) => {
 	 		if(data) {
 		  		this.productCategory = data;
 		  	}

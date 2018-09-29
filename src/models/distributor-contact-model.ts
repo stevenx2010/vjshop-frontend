@@ -1,4 +1,5 @@
 export class DistributorContact {
+	public id: number = 0;
 	public name: string = '';
 	public mobile: string = '';
 	public phone_area_code: string = '';
@@ -8,6 +9,7 @@ export class DistributorContact {
 
 	constructor(obj?) {
 		if(obj) {
+			this.id = obj.id || 0;
 			this.name = obj.name || '';
 			this.mobile = obj.mobile || '';
 			this.phone_area_code = obj.phone_area_code || '';

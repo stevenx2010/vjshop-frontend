@@ -1,5 +1,5 @@
-<div class="container">
-	<h2>产品分类子类</h2>
+<div>
+	<h3>产品分类子类</h3>
 	<div class="form-group">
 		<label for="productCategoies">产品分类</label>
 		<select class="form-control" id="productCategoies" (change)="onSelect($event)" required>
@@ -9,16 +9,16 @@
 		</select>
 	</div>
 
-	<button class="btn btn-primary" (click)="add()" [disabled]="addBtnDisabled">新增产品分类子类</button>
-	<table class="table table-bordered">
+	<button id="btn-0" class="btn btn-primary" (click)="add()" [disabled]="addBtnDisabled">新增产品分类子类</button>
+	<table class="table table-bordered table-hover">
 		<thead>
 			<tr>
 				<th></th>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Sort Order</th>
-				<th>Edit</th>
-				<th>Delete</th>
+				<th>子类名称</th>
+				<th>子类描述</th>
+				<th>排序序号</th>
+				<th>编辑</th>
+				<th>删除</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,58 +27,35 @@
 				<td>{{productSubCategory.name}}</td>
 				<td>{{productSubCategory.description}}</td>
 				<td>{{productSubCategory.sort_order}}</td>
-				<td><i class="material-icons" data-content="edit" (click)="edit(i)">edit</i></td>
-				<td><i class="material-icons" data-content="delete" data-toggle="modal" (click)="delete(i)" data-target="#deleteConfirm">delete</i></td>
+				<td><i class="fa fa-edit" data-content="edit" (click)="edit(i)"></i></td>
+				<td><i class="fa fa-trash" data-content="delete" data-toggle="modal" (click)="delete(i)" data-target="#deleteConfirm"></i></td>
 			</tr>
 		</tbody>
 	</table>
 
-	<button class="btn btn-primary" (click)="swap()" [disabled]="swapBtnDisabled">交换排序序号</button>
-	<button class="btn btn-primary" (click)="update()" [disabled]="updateBtnDisabled">保存更新</button>
-</div>
-
-
-<!--Modal-->
-<div class="modal deleteConfirm-modal-sm" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalCenterTitle" aria-hidden="true">
-	<div class="modal-dialo modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="deleteConfirmModalCenterTitle">确认删除</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-
-			<div class="modal-body">
-				请确认是否真的要删除该产品分类？
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-			</div>
-		</div>
+	<div align="right">
+		<button id="btn-1" class="btn btn-primary" (click)="swap()" [disabled]="swapBtnDisabled">交换排序序号</button>
+		<button class="btn btn-success" (click)="update()" [disabled]="updateBtnDisabled">保存更新</button>
 	</div>
 </div>
 
+
 	<!--Modal-->
-	<div class="modal deleteConfirm-modal-sm" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialo modal-dialog-centered" role="document">
+	<div class="modal fade" id="deleteConfirm">
+		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="deleteConfirmModalCenterTitle">确认删除</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认删除</h4>					
 				</div>
 
 				<div class="modal-body">
-					请确认是否真的要删除该产品分类？
+					请确认是否真的要删除该产品分类子类？
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-danger" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
 				</div>
 			</div>
 		</div>
@@ -94,7 +71,7 @@
 
 	.active {
 		background-color: #ff4832;
-		color: white;
+		color: red;
 	}
 
 	[data-content="edit"]:hover {
@@ -108,9 +85,18 @@
 		cursor: pointer;
 	}
 
-	.modal {
-		width: 30rem;
-		margin-left: 30%;
+	#btn-0 {
+		margin-top:2rem;
+		margin-bottom: 2rem;
 	}
+
+	#btn-1 {
+		margin-right: 2rem;
+	}
+
+	h3 {
+		margin-bottom: 2rem;
+	}
+
 
 </style>

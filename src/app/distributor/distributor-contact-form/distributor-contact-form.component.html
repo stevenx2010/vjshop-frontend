@@ -1,5 +1,13 @@
-<div class="container">
+<div>
+	<ol class="breadcrumb" *ngIf="formFunction == 'edit'">
+		<li class="breadcrumb-item"><a routerLink="/distributor">经销商列表</a></li>
+		<li class="breadcrumb-item"><a [routerLink]="upperLink">编辑经销商</a></li>
+		<li class="breadcrumb-item active" aria-current="page"><a>{{caption}}</a></li>
+	</ol>
 	<form [formGroup]="form">
+		<div class="form-row">
+			<div class="col-md-12"></div>
+		</div>
 		<div class="form-row">
 			<div class="form-group col-md-3">
 				<label for="name">联系人姓名</label>
@@ -26,7 +34,7 @@
 
 			<div class="form-group col-md-2">
 				<label for="area_code">电话区号</label>
-				<select id="area_code" class="form-control" formControlName="phoneAreaCode" (change)="selectCode($event)">
+				<select id="area_code" class="form-control" formControlName="phoneAreaCode" (change)="selectCode($event)" #area>
 					<option *ngFor="let code of areaCode" value="{{code.value}}">{{code.text}}</option>
 				</select>
 			</div>
@@ -42,13 +50,17 @@
 			</div>
 		</div>
 	    <div class="form-row">
-	    	<div class="form-group">
+	    	<div class="form-group col-md-12">
 	    		<label for="defaultContact" style="margin-right: 2rem;">设置为缺省联系人</label>
-	    		<input type="checkbox" id="defaultContact" (change)="onChkBoxChange($event)" checked="isDefaultContact">
+	    		<input type="checkbox" id="defaultContact" (change)="onChkBoxChange($event)" [checked]="isDefaultContact">
 	    	</div>	
 	    </div>	
 
-	    <button class="btn btn-outline-primary" (click)="save()" [disabled]="!form.valid">保存联系人信息</button>
+	    <div class="form-row">
+	    	<div class="col-md-12" align="right">
+	    		<button class="btn btn-success" (click)="save()" [disabled]="!form.valid">保存联系人信息</button>
+	    	</div>
+	    </div>
 	</form>
 </div>
 
@@ -64,6 +76,10 @@
 
 	.form-row {
 		align-items: center;
+	}
+
+	form {
+		padding-top: 7rem;
 	}
 
 </style>

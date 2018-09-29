@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { VJAPI } from '../../../services/vj.services';
 import { ProductCategory } from '../../../models/product-category';
@@ -21,6 +22,9 @@ export class ProductFormComponent implements OnInit {
 
   @ViewChild('topImageInput') topImageInput: ElementRef;
 
+  @ViewChild('c') c: ElementRef;
+  @ViewChild('s') s: ElementRef;
+
   productCategories: ProductCategory[];
   productSubCategories: ProductSubCategory[];
   product: Product;
@@ -38,7 +42,11 @@ export class ProductFormComponent implements OnInit {
   bottomImageFiles: File[];
   thumbnailFile: File;
 
-  constructor(private fb: FormBuilder, private renderer: Renderer2, private vjApi: VJAPI) { 
+  formFunction: string = 'add';
+
+  constructor(private fb: FormBuilder, private renderer: Renderer2, private vjApi: VJAPI, private router: Router,
+              private actRoute: ActivatedRoute) 
+  { 
     this.productCategories = new Array<ProductCategory>(new ProductCategory());
     this.productSubCategories = new Array<ProductSubCategory>(new ProductSubCategory());
    
@@ -49,6 +57,12 @@ export class ProductFormComponent implements OnInit {
 
     this.topImageFiles = new Array<File>();
     this.bottomImageFiles = new Array<File>();
+
+    this.productId = this.actRoute.snapshot.params['id'];
+    if(this.productId) {
+      this.formFunction = 'edit';
+      this.title = '编辑产品';
+    }
 
   }
 
@@ -73,6 +87,36 @@ export class ProductFormComponent implements OnInit {
         this.productCategories = data;
       }
     });
+
+    if(this.formFunction == 'edit'){
+      this.vjApi.queryProductById(this.productId).subscribe((p) => {
+        if(p.length > 0) {
+          this.product  = p[0];
+
+          // fill category control
+          this.vjApi.queryProductCategoryIdBySubCatId(p[0].product_sub_category_id).subscribe((catId) => {
+            let id = (catId.json())[0].id;
+            let name = (catId.json())[0].name;
+            this.c.nativeElement.selectedIndex = id;
+            this.form.controls['category_id'].setValue(id);
+          
+            // fill subcategory control
+            console.log(this.product);
+            this.populateSubCategories(id);
+            this.s.nativeElement.selectedIndex = this.product.product_sub_category_id;
+            this.form.controls['sub_category_id'].setValue(this.product.product_sub_category_id);
+
+            this.form.controls['name'].setValue(this.product.name);
+            this.form.controls['model'].setValue(this.product.model);
+            this.form.controls['description'].setValue(this.product.description);
+            this.form.controls['package_unit'].setValue(this.product.package_unit);
+            this.form.controls['price'].setValue(this.product.price);
+            this.form.controls['brand'].setValue(this.product.brand);
+            this.form.controls['inventory'].setValue(this.product.inventory);
+          });
+        }
+      })
+    }
   }
 
 
@@ -144,6 +188,9 @@ export class ProductFormComponent implements OnInit {
 
   prepareFormData() {
     let body = new FormData();
+    if(this.formFunction == 'edit'){
+      body.append('id', this.productId + '');
+    }
     body.append('product_sub_category_id', this.product.product_sub_category_id + '');
     body.append('product_sub_category_name', this.product.product_sub_category_name);
     body.append('name',this.form.controls.name.value);
@@ -211,6 +258,14 @@ export class ProductFormComponent implements OnInit {
         this.productSubCategories = data;
       }
     });
+  }
+
+  populateSubCategories(catId) {
+    this.vjApi.getProductSubCategoriesByProductCategoryId(catId).subscribe((data) => {
+      if(data) {
+        this.productSubCategories = data;
+      }
+    });    
   }
 
   subCategorySelected(event) {

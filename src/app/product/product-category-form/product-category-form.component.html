@@ -1,9 +1,9 @@
-<div class="container">
+<div>
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item"><a routerLink='/product/category'>产品分类</a></li>
-		<li class="breadcrumb-item active" aria-current="page"><a>新增产品分类</a></li>
+		<li class="breadcrumb-item active" aria-current="page"><a>{{title}}</a></li>
 	</ol>
-	<h2>{{title}}</h2>
+	<h3>{{title}}</h3>
 	<form [formGroup]="form" (ngSubmit)="submit()">
 		<div class="form-row">
 			<div class="form-group col-md-8">
@@ -31,13 +31,17 @@
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label for="description">产品分类描述</label>
-			<textarea id="description" rows="3" class="form-control" formControlName="description"></textarea>
+		<div class="col-md-12">
+			<div class="form-group">
+				<label for="description">产品分类描述</label>
+				<textarea id="description" rows="3" class="form-control" formControlName="description"></textarea>
+			</div>
+		
+
+			<div align="right">
+				<button type="button" class="btn btn-primary" type="submit" [disabled]="!form.valid">保存以上数据</button>
+			</div>
 		</div>
-
-
-		<button type="button" class="btn btn-outline-primary" type="submit" [disabled]="!form.valid">保存以上数据</button>
 	</form>
 </div>
 

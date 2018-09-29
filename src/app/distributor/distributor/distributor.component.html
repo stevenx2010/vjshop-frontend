@@ -1,3 +1,101 @@
-<p>
-  distributor works!
-</p>
+<div>
+	<h3>经销商查询</h3>
+	<div class="col-md-12 search">
+	<form [formGroup]="form">
+        <div class="input-group">
+            <input type="text" class="form-control" formControlName="searchText" placeholder="经销商名称查询 ...">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary btn-sm text-muted" type="button" (click)="search()">
+                     	<i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+
+	<div class="col-md-12">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th scope="col"></th>
+					<th scope="col"></th>
+					<th scope="col">经销商名称</th>
+					<th scope="col">经销商描述</th>
+					<th scope="col">地址</th>
+					<th scope="col">联系人</th>
+					<th>编辑</th>
+					<th>删除</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let distributor of distributors; let i = index;" [class.active]="i == checkedRadioBtn">
+					<td><input type="radio" name="distributor" value="{{i}}" [ngModel]="radioBtnValue" (change)="radioChecked(e, i)"></td>
+					<th scope="row">{{i+1}}</th>
+					<td>{{distributor?.name}}</td>
+					<td>{{distributor?.description}}</td>
+					<td>
+						<tr *ngFor="let address of distributor?.addresses; let j = index;">
+							<td>{{j+1}}.{{address.city}}{{address.street}}<i class="fa fa-check" *ngIf="address?.default_address"></i></td>
+						</tr>
+					</td>
+					<td>
+						<tr *ngFor="let contact of distributor?.contacts; let k = index;">
+							<td>
+								{{k+1}}.{{contact?.name}}&nbsp;{{contact?.mobile}}&nbsp;({{contact?.phone_area_code}}){{contact?.telephone}}
+								<i class="fa fa-check" *ngIf="contact?.default_contact"></i>
+							</td>
+						</tr>
+					</td>
+					<td><i class="fa fa-edit" data-content="edit" (click)="edit(i)"></i></td>
+					<td><i class="fa fa-trash" data-content="delete" data-toggle="modal" data-target="#deleteConfirm" (click)="delete(i)"></i></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+	<!--Modal-->
+	<div class="modal fade" id="deleteConfirm">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认删除</h4>					
+				</div>
+
+				<div class="modal-body">
+					<p></p>
+					请确认是否真的要删除该经销商？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<style>
+	[data-content="edit"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+
+	[data-content="delete"]:hover {
+		color: #ff4832;
+		cursor: pointer;
+	}
+
+	.active {
+		background-color: #c1c1c1;
+		color: red;
+	}
+
+	.search {
+		margin-top: 4rem;
+		margin-bottom: 3rem;
+	}
+</style>

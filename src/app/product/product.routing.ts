@@ -19,6 +19,7 @@ export const productRoutes: Routes = [
 	{path: 'product/subcategory/edit/:id', component: ProductSubCategoryFormComponent},
 
 	{path: 'product/product', component: ProductComponent},
-	{path: 'product/product/add', component: ProductFormComponent}
+	{path: 'product/product/add', component: ProductFormComponent},
+	{path: 'product/product/edit/:id', component: ProductFormComponent}
 
 ]

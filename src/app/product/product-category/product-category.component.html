@@ -1,17 +1,17 @@
-<div class="container">
-	<h2>产品分类</h2>
+<div class="container-fluid">
+	<h3>产品分类</h3>
 
-	<button type="button" class="btn btn-outline-primary" (click)="add()">新增产品分类</button>
+	<button id="btn-0" type="button" class="btn btn-primary" (click)="add()">新增产品分类</button>
 
-	<table class="table table-bordered">
+	<table class="table table-bordered table-hover">
 		<thead>
 			<tr>
 				<th></th>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Sort Order</th>
-				<th>Edit</th>
-				<th>Delete</th>
+				<th>分类名称</th>
+				<th>分类描述</th>
+				<th>排序序号</th>
+				<th>编辑</th>
+				<th>删除</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -20,28 +20,27 @@
 				<td>{{productCategory.name}}</td>
 				<td>{{productCategory.description}}</td>
 				<td>{{productCategory.sort_order}}</td>
-				<td><i class="material-icons" *ngIf="productCategory.name != '全部产品'" data-content="edit" (click)="edit(i)">edit</i></td>
-				<td><i class="material-icons" *ngIf="productCategory.name != '全部产品'" data-content="delete" (click)="delete(i)" data-toggle="modal" data-target="#deleteConfirm">delete</i></td>
+				<td><i class="fa fa-edit" *ngIf="productCategory.name != '全部产品'" data-content="edit" (click)="edit(i)"></i></td>
+				<td><i class="fa fa-trash" *ngIf="productCategory.name != '全部产品'" data-content="delete" (click)="delete(i)" data-toggle="modal" data-target="#deleteConfirm"></i></td>
 			</tr>
 		</tbody>
 	</table>
 
-	<button type="button" class="btn btn-outline-primary" (click)="swap()" [disabled]="swapBtnDisabled">交换排序序号</button>
-	<button type="button" class="btn btn-outline-success" (click)="update()" [disabled]="updateBtnDisabled">保存更新</button>
-
+	<div align="right">
+		<button id="btn-1" type="button" class="btn btn-primary" (click)="swap()" [disabled]="swapBtnDisabled">交换排序序号</button>
+		<button type="button" class="btn btn-success" (click)="update()" [disabled]="updateBtnDisabled">保存更新</button>
+	</div>
 
 
 </div>
 
 	<!--Modal-->
-	<div class="modal deleteConfirm-modal-sm" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialo modal-dialog-centered" role="document">
+	<div class="modal fade" id="deleteConfirm">
+		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="deleteConfirmModalCenterTitle">确认删除</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认删除</h4>					
 				</div>
 
 				<div class="modal-body">
@@ -49,8 +48,8 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" (click)="deleteConfirmed()" data-dismiss="modal"><i class="material-icons">event</i>确定</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-danger" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
 				</div>
 			</div>
 		</div>
@@ -58,15 +57,15 @@
 
 <style>
 
-	.container button {
+	.btn-bottom {
 		margin-top: 1.5rem;
 		margin-bottom: 1.5rem;
-		margin-right: 2rem;
+		margin-left: 2rem!important;
 	}
 
 	.active {
-		background-color: #ff4832;
-		color: white;
+		background-color: black;
+		color: red;
 	}
 
 	[data-content="edit"]:hover {
@@ -80,8 +79,11 @@
 		cursor: pointer;
 	}
 
-	.modal {
-		width: 30rem;
-		margin-left: 30%;
+	#btn-0 {
+		margin-top: 2rem!important;
+		margin-bottom: 2rem!important;
+	}
+	#btn-1 {
+		margin-right: 2rem!important;
 	}
 </style>

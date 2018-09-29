@@ -77,6 +77,7 @@ export class VJAPI {
 		return this.http.delete(API_BASE_URL + 'api/product/categories/delete/' + categoryId, {headers: headers});		
 	}
 
+
 	/**
 	 * Product SubCategory Related API
 	 */
@@ -118,6 +119,12 @@ export class VJAPI {
 		return this.http.delete(API_BASE_URL + 'api/product/subcategories/delete/' + subCategoryId, {headers: headers});		
 	}
 
+	public queryProductCategoryIdBySubCatId(subCatId): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/product/categories/subCatId/' + subCatId, {headers: headers});
+	}
 
 	/**
 	 * Product  Related API
@@ -171,12 +178,53 @@ export class VJAPI {
 		return this.http.post(API_BASE_URL + 'api/product/products/swap', body, {headers:headers});		
 	}
 
-	public queryProductByKeywordAndCatId(keyword, subCatId): Observable<Response> {
+	public queryProductByKeywordAndSubCatId(keyword, subCatId): Observable<Response> {
 		let headers = new Headers();
 		this.initAuthHeader(headers);
 	
 		return this.http.get(API_BASE_URL + 'api/product/query/keyword/' + keyword + '/' + subCatId,  {headers:headers});		
 	}
+
+	public queryProductByKeywordAndCatId(keyword, catId): Observable<Product[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/product/query/keyword/' + keyword + '/catid/' + catId,  {headers:headers})
+			.pipe(map((data) => data.json()));	
+	}
+
+	public queryProductByCategoryId(catId): Observable<Product[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/product/query/categoryId/' + catId,  {headers:headers})
+			.pipe(map((data) => data.json()));				
+	}
+
+	public queryProductAll(): Observable<Product[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/product/query/all/',  {headers:headers})
+			.pipe(map((data) => data.json()));		
+	}
+
+	public queryByKeyword(keyword): Observable<Product[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/product/query/keyword/' + keyword,  {headers:headers})
+			.pipe(map((data) => data.json()));				
+	}
+
+	public queryProductById(productId): Observable<Product[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/product/query/id/' + productId,  {headers:headers})
+			.pipe(map((data) => data.json()));				
+	}
+
 
 	/**
 	 * Distributor  Related API
@@ -223,4 +271,54 @@ export class VJAPI {
 	
 		return this.http.post(API_BASE_URL + 'api/distributor/inventory/increase', body, {headers:headers});			
 	}
+
+	public getDistributors(): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/distributor/distributors', {headers:headers});				
+	}
+
+	public deleteDistributor(id: number): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.delete(API_BASE_URL + 'api/distributor/delete/' + id, {headers:headers});				
+	}
+
+	public queryDistributorInfoById(id: number): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/distributor/query/' + id, {headers:headers});						
+	}
+
+	public queryDistributorAddressById(addressId: number): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/distributor/address/query/' + addressId, {headers:headers});			
+	}
+
+	public deleteDistributorAddressById(addressId: number): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.delete(API_BASE_URL + 'api/distributor/address/delete/' + addressId, {headers:headers});			
+	}
+
+	public queryDistributorContactById(contactId: number): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/distributor/contact/query/' + contactId, {headers:headers});			
+	}
+
+	public deleteDistributorContactByeId(contactId: number): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.delete(API_BASE_URL + 'api/distributor/contact/delete/' + contactId, {headers:headers});		
+	}
+
 }

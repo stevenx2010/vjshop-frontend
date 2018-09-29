@@ -11,11 +11,15 @@ import { appRoutes } from './ap.routing';
 
 import { ProductModule } from './product/product.module';
 import { DistributorModule } from './distributor/distributor.module';
+import { NavbarComponent } from './ui/navbar/navbar.component';
+import { MenuComponent } from './ui/menu/menu.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    NavbarComponent,
+    MenuComponent,
   ],
   imports: [
     BrowserModule,

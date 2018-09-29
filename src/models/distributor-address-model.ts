@@ -1,4 +1,5 @@
 export class DistributorAddress {
+	public id: number = 0;
 	public distributor_id: number =0;
 	public city: string = '';
 	public street: string = '';
@@ -6,6 +7,7 @@ export class DistributorAddress {
 
 	constructor(obj?) {
 		if(obj) {
+			this.id = obj.id || 0;
 			this.distributor_id = obj.distributor_id || 0;
 			this.city = obj.city || '';
 			this.street = obj.street || '';

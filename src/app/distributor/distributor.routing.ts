@@ -7,11 +7,17 @@ import { DistributorContactFormComponent } from './distributor-contact-form/dist
 import { DistributorInventoryFormComponent } from './distributor-inventory-form/distributor-inventory-form.component';
 
 export const distributorRoutes: Routes = [
-	{ path: 'distributor/', component: DistributorComponent },
-	{ path: 'distributor/add', component: DistributorFormComponent,
+	{ path: 'distributor', component: DistributorComponent },
+	{ path: 'distributor/add/:id', component: DistributorFormComponent,
 	  children: [
 	  	{ path: 'address/:id', component: DistributorAddressFormComponent},
 	  	{ path: 'contact/:id', component: DistributorContactFormComponent}] },
-	 { path: 'distributor/inventory', component: DistributorInventoryFormComponent },
+	{ path: 'distributor/edit/:id', component: DistributorFormComponent,
+	  children: [
+	  	{ path: 'address/:id', component: DistributorAddressFormComponent},
+	  	{ path: 'contact/:id', component: DistributorContactFormComponent}] }, 
+	{ path: 'distributor/edit/address/:id/:addressId', component: DistributorAddressFormComponent},
+	{ path: 'distributor/edit/contact/:id/:contactId', component: DistributorContactFormComponent},
+	{ path: 'distributor/inventory', component: DistributorInventoryFormComponent },
 
 ];
