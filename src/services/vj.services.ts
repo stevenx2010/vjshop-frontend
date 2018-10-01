@@ -10,6 +10,7 @@ import { Product } from '../models/product';
 import { ProductImage } from '../models/product-image-model';
 import { API_BASE_URL } from '../models/constants';
 import { CouponType } from '../models/coupon-type.model';
+import { Coupon } from '../models/coupon.model';
 
 @Injectable()
 export class VJAPI {
@@ -331,6 +332,21 @@ export class VJAPI {
 		return this.http.delete(API_BASE_URL + 'api/distributor/contact/delete/' + contactId, {headers:headers});		
 	}
 
+	public queryDistributorInventoryByConditions(body): Observable<Product[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/distributor/inventory/query', body, {headers:headers})
+			.pipe(map((data) => data.json()));			
+	}
+
+	public queryDistributorProductByConditions(body): Observable<Product[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/distributor/product/query', body, {headers:headers})
+			.pipe(map((data) => data.json()));			
+	}
 
 	/**
 	 *  Coupon  Related API
@@ -342,5 +358,72 @@ export class VJAPI {
 	
 		return this.http.get(API_BASE_URL + 'api/coupon/type/all', {headers:headers})
 				.pipe(map((data) => data.json()));				
+	}
+
+	public updateCouponTypeSortOrder(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/coupon/type/update/sort_order', body, {headers:headers});		
+	}
+
+	public updateOrCreateCouponType(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/coupon/type/update/coupontype', body, {headers:headers});			
+	}
+
+	public queryCouponTypeById($couponTypeId): Observable<CouponType> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/coupon/type/query/id/' + $couponTypeId, {headers:headers})
+				.pipe(map((data) => data.json()));						
+	}
+
+	public deleteCouponTypeById($couponTypeId): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.delete(API_BASE_URL + 'api/coupon/type/delete/id/' + $couponTypeId, {headers:headers});	
+	}
+
+	public queryCoupon(params): Observable<Coupon[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/coupon/query/', params, {headers:headers})
+			.pipe(map((data) => data.json()));			
+	}
+
+	public updateOrCreateCoupon(body): Observable<Response> {
+		let headers = new Headers();
+	//	this.initAuthHeader(headers);
+		headers.append('Access-Control-Allow-Origin', '*');
+		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
+		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
+		headers.append('Authorization', 'Bearer ' + this.api_token);
+		headers.append('X-Acces-Token', this.access_token);
+		headers.append('Accept-language', 'en_US');		
+		return this.http.post(API_BASE_URL + 'api/coupon/update', body, {headers: headers});			
+	}
+
+	public queryCouponById($couponId): Observable<Coupon[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/coupon/query/id/' + $couponId, {headers:headers})
+				.pipe(map((data) => data.json()));				
+	}
+
+	/**
+	 *  Order  Related API
+	 */
+	public queryOrderByConditions(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/order/query/conditions',body, {headers:headers});		
 	}
 }

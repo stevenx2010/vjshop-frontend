@@ -72,7 +72,7 @@
 			<div class="input-group">
 				<input type="text" class="form-control" placeholder="产品名称关键字过滤..." [(ngModel)]="filterKeyword">
 					<span class="input-group-btn">
-	                <button class="btn btn-primary btn-sm text-muted" type="button" (click)="filter()">
+	                <button class="btn btn-primary btn-sm text-muted" type="button" [disabled]="filterBtnDisabled" (click)="queryInventory()">
 	                    <i class="fa fa-search"></i>
 	                </button>
 	            	</span>
@@ -108,7 +108,7 @@
 
 	<div class="products" *ngIf="productShow"> <!--"-->
 		<div class="form-row">
-			<div align="center"><h4>编辑产品库存</h4></div>
+			<div align="center"><h4>新增/编辑产品库存</h4></div>
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="category">产品分类</label>
@@ -131,7 +131,7 @@
 				<div class="form-group">
 					<label for="kwq">产品型号查询（输入*查询全部）</label>
 					<div class="input-group">
-						<input type="text" placeholder="产品名称型号关键字查询..." [disabled]="inputQueryDisabled" [(ngModel)]="keywordProduct" class="form-control">
+						<input type="text" placeholder="产品名称型号关键字查询..." [(ngModel)]="keywordProduct" class="form-control">
 						<span class="input-group-btn">
 			                <button class="btn btn-primary btn-sm text-muted" type="button" (click)="queryProduct()">
 			                    <i class="fa fa-search"></i>

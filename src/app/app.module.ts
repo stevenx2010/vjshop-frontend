@@ -14,6 +14,7 @@ import { DistributorModule } from './distributor/distributor.module';
 import { NavbarComponent } from './ui/navbar/navbar.component';
 import { MenuComponent } from './ui/menu/menu.component';
 import { CouponModule } from './coupon/coupon.module';
+import { OrderModule } from './order/order.module';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { CouponModule } from './coupon/coupon.module';
     HttpModule,
     DistributorModule,
     CouponModule,
+    OrderModule,
   ],
   providers: [
   	VJAPI

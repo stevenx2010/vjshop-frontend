@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+
+import { filter } from 'rxjs/operators';
 
 import { VJAPI } from '../../../services/vj.services';
 import { CouponType } from '../../../models/coupon-type.model';
@@ -19,19 +21,38 @@ export class CouponTypeComponent implements OnInit {
   isActive: boolean = false;
   swapList: number[];
 
+  indexToBeDeleted: number;
+
   constructor(private vjApi: VJAPI, private router: Router, private actRoute: ActivatedRoute) { 
   	this.couponTypes = new Array<CouponType>();
   	this.selectedItemSet = new Set();
   	this.swapList = new Array<number>();
-  }
+
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      let re = /\/coupon\/type/;
+      let obj: NavigationEnd = event;
+      console.log(obj.url.search(re));
+
+      if(obj.url.search(re) >= 0)
+        this.populateData();
+    })
+  }s
 
   ngOnInit() {
-  	this.vjApi.getCouponTypeAll().subscribe((ct) => {
-  		console.log(ct);
-  		if(ct.length > 0) {
-  			this.couponTypes = ct;
-  		}
-  	})
+   this.populateData();
+  }
+
+  populateData() {
+   this.vjApi.getCouponTypeAll().subscribe((ct) => {
+      console.log(ct);
+      if(ct.length > 0) {
+        this.couponTypes = ct.sort((a: CouponType, b: CouponType) => {
+          if(a.sort_order < b.sort_order) return -1;
+          if(a.sort_order > b.sort_order) return 1;
+          return 0;
+        });
+      }
+    })    
   }
 
 
@@ -67,6 +88,8 @@ export class CouponTypeComponent implements OnInit {
       this.couponTypes[i].sort_order = this.couponTypes[j].sort_order;
       this.couponTypes[j].sort_order = temp;
 
+      console.log(this.swapList);
+
       this.updateBtnDisabled = false;
     } else {
       this.updateBtnDisabled = true;
@@ -77,15 +100,23 @@ export class CouponTypeComponent implements OnInit {
   	this.router.navigate(['add'], {relativeTo: this.actRoute});
   }
 
-  edit(index: number) {
+  update() {
+    this.updateBtnDisabled = true;
+    this.vjApi.updateCouponTypeSortOrder(this.swapList).subscribe((resp) => console.log(resp));
 
+    this.populateData();
+  }
+
+  edit(index: number) {
+    this.router.navigate(['edit/' + this.couponTypes[index].id], {relativeTo: this.actRoute});
   }
 
   delete(index: number) {
-
+    this.indexToBeDeleted = index;
   }
 
   deleteConfirmed() {
-
+    this.vjApi.deleteCouponTypeById(this.couponTypes[this.indexToBeDeleted].id).subscribe((resp) => console.log(resp));
+    this.populateData();
   }
 }

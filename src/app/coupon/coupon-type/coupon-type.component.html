@@ -1,4 +1,5 @@
 <div>
+
 	<div class="form-row">
 		<div class="col-md-12">
 			<h3>优惠券类型</h3>
@@ -27,8 +28,8 @@
 						<td>{{ct?.type}}</td>
 						<td>{{ct?.description}}</td>
 						<td>{{ct?.sort_order}}</td>
-						<td><i class="fa fa-edit" data-content="edit"></i></td>
-						<td><i class="fa fa-trash" data-content="delete" data-toggle="modal" data-target="#deleteConfirm"></i></td>
+						<td><i class="fa fa-edit" data-content="edit" (click)="edit(i)"></i></td>
+						<td><i class="fa fa-trash" data-content="delete" data-toggle="modal" data-target="#deleteConfirm" (click)="delete(i)"></i></td>
 					</tr>
 				</tbody>
 			</table>
@@ -41,6 +42,7 @@
 	</div>
 
 	<router-outlet></router-outlet>
+
 
 	<!--Modal-->
 	<div class="modal fade" id="deleteConfirm">
@@ -63,6 +65,7 @@
 		</div>
 	</div>
 
+	
 </div>
 
 <style>

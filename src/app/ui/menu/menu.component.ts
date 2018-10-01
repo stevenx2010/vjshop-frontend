@@ -45,4 +45,20 @@ export class MenuComponent implements OnInit {
   toCouponType() {
     this.router.navigate(['coupon/type']);
   }
+
+  toCoupon() {
+    this.router.navigate(['coupon']);
+  }
+
+  toCouponAdd() {
+    this.router.navigate(['coupon/add']);
+  }
+
+  toUserOrder() {
+    this.router.navigate(['order/user/query']);
+  }
+
+  toDistributorOrder() {
+
+  }
 }

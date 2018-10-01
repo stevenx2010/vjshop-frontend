@@ -19,6 +19,7 @@ export class DistributorInventoryFormComponent implements OnInit {
   keyword: string;
   keywordProduct: string = '';
   distributorName: string;
+  categoryId: number;
   subCategoryId: number;
   distributorId: number;
   productId: number;
@@ -33,14 +34,14 @@ export class DistributorInventoryFormComponent implements OnInit {
   filterProductCategories: ProductCategory[];
   filterProductSubCategories: ProductSubCategory[];
   filterProductInventories: Product[];
-  filterProductCategoryId: number;
+  filterCategoryId: number;
   filterSubCategoryId: number;
   filterKeyword: string;
 
   tableDisplay: boolean = false;
   productShow: boolean = false;
-  inputQueryDisabled: boolean = true;
   saveBtnDisabled: boolean = true;
+  filterBtnDisabled: boolean = true;
 
   constructor(private vjApi: VJAPI) { 
   	this.distributors = new Array<Distributor>();
@@ -87,6 +88,7 @@ export class DistributorInventoryFormComponent implements OnInit {
 
   	this.tableDisplay = false;
     this.productShow = true;
+    this.filterBtnDisabled = false;
 
     // get inventory
    this.getDistributorInventory(this.distributorId);
@@ -103,6 +105,9 @@ export class DistributorInventoryFormComponent implements OnInit {
   }
 
   catSelected(event) {
+    this.categoryId = event.target.value;
+    this.subCategoryId = 0;
+    this.keywordProduct = '';
   	if(event.target.value > 1) {
   		this.vjApi.getProductSubCategoriesByProductCategoryId(event.target.value).subscribe((data) => {
   			console.log(data);
@@ -112,7 +117,6 @@ export class DistributorInventoryFormComponent implements OnInit {
             this.productSubCategories.push(d);
           }
           this.filterSubCategoryId = this.productSubCategories[0].id;
-          this.inputQueryDisabled = false;
   			}
   		})
   	} else {
@@ -125,6 +129,9 @@ export class DistributorInventoryFormComponent implements OnInit {
   }
 
   filterCatSelected(event) {
+    this.filterCategoryId = event.target.value;
+    this.filterSubCategoryId = 0;
+    this.keyword = '';
     if(event.target.value > 1) {
       this.vjApi.getProductSubCategoriesByProductCategoryId(event.target.value).subscribe((data) => {
         console.log(data);
@@ -145,33 +152,37 @@ export class DistributorInventoryFormComponent implements OnInit {
 
   }
 
-  filter() {
+  queryInventory() {
+    this.filterProductInventories = [];
+    let body = {
+      'distributorId': this.distributorId,
+      'categoryId': this.filterCategoryId ? this.filterCategoryId : 0,
+      'subCategoryId': this.filterSubCategoryId ? this.filterSubCategoryId : 0,
+      'keyword': this.filterKeyword ? this.filterKeyword : ''
+    }
 
-      this.filterProductInventories = this.productInventories.filter((e, index, array) => {
-        console.log(this.filterSubCategoryId);
-        console.log(this.filterKeyword);
-        if((this.filterSubCategoryId == null || this.filterSubCategoryId == 0) && this.filterKeyword == null) return true;
-        else if((this.filterSubCategoryId == null || this.filterSubCategoryId == 0) && this.filterKeyword != null) {
-          return (e.name.toLowerCase().indexOf(this.filterKeyword.trim().toLowerCase()) >= 0);
-        }
-        else if(this.filterSubCategoryId != null && this.filterKeyword == null) {
-          return (e.product_sub_category_id == this.filterSubCategoryId );
-        } else {
-          return (e.product_sub_category_id == this.filterSubCategoryId) && 
-                    (e.name.toLowerCase().indexOf(this.filterKeyword.trim().toLowerCase()) >= 0);
-        }
-      })    
+    this.vjApi.queryDistributorInventoryByConditions(JSON.stringify(body)).subscribe((invt) => {
+      console.log(invt);
+      if(invt.length > 0) {
+        this.filterProductInventories = invt;
+      }
+    });
   }
 
   queryProduct() {
-    this.vjApi.queryProductByKeywordAndSubCatId(this.keywordProduct,this.subCategoryId).subscribe((data) => {
-      if(data.json()) {
-        this.products = data.json();
-        this.products.forEach((d) => {
-        this.inventories.push(0);
-        })
+    this.products = [];
+    let body = {
+      'categoryId': this.categoryId ? this.categoryId : 0,
+      'subCategoryId': this.subCategoryId ? this.subCategoryId : 0,
+      'keyword': this.keywordProduct ? this.keywordProduct : ''
+    }
+
+    this.vjApi.queryDistributorProductByConditions(JSON.stringify(body)).subscribe((p) => {
+      console.log(p);
+      if(p.length > 0) {
+        this.products = p;
       }
-    });
+    })
   }
 
   inventoryChange(index) {
