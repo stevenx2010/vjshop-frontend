@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
 import { orderRoutes} from './order.routing';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { DistributorOrderComponent } from './distributor-order/distributor-order.component';
 
 @NgModule({
   imports: [
@@ -13,7 +15,8 @@ import { orderRoutes} from './order.routing';
     RouterModule.forChild(orderRoutes),
     FormsModule,
     AngularDateTimePickerModule,
+
   ],
-  declarations: [UserOrderComponent]
+  declarations: [UserOrderComponent, DistributorOrderComponent, OrderDetailComponent]
 })
 export class OrderModule { }

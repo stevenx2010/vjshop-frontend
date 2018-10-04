@@ -11,6 +11,7 @@ import { ProductImage } from '../models/product-image-model';
 import { API_BASE_URL } from '../models/constants';
 import { CouponType } from '../models/coupon-type.model';
 import { Coupon } from '../models/coupon.model';
+import { Order } from '../models/order.model';
 
 @Injectable()
 export class VJAPI {
@@ -409,21 +410,37 @@ export class VJAPI {
 		return this.http.post(API_BASE_URL + 'api/coupon/update', body, {headers: headers});			
 	}
 
-	public queryCouponById($couponId): Observable<Coupon[]> {
+	public queryCouponById(couponId): Observable<Coupon[]> {
 		let headers = new Headers();
 		this.initAuthHeader(headers);
 	
-		return this.http.get(API_BASE_URL + 'api/coupon/query/id/' + $couponId, {headers:headers})
+		return this.http.get(API_BASE_URL + 'api/coupon/query/id/' + couponId, {headers:headers})
 				.pipe(map((data) => data.json()));				
 	}
 
 	/**
 	 *  Order  Related API
 	 */
-	public queryOrderByConditions(body): Observable<Response> {
+	public queryOrderByConditions(body): Observable<Order[]> {
 		let headers = new Headers();
 		this.initAuthHeader(headers);
 	
-		return this.http.post(API_BASE_URL + 'api/order/query/conditions',body, {headers:headers});		
+		return this.http.post(API_BASE_URL + 'api/order/query/conditions',body, {headers:headers})
+			.pipe(map((data) => data.json()));		
+	}
+
+	public queryOrderDetailByOrderId(orderId): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/order/query/detail/id/' + orderId, {headers:headers});	
+	}
+
+	public queryOderByConditionsForDistributor(body): Observable<Order[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/order/query/conditions/distributor',body, {headers:headers})
+			.pipe(map((data) => data.json()));				
 	}
 }

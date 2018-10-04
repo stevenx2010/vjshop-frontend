@@ -1,71 +1,81 @@
-
 <div>
 	<div class="form-row">
 		<div class="col-md-12">
-			<h3>用户订单查询</h3>
+			<h3>经销商订单查询</h3>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-12 search">
+	        <div class="input-group">
+	            <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="经销商名称查询（*：查询全部）...">
+	            <span class="input-group-btn">
+	                <button class="btn btn-primary btn-sm text-muted" type="button" (click)="search()">
+	                    <i class="fa fa-search"></i>
+	                </button>
+	            </span>
+            </div>
+        </div>
+    </div>
+
+<!-- query results-->		
+		<div class="form-row">
+			<div class="col-md-12">
+				<div class="box success">
+		            <header>
+		                <div class="icons"><i class="fa fa-building-o"></i></div>
+		                <div align="left">
+		                	<h4>&nbsp;选取的经销商: <span style="font-weight: bold;color: yellow;">{{distributorName}}</span></h4>
+		                </div>
+					</header>
+		        </div>
+		    </div>
+		</div>
+
+<!-- TABLE for query distributor -->
+	<div class="form-row" *ngIf="tableDisplay">
+		<div class="col-md-12">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>经销商名称</th>
+						<th>描述</th>
+						<th>选取</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let distributor of distributors; let i = index;">
+						<th scope="row">{{distributor?.id}}</th>
+						<td>{{distributor?.name}}</td>
+						<td>{{distributor?.description}}</td>
+						<td><input type="radio" name="select" (change)="selected($event, i)"></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 
 	<div class="form-row">
 		<div class="form-group col-md-3">
 			<label for="order-serial">订单号</label>
-			<input type="text" id="order-serial" name="order_serial" class="form-control" [(ngModel)]="orderSerial" pattern="[0-9]{16}" maxlength="16" #orderserial="ngModel" (change)="orderSerialChanged()" [disabled]="orderSerialDisabled">
+			<input type="text" id="order-serial" name="order_serial" class="form-control" [(ngModel)]="orderSerial" pattern="[0-9]{16}" maxlength="16" #orderserial="ngModel" [disabled]="orderSerialDisabled">
 			<div *ngIf="(orderserial.invalid || orderserial.dirty) && orderserial.errors" class="alert alert-danger">
 				<div *ngIf="orderserial.errors.pattern">
 					订单号是16位数字
 				</div>
 			</div>
-
 		</div>
 		<div class="form-group col-md-3">
-			<label for="mobile">用户手机号</label>
-			<input type="text" id="mobile" name="mobile" class="form-control" [(ngModel)]="mobile" pattern="[0-9]{11}" #usermobile="ngModel" maxlength="11" [disabled]="mobileDisabled" (change)="mobileChanged()">
-			<div *ngIf="usermobile.touched && usermobile.errors" class="alert alert-danger">
-				<div *ngIf="usermobile.errors.pattern">
-					手机号是11位数字
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group col-md-3">
-			<label for="orderstatus">订单状态</label>
-			<select id="orderstatus" name="orderstatus" (change)="orderStatusSelected($event)" class="form-control" #o>
-				<option value="0"></option>
-				<option value="1">未支付</option>
-				<option value="2">已支付</option>
-				<option value="3">已收货</option>
-				<option value="4">已关闭</option>
-				<option value="5">已取消</option>
-				<option value="6">已评价</option> 
-				<option value="7">未评价</option>
-			</select>
-		</div>
-		<div class="form-group col-md-3">
-			<label fro="delivery">配送状态</label>
-			<select id="delivery" name="delivery" (change)="deliveryStatusSelected($event)" class="form-control" #d>
+			<label>订单配送状态</label>
+			<select class="form-control" name="delivery" (change)="deliveryStatusSelected($event)">
 				<option value="0"></option>
 				<option value="1">待配送</option>
-				<option value="2">配送中</option>
-				<option value="3">待确认</option>
-				<option value="4">已确认</option>
+				<option value="2">已配送待确认</option>
+				<option value="3">已确认</option>
 			</select>
 		</div>
-		<div class="form-group col-md-3">
-			<label for="invoice">开票状态</label>
-			<select id="invoice" name="invoice" (change)="invoiceStatusSelected($event)" class="form-control" #i>
-				<option value="0"></option>
-				<option value="1">未开票</option>
-				<option value="2">已开票</option>
-			</select>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="comment">评价状态</label>
-			<select id="comment" name="comment" (change)="commentStatusSelected($event)" class="form-control" #c>
-				<option value="0"></option>
-				<option value="1">未评价</option>
-				<option value="2">已评价</option>
-			</select>
-		</div>
+
 		<div class="form-group col-md-3">
 			<label for="date1">订单日期：开始</label>
 			<angular2-date-picker [settings]="settings" [(ngModel)]="date1"></angular2-date-picker>
@@ -74,31 +84,31 @@
 			<label for="date2">订单日期：结束</label>
 			<angular2-date-picker [settings]="settings" [(ngModel)]="date2"></angular2-date-picker>
 		</div>
-	</div>
+
 	<div class="form-row">
-		<div class="col-md-12">
-		</div>
+		<div class="col-md-12"></div>
 	</div>
+
 	<div class="form-row">
 		<div class="col-md-3">
-			<div class="form-group datecheck">
-				
+			<div class="form-group datecheck">				
 				<input type="checkbox" name="queryByDate" (change)="checkboxSelected($event)" unchecked #checkbox>
 				<label for="queryByDate">&nbsp;&nbsp;添加上述时间段到查询中</label>
 			</div>
 		</div>
+
 		<div class="col-md-9">
 			<div class="form-group">
 				<label>订单号模糊查询</label>
 				<div class="input-group">
-					<input type="input" name="keyword" [(ngModel)]="keyword" class="form-control" placeholder="任意长度订单号查询..." (click)="query()" pattern="[0-9]+" maxlength="16" #kw="ngModel" [disabled]="keywordDisabled" (change)="keywordChanged()">
+					<input type="input" name="keyword" [(ngModel)]="keyword" class="form-control" placeholder="任意长度订单号查询..." pattern="[0-9]+" maxlength="16" #kw="ngModel" [disabled]="keywordDisabled">
 					<div *ngIf="kw.touched && kw.errors" class="alert alert-danger">
 						<div *ngIf="kw.errors.pattern">
 							订单号是数字，最长16位
 						</div>
 					</div>
 					<span class="input-group-btn">
-						<button class="btn btn-primary text-muted btn-sm" type="button" (click)="query()">
+						<button class="btn btn-primary text-muted btn-sm" type="button" (click)="query()" [disabled]="queryBtnDisabled">
 							<i class="fa fa-search" data-content="detail"></i>
 						</button>
 					</span>
@@ -182,9 +192,8 @@
 						<td *ngIf="order.invoice_status == 2">已开票</td>
 
 						<td *ngIf="order.refund_status == -1">NA</td>
-						<td *ngIf="order.refund_status == 1">申请退单</td>
-						<td *ngIf="order.refund_status == 2">退单处理中</td>
-						<td *ngIf="order.refund_status == 3">退单完成</td>
+						<td *ngIf="order.refund_status == 0">等待退单</td>
+						<td *ngIf="order.refund_status == 0">退单完成</td>
 
 						<td align="center" *ngIf="displayDetail && selectedOrder == i"><i class="fa fa-arrow-up" data-content="detail" (click)="toOrderDetail(i, 'up')"></i></td>
 						<td align="center" *ngIf="displayDetail && selectedOrder != i"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
@@ -195,7 +204,6 @@
 			</table>
 		</div>
 	</div>
-
 </div>
 
 <style>
@@ -205,30 +213,6 @@
 
 	.datecheck {
 		margin-top: 3rem;
-	}
-
-	.notpaid {
-		color: red;
-	}
-
-	.paid {
-		color: green;
-	}
-
-	.purchase-received {
-		color: blue;
-	}
-
-	.delivery-waiting {
-		color: orange;
-	}
-
-	.delivered {
-		color: blue;
-	}
-
-	.delivery-confirmed {
-		color: green;
 	}
 
 	[data-content="detail"]:hover {

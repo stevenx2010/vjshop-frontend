@@ -15,13 +15,14 @@ import { NavbarComponent } from './ui/navbar/navbar.component';
 import { MenuComponent } from './ui/menu/menu.component';
 import { CouponModule } from './coupon/coupon.module';
 import { OrderModule } from './order/order.module';
+import { InvoiceModule } from './invoice/invoice.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    MenuComponent,
+    MenuComponent, 
   ],
   imports: [
     BrowserModule,
@@ -31,6 +32,7 @@ import { OrderModule } from './order/order.module';
     DistributorModule,
     CouponModule,
     OrderModule,
+    InvoiceModule,
   ],
   providers: [
   	VJAPI

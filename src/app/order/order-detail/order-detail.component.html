@@ -1,0 +1,95 @@
+<div class="detail">
+	<div class="form-row">
+		<div class="col-md-12">
+			<h5>用户信息</h5>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>姓名</th>
+						<th>手机号</th>
+						<th>电话</th>
+						<th>送货城市</th>
+						<th>送货街道</th>
+						<th>默认地址</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">{{customer?.id}}</th>
+						<td>{{shippingAddress?.username}}</td>
+						<td>{{shippingAddress?.mobile}}</td>
+						<td>{{shippingAddress?.tel}}</td>
+						<td>{{shippingAddress?.city}}</td>
+						<td>{{shippingAddress?.street}}</td>
+						<td *ngIf="shippingAddress != null && shippingAddress.default_address">Y</td>
+						<td *ngIf="shippingAddress != null && !(shippingAddress.default_address)">N</td>
+					</tr>
+				</tbody>
+			</table>
+			<h5>该订单中购买的产品</h5>
+			<table class="table">
+				<thead>
+					<th>#</th>
+					<th>产品图片</th>
+					<th>产品分类</th>
+					<th>产品名称</th>
+					<th>产品型号</th>
+					<th>单价</th>
+					<th>重量</th>
+					<th>重量单位</th>
+					<th>购买数量</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let product of products">
+						<th scope="row">{{product?.id}}</th>
+						<td><img src='{{baseUrl}}{{product?.thumbnail_url}}' width="50"></td>
+						<td>{{product?.product_sub_category_name}}</td>
+						<td>{{product?.name}}</td>
+						<td>{{product?.model}}</td>
+						<td>{{product?.price | currency:'CNY':'symbol-narrow'}}</td>
+						<td>{{product?.weight}}</td>
+						<td>{{product?.weight_unit}}</td>
+						<td>{{product?.pivot.quantity}}</td>
+				</tbody>
+			</table>
+
+			<h5>配送/拟配送的经销商信息</h5>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>经销商名称</th>
+						<th>地址城市</th>
+						<th>地址街道</th>
+						<th>联系人</th>
+						<th>手机</th>
+						<th>联系电话</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">{{distributor?.id}}</th>
+						<td>{{distributor?.name}}</td>
+						<td>{{distributorAddress?.city}}</td>
+						<td>{{distributorAddress?.street}}</td>
+						<td>{{distributorContact?.name}}</td>
+						<td>{{distributorContact?.mobile}}</td>
+						<td>{{distributorContact?.phone_area_code}}-{{distributorContact?.telephone}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<style>
+	h5 {
+		margin-top: 3rem;
+		color: blue;
+	}
+
+	.detail {
+		margin-bottom: 3rem;
+	}
+</style>

@@ -59,6 +59,14 @@ export class MenuComponent implements OnInit {
   }
 
   toDistributorOrder() {
+    this.router.navigate(['order/distributor/query']);
+  }
 
+  toInvoiceProcess() {
+    this.router.navigate(['invoice/process']);
+  }
+
+  toInvoiceQuery() {
+    this.router.navigate(['invoice/query']);
   }
 }

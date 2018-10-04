@@ -1,8 +1,7 @@
-
 <div>
 	<div class="form-row">
 		<div class="col-md-12">
-			<h3>用户订单查询</h3>
+			<h3>未开票订单处理</h3>
 		</div>
 	</div>
 
@@ -15,8 +14,8 @@
 					订单号是16位数字
 				</div>
 			</div>
-
 		</div>
+		
 		<div class="form-group col-md-3">
 			<label for="mobile">用户手机号</label>
 			<input type="text" id="mobile" name="mobile" class="form-control" [(ngModel)]="mobile" pattern="[0-9]{11}" #usermobile="ngModel" maxlength="11" [disabled]="mobileDisabled" (change)="mobileChanged()">
@@ -25,46 +24,6 @@
 					手机号是11位数字
 				</div>
 			</div>
-		</div>
-
-		<div class="form-group col-md-3">
-			<label for="orderstatus">订单状态</label>
-			<select id="orderstatus" name="orderstatus" (change)="orderStatusSelected($event)" class="form-control" #o>
-				<option value="0"></option>
-				<option value="1">未支付</option>
-				<option value="2">已支付</option>
-				<option value="3">已收货</option>
-				<option value="4">已关闭</option>
-				<option value="5">已取消</option>
-				<option value="6">已评价</option> 
-				<option value="7">未评价</option>
-			</select>
-		</div>
-		<div class="form-group col-md-3">
-			<label fro="delivery">配送状态</label>
-			<select id="delivery" name="delivery" (change)="deliveryStatusSelected($event)" class="form-control" #d>
-				<option value="0"></option>
-				<option value="1">待配送</option>
-				<option value="2">配送中</option>
-				<option value="3">待确认</option>
-				<option value="4">已确认</option>
-			</select>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="invoice">开票状态</label>
-			<select id="invoice" name="invoice" (change)="invoiceStatusSelected($event)" class="form-control" #i>
-				<option value="0"></option>
-				<option value="1">未开票</option>
-				<option value="2">已开票</option>
-			</select>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="comment">评价状态</label>
-			<select id="comment" name="comment" (change)="commentStatusSelected($event)" class="form-control" #c>
-				<option value="0"></option>
-				<option value="1">未评价</option>
-				<option value="2">已评价</option>
-			</select>
 		</div>
 		<div class="form-group col-md-3">
 			<label for="date1">订单日期：开始</label>
@@ -104,8 +63,9 @@
 					</span>
 				</div>
 			</div>
-		</div>
+		</div> 
 	</div>
+
 
 	<div class="form-row">
 		<div class="col-md-12">
@@ -195,7 +155,6 @@
 			</table>
 		</div>
 	</div>
-
 </div>
 
 <style>

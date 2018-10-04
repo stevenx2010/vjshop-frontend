@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
 
 import { VJAPI } from '../../../services/vj.services';
+import { Order } from '../../../models/order.model';
 
 @Component({
   selector: 'app-user-order',
@@ -13,9 +16,11 @@ export class UserOrderComponent implements OnInit {
   @ViewChild('d') d: ElementRef;
   @ViewChild('i') i: ElementRef;
   @ViewChild('c') c: ElementRef;
+  @ViewChild('checkbox') checkbox: ElementRef;
 
   orderSerial: string;
   mobile: string;
+  orderId: number;
 
   date1: Date = new Date();
   date2: Date = new Date();
@@ -32,24 +37,37 @@ export class UserOrderComponent implements OnInit {
   orderSerialDisabled: boolean = false;
   mobileDisabled: boolean = false;
   keywordDisabled: boolean = false;
+  queryByDate: boolean = false;
 
   settings = {
       bigBanner: false,
       timePicker: true,
-      format: 'dd-MM-yyyy',
+      format: 'yyyy-MM-dd',
       defaultOpen: false,
   }
-     
-  constructor(private vjApi: VJAPI) { }
+  
+  orders: Order[];
+  displayDetail: boolean = false;
+  selectedOrder: number;
+  iconDisabled: boolean = true;
+
+  constructor(private vjApi: VJAPI, private router: Router, private actRoute: ActivatedRoute) {
+    this.orders = new Array<Order>(new Order());
+  }
+  
 
   ngOnInit() {
   }
 
   query() {
+    this.displayDetail = false;
+    this.iconDisabled = false;
     let body = this.prepareQueryData();
 
     this.vjApi.queryOrderByConditions(body).subscribe((o) => {
-      console.log(o);
+      this.orders = [];
+      if(o.length > 0)
+        this.orders = o;
     })
   }
 
@@ -61,8 +79,10 @@ export class UserOrderComponent implements OnInit {
       'delivery_status': this.deliveryStatus ? this.deliveryStatus : 0,
       'invoice_status': this.invoiceStatus ? this.invoiceStatus : 0,
       'comment_status': this.commentStatus ? this.commentStatus : 0,
+      'query_by_date': this.queryByDate,
       'date1': this.dp.transform(this.date1, 'yyyy-MM-dd 00:00:00'),
-      'date2': this.dp.transform(this.date2, 'yyyy-MM-dd 23:59:59')
+      'date2': this.dp.transform(this.date2, 'yyyy-MM-dd 23:59:59'),
+      'keyword': this.keyword ? this.keyword.trim() : ''
     }
 
     return body;
@@ -96,10 +116,11 @@ export class UserOrderComponent implements OnInit {
       this.mobileDisabled = false;
       this.keywordDisabled = false;
     }
+    this.checkbox.nativeElement.checked = false;
   }
 
   keywordChanged() {
-    if(this.keyword.length > 0) {s
+    if(this.keyword.length > 0) {
       this.orderSerialDisabled = true;
     } else {
       this.orderSerialDisabled = false;
@@ -111,6 +132,22 @@ export class UserOrderComponent implements OnInit {
       this.orderSerialDisabled = true;
     } else {
       this.orderSerialDisabled = false;
+    }
+  }
+
+  checkboxSelected(event) {
+    this.queryByDate = !this.queryByDate;
+    console.log(this.queryByDate);
+  }
+
+  toOrderDetail(index, dir) {
+    if(!this.iconDisabled) {
+      if(dir == 'down') this.displayDetail = true;
+      else this.displayDetail = false;
+      this.selectedOrder = index;
+
+      this.orderId = this.orders[index].id;
+      console.log(this.orderId);
     }
   }
 }

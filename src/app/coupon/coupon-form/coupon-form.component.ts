@@ -158,7 +158,7 @@ export class CouponFormComponent implements OnInit {
     if(this.imageFile) {
       body.append('image_file', this.imageFile);
     } else {
-      body.append('image_file_url', this.coupon.image_url);
+      body.append('image_url', this.coupon.image_url);
     }
     console.log(body);
     return body;

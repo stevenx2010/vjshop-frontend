@@ -133,6 +133,18 @@
                           <span class="link-title">&nbsp;发票管理</span>
                           <span class="fa arrow"></span>  
                       </a>
+                        <ul class="collapse">
+                        <li>
+                          <div class="call" (click)="toInvoiceProcess()">
+                            <i class="fa fa-angle-right"></i>&nbsp; 未开票订单处理
+                          </div>
+                        </li>
+                        <li>
+                          <div class="call" (click)="toInvoiceQuery()">
+                            <i class="fa fa-angle-right"></i>&nbsp; 已开票订单查询
+                          </div>
+                        </li>
+                      </ul>
                     </li>
 
 <!-- Canceled order Mangement-->                    
