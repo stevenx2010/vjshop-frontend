@@ -1,3 +1,213 @@
-<p>
-  invoice-query works!
-</p>
+<div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<h3>已开票订单查询</h3>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="form-group col-md-3">
+			<label for="order-serial">订单号</label>
+			<input type="text" id="order-serial" name="order_serial" class="form-control" [(ngModel)]="orderSerial" pattern="[0-9]{16}" maxlength="16" #orderserial="ngModel" (change)="orderSerialChanged()" [disabled]="orderSerialDisabled">
+			<div *ngIf="(orderserial.invalid || orderserial.dirty) && orderserial.errors" class="alert alert-danger">
+				<div *ngIf="orderserial.errors.pattern">
+					订单号是16位数字
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-group col-md-3">
+			<label for="mobile">用户手机号</label>
+			<input type="text" id="mobile" name="mobile" class="form-control" [(ngModel)]="mobile" pattern="[0-9]{11}" #usermobile="ngModel" maxlength="11" [disabled]="mobileDisabled" (change)="mobileChanged()">
+			<div *ngIf="usermobile.touched && usermobile.errors" class="alert alert-danger">
+				<div *ngIf="usermobile.errors.pattern">
+					手机号是11位数字
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-md-3">
+			<label for="date1">订单日期：开始</label>
+			<angular2-date-picker [settings]="settings" [(ngModel)]="date1"></angular2-date-picker>
+		</div>
+		<div class="form-group col-md-3">
+			<label for="date2">订单日期：结束</label>
+			<angular2-date-picker [settings]="settings" [(ngModel)]="date2"></angular2-date-picker>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-12">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-3">
+			<div class="form-group datecheck">
+				
+				<input type="checkbox" name="queryByDate" (change)="checkboxSelected($event)" unchecked #checkbox>
+				<label for="queryByDate">&nbsp;&nbsp;添加上述时间段到查询中</label>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="form-group">
+				<label>订单号模糊查询</label>
+				<div class="input-group">
+					<input type="input" name="keyword" [(ngModel)]="keyword" class="form-control" placeholder="任意长度订单号查询..." (click)="query()" pattern="[0-9]+" maxlength="16" #kw="ngModel" [disabled]="keywordDisabled" (change)="keywordChanged()">
+					<div *ngIf="kw.touched && kw.errors" class="alert alert-danger">
+						<div *ngIf="kw.errors.pattern">
+							订单号是数字，最长16位
+						</div>
+					</div>
+					<span class="input-group-btn">
+						<button class="btn btn-primary text-muted btn-sm" type="button" (click)="query()">
+							<i class="fa fa-search" data-content="detail"></i>
+						</button>
+					</span>
+				</div>
+			</div>
+		</div> 
+	</div>
+
+
+	<div class="form-row">
+		<div class="col-md-12">
+			<h4>订单数量：{{orders.length}}</h4>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-12">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>订单编号</th>
+						<th>总价</th>
+						<th>总重</th>
+						<th>运费</th>
+						<th>下单日期</th>
+						<th>订单状态</th>
+						<th>支付方式</th>
+
+						<th>配送状态</th>
+						<th>配送日期</th>
+						<th>配送确认日期</th>
+																							
+						<th>需要发票</th>
+						<th>发票信息</th>
+						<th>开票状态</th>
+						<th>退单状态</th>
+						<th>订单详情</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngIf="displayDetail">
+						<td colspan="17">
+							<app-order-detail [orderid]="orderId"></app-order-detail>
+						</td>
+					</tr>
+
+					<tr *ngFor="let order of orders; let i = index;" [class.active]="selectedOrder == i">
+						<th scope="row">{{order?.id}}</th>
+						<td>{{order?.order_serial}}</td>
+						<td>{{order?.total_price}}</td>
+						<td>{{order?.total_weight}}</td>
+						<td>{{order?.shipping_charges}}</td>
+						<td>{{order?.order_date}}</td>
+						<td *ngIf="order.order_status==1" class="notpaid">未支付</td>
+						<td *ngIf="order.order_status==2" class="paid">已支付</td>
+						<td *ngIf="order.payment_method == 1">Wechat</td>
+						<td *ngIf="order.payment_method == 2">Alipay</td>
+
+						<td *ngIf="order.order_status==3" class="purchase-received">已收货</td>
+						<td *ngIf="order.order_status==4">已关闭</td>
+						<td *ngIf="order.order_status==5">已取消</td>
+						<td *ngIf="order.order_status==6">已评价</td>
+						<td *ngIf="order.order_status==7">未评价</td>
+						
+						<td *ngIf="order.delivery_status == 0">NA</td>
+						<td *ngIf="order.delivery_status == 1" class="delivery-waiting">待送货</td>
+						<td *ngIf="order.delivery_status == 2">送货中</td>
+						<td *ngIf="order.delivery_status == 3" class="deliveried">已送货未确认</td>
+						<td *ngIf="order.delivery_status == 4" class="delivery-confirmed">已确认</td>
+						<td>{{order?.delivery_date}}</td>
+						<td>{{order?.delivery_confirm_date}}</td>
+												
+						<td *ngIf="order.is_invoice_required">Y</td>
+						<td *ngIf="!order.is_invoice_required">N</td>
+
+						<td *ngIf="!order.is_invoice_required">NA</td>
+						<td *ngIf="order.invoice_type == 1 && order.is_invoice_required">个人</td>
+						<td *ngIf="order.invoice_type == 2 && order.is_invoice_required">发票抬头：{{order?.invoice_head}}<br>税号：{{order?.invoice_tax_number}}</td>
+
+						<td *ngIf="order.invoice_status == 0">NA</td>
+						<td *ngIf="order.invoice_status == 1">未开票</td>
+						<td *ngIf="order.invoice_status == 2">已开票</td>
+
+						<td *ngIf="order.refund_status == -1">NA</td>
+						<td *ngIf="order.refund_status == 1">申请退单</td>
+						<td *ngIf="order.refund_status == 2">退单处理中</td>
+						<td *ngIf="order.refund_status == 3">退单完成</td>
+
+						<td align="center" *ngIf="displayDetail && selectedOrder == i"><i class="fa fa-arrow-up" data-content="detail" (click)="toOrderDetail(i, 'up')"></i></td>
+						<td align="center" *ngIf="displayDetail && selectedOrder != i"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
+						<td align="center" *ngIf="!displayDetail"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<style>
+
+	.form-row {
+		align-items: center;
+	}
+
+	.datecheck {
+		margin-top: 3rem;
+	}
+
+	.notpaid {
+		color: red;
+	}
+
+	.paid {
+		color: green;
+	}
+
+	.purchase-received {
+		color: blue;
+	}
+
+	.delivery-waiting {
+		color: orange;
+	}
+
+	.delivered {
+		color: blue;
+	}
+
+	.delivery-confirmed {
+		color: green;
+	}
+
+	[data-content="detail"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+
+	i {
+		font-size: 2rem;
+	}
+
+	.active {
+		color: blue;
+	}
+
+	h3 {
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+	}
+</style>

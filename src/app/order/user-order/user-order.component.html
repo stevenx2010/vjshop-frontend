@@ -153,15 +153,15 @@
 						<td>{{order?.order_date}}</td>
 						<td *ngIf="order.order_status==1" class="notpaid">未支付</td>
 						<td *ngIf="order.order_status==2" class="paid">已支付</td>
-						<td *ngIf="order.payment_method == 1">Wechat</td>
-						<td *ngIf="order.payment_method == 2">Alipay</td>
-
 						<td *ngIf="order.order_status==3" class="purchase-received">已收货</td>
 						<td *ngIf="order.order_status==4">已关闭</td>
 						<td *ngIf="order.order_status==5">已取消</td>
 						<td *ngIf="order.order_status==6">已评价</td>
 						<td *ngIf="order.order_status==7">未评价</td>
-						
+
+						<td *ngIf="order.payment_method == 1">Wechat</td>
+						<td *ngIf="order.payment_method == 2">Alipay</td>
+
 						<td *ngIf="order.delivery_status == 0">NA</td>
 						<td *ngIf="order.delivery_status == 1" class="delivery-waiting">待送货</td>
 						<td *ngIf="order.delivery_status == 2">送货中</td>
@@ -244,4 +244,6 @@
 	.active {
 		color: blue;
 	}
+
+
 </style>

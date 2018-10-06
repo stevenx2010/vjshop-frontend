@@ -79,10 +79,41 @@
 					</tr>
 				</tbody>
 			</table>
+
+			<div *ngIf="invoice_issued">
+				<h5>开票信息</h5>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>发票编号</th>
+							<th>发票金额</th>
+							<th>开票日期</th>
+							<th>批准人</th>
+							<th>审核人</th>
+							<th>制单</th>
+							<th>发票图片</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">{{invoice?.id}}</th>
+							<td>{{invoice?.invoice_number}}</td>
+							<td>{{invoice?.invoice_amount | currency:'CNY':'symbol-narrow'}}</td>
+							<td>{{invoice?.issued_date}}</td>
+							<td>{{invoice?.approved_by}}</td>
+							<td>{{invoice?.audited_by}}</td>
+							<td>{{invoice?.issued_by}}</td>
+							<td><img src="{{baseUrl}}{{invoice?.image_url}}" width="50" (click)="showImage()"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
 
+<img src="{{baseUrl}}{{invoice?.image_url}}" class="big-image" [style.z-index]="z_index" (click)="showImage()">
 <style>
 	h5 {
 		margin-top: 3rem;
@@ -91,5 +122,11 @@
 
 	.detail {
 		margin-bottom: 3rem;
+	}
+
+	.big-image {
+		position: absolute;
+		z-index: -1;
+		left: 20%;
 	}
 </style>

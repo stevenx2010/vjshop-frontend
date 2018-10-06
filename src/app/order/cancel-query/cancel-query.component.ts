@@ -4,13 +4,12 @@ import { Order } from '../../../models/order.model';
 
 import  { VJAPI } from '../../../services/vj.services';
 
-
 @Component({
-  selector: 'app-invoice-process',
-  templateUrl: './invoice-process.component.html',
-  styleUrls: ['./invoice-process.component.css']
+  selector: 'app-cancel-query',
+  templateUrl: './cancel-query.component.html',
+  styleUrls: ['./cancel-query.component.css']
 })
-export class InvoiceProcessComponent implements OnInit {
+export class CancelQueryComponent implements OnInit {
   @ViewChild('checkbox') checkbox: ElementRef;
   orderSerial: string;
   mobile: string;
@@ -36,10 +35,6 @@ export class InvoiceProcessComponent implements OnInit {
   iconDisabled: boolean = true;
   displayDetail: boolean = false;
   selectedOrder: number;
-  invoiceBtnDisabled: boolean = true;
-  invoiceDisplay: boolean = false;
-
-  invoiceBtnText: string = '去开票';
 
 
   constructor(private vjApi: VJAPI) { 
@@ -86,14 +81,6 @@ export class InvoiceProcessComponent implements OnInit {
     }
   }
 
-  toIssueInvoice(index) {
-    this.orderId = this.orders[index].id;
-    this.selectedOrder = index;
-    this.invoiceDisplay = !this.invoiceDisplay;
-    this.invoiceBtnText = this.invoiceDisplay ? '关闭开票' : '去开票';
-    if(!this.invoiceDisplay) this.query();
-  }
-
 query() {
     this.displayDetail = false;
     this.iconDisabled = false;
@@ -103,7 +90,6 @@ query() {
       this.orders = [];
       if(o.length > 0) {
         this.orders = o;
-        this.invoiceBtnDisabled = false;
       }
     })
   }
@@ -116,7 +102,7 @@ query() {
       'date1': this.dp.transform(this.date1, 'yyyy-MM-dd 00:00:00'),
       'date2': this.dp.transform(this.date2, 'yyyy-MM-dd 23:59:59'),
       'keyword': this.keyword ? this.keyword.trim() : '',
-      'invoice_required': true
+      'refund_orders': true
     }
 
     return body;

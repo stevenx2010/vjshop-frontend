@@ -1,0 +1,76 @@
+<div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<h3>新人礼券页面管理</h3>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="form-group col-md-12">
+			<label>新人礼券导航条文字</label>
+			<input type="text" class="form-control" name="description" #d="ngModel" [(ngModel)]="description" required>
+			<div *ngIf="d.touched && d.errors" class="alert alert-danger">
+				<div *ngIf="d.errors.required">
+					必须输入导航条文字，导航条文字不能为空！
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="form-group col-md-12">
+			<label>新人礼券图片文件上传</label>
+			<input type="file" class="form-control" name="image" id="image" multiple (change)="previewImage($event)">
+			<div #preview></div>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-12">
+			<button type="button" class="btn btn-success btn-rect" name="save" data-toggle="modal" data-target="#save-data" (click)="save()" [disabled]="!d.valid">保存数据</button>	
+		</div>
+	</div>
+</div>
+
+	<!--Modal-->
+	<div class="modal fade" id="save-data">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">提示</h4>					
+				</div>
+
+				<div class="modal-body">
+					数据已保存，请继续！
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+
+<style>
+	.ng-valid[required], .ng-valid.required {
+		border-left: 5px solid #42A948;
+	}
+
+	.ng-invalid:not(form) {
+		border-left: 5px solid #a94442;
+	}
+
+	h3 {
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	img {
+		margin: 1rem;
+	}
+
+	button {
+		margin-top: 3rem;
+	}
+</style>

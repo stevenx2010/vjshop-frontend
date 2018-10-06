@@ -1,7 +1,7 @@
 <div>
 	<div class="form-row">
 		<div class="col-md-12">
-			<h3>未开票订单处理</h3>
+			<h3>已退订单查询</h3>
 		</div>
 	</div>
 
@@ -96,18 +96,12 @@
 						<th>开票状态</th>
 						<th>退单状态</th>
 						<th>订单详情</th>
-						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr *ngIf="displayDetail">
 						<td colspan="17">
 							<app-order-detail [orderid]="orderId"></app-order-detail>
-						</td>
-					</tr>
-					<tr *ngIf="invoiceDisplay">
-						<td colspan="17">
-							<app-invoice-issue [orderid]="orderId"></app-invoice-issue>
 						</td>
 					</tr>
 
@@ -156,7 +150,6 @@
 						<td align="center" *ngIf="displayDetail && selectedOrder == i"><i class="fa fa-arrow-up" data-content="detail" (click)="toOrderDetail(i, 'up')"></i></td>
 						<td align="center" *ngIf="displayDetail && selectedOrder != i"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
 						<td align="center" *ngIf="!displayDetail"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
-						<td align="center"><button type="button" class="btn btn-primary btn-sm" [disabled]="invoiceBtnDisabled" (click)="toIssueInvoice(i)">{{invoiceBtnText}}</button></td>
 					</tr>
 
 				</tbody>

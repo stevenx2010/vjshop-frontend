@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { OrderDetailComponent } from '../order-detail/order-detail.component';
 
 import { VJAPI } from '../../../services/vj.services';
 import { Order } from '../../../models/order.model';
@@ -59,15 +58,16 @@ export class UserOrderComponent implements OnInit {
   ngOnInit() {
   }
 
-  query() {
-    this.displayDetail = false;
-    this.iconDisabled = false;
+  query() {    
     let body = this.prepareQueryData();
 
     this.vjApi.queryOrderByConditions(body).subscribe((o) => {
       this.orders = [];
-      if(o.length > 0)
+      if(o.length > 0) {
         this.orders = o;
+        this.displayDetail = false;
+        this.iconDisabled = false;
+      }
     })
   }
 

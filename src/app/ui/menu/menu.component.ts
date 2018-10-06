@@ -69,4 +69,20 @@ export class MenuComponent implements OnInit {
   toInvoiceQuery() {
     this.router.navigate(['invoice/query']);
   }
+
+  toOrderCancelProcess() {
+    this.router.navigate(['order/cancel/process']);
+  }
+
+  toOrderCancelQuery() {
+    this.router.navigate(['order/cancel/query']);
+  }
+
+  toHomePage() {
+    this.router.navigate(['page/homepage']);
+  }
+
+  toNewComerPage() {
+    this.router.navigate(['page/newcomerpage']);
+  }
 }

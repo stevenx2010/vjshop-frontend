@@ -1,0 +1,107 @@
+<div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<h5>填写开票信息(订单号： #{{orderid}})</h5>
+		</div>
+	</div>
+<form [formGroup]="form">
+	<div class="form-row">
+		<div class="form-group col-md-3">
+			<label>发票票号</label>
+			<input type="text" name="invoice-number" class="form-control"  formControlName="invoice_number" required>
+			<div *ngIf="form.controls.invoice_number.touched && form.controls.invoice_number.errors" class="alert alert-danger">
+				<div *ngIf="form.controls.invoice_number.errors.required">
+					必须输入发票票号
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-md-3">
+			<label>开票金额(元人民币)</label>
+			<input type="text" name="amount" class="form-control" formControlName="invoice_amount" required>
+			<div *ngIf="form.controls.invoice_amount.touched && form.controls.invoice_amount.errors" class="alert alert-danger">
+				<div *ngIf="form.controls.invoice_amount.errors.pattern">
+					开票金额必须是带两位小数的数字，例如：3.14, 2.38等!
+				</div>
+			</div>
+		</div>
+
+
+		<div class=" form-group col-md-3">
+			<label>审批人姓名</label>
+			<input type="text" name="approvedby" class="form-control" formControlName="approved_by">
+		</div>
+
+		<div class="form-group col-md-3">
+			<label>审核人姓名</label>
+			<input type="text" name="auditby" class="form-control" formControlName="audited_by">
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="form-group col-md-3">
+			<label>开票人姓名</label>
+			<input type="text" name="issuedby" class="form-control" formControlName="issued_by" required>
+			<div *ngIf="form.controls.issued_by.touched && form.controls.issued_by.errors" class="alert alert-danger">
+				<div *ngIf="form.controls.issued_by.errors.required">
+					必须输入开票人姓名
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-md-6">
+			<label>上传发票图片</label>
+			<input type="file" class="form-control" name="invoiceImage" (change)="previewInvoiceImage($event)">
+		</div>
+	</div>	
+</form>
+		<div class="form-group col-md-3">
+			<label for="date1">开票时间</label>
+			<angular2-date-picker [settings]="settings" [(ngModel)]="date"></angular2-date-picker>
+		</div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<div align="center" #preview></div>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<button type="button" class="btn btn-success btn-rect"[disabled]="!form.valid" (click)="update()" data-toggle="modal" data-target="#invoice-saved">保存发票数据</button>
+		</div>
+	</div>
+</div>
+	<!--Modal-->
+	<div class="modal fade" id="invoice-saved">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">提示</h4>					
+				</div>
+
+				<div class="modal-body">
+					数据已保存，请继续！
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" data-dismiss="modal">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+<style>
+	.form-row {
+		align-items: center;
+	}
+
+	.ng-valid[required], .ng-valid.required {
+		border-left: 5px solid #42A948;
+	}
+
+	.ng-invalid:not(form) {
+		border-left: 5px solid #a94442;
+	}
+
+	button {
+		margin-bottom: 2rem;
+	}
+
+</style>

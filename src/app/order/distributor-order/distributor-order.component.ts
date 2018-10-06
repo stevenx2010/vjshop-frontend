@@ -4,7 +4,6 @@ import { DatePipe } from '@angular/common';
 import { VJAPI } from '../../../services/vj.services';
 import { Order } from '../../../models/order.model';
 import { Distributor } from '../../../models/distributor.model';
-import { OrderDetailComponent } from '../order-detail/order-detail.component';
 
 @Component({
   selector: 'app-distributor-order',

@@ -23,6 +23,10 @@ export class OrderDetailComponent implements OnInit {
 
   baseUrl: string = API_BASE_URL;
 
+  invoice_issued: boolean = false;
+  invoice: any;
+  z_index: number = -1;
+
   constructor(private vjApi: VJAPI, private router: Router, private actRoute: ActivatedRoute) { 
   	this.orderid = this.actRoute.snapshot.params['id'];
   	console.log(this.actRoute.snapshot.url);
@@ -35,6 +39,7 @@ export class OrderDetailComponent implements OnInit {
 	  	this.vjApi.queryOrderDetailByOrderId(this.orderid).subscribe((d) => {
 	  		this.orderDetail = d.json();
 
+	  		console.log(this.orderDetail);
 	  		if(this.orderDetail) {
 	  			let customer = this.orderDetail.customer;
 	  			if(customer.length > 0) {
@@ -65,9 +70,21 @@ export class OrderDetailComponent implements OnInit {
 	  			if(distributorContact.length > 0) {
 	  				this.distributorContact = distributorContact[0];
 	  			}
+
+	  			let invoice = this.orderDetail.invoice;
+	  			if(invoice && invoice.length > 0) {
+	  				this.invoice = invoice[0];
+	  				this.invoice_issued = true;
+	  			} else {
+	  				this.invoice_issued = false;
+	  			}
 	  		}
 	  	});
 	  }
   }
 
+  showImage() {
+  	if(this.z_index == -1) this.z_index = 2;
+  	else this.z_index = -1;
+  }
 }

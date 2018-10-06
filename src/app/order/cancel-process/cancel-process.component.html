@@ -1,7 +1,7 @@
 <div>
 	<div class="form-row">
 		<div class="col-md-12">
-			<h3>未开票订单处理</h3>
+			<h3>退单申请处理</h3>
 		</div>
 	</div>
 
@@ -105,9 +105,83 @@
 							<app-order-detail [orderid]="orderId"></app-order-detail>
 						</td>
 					</tr>
-					<tr *ngIf="invoiceDisplay">
+	<!--				<tr *ngIf="invoiceDisplay">
 						<td colspan="17">
 							<app-invoice-issue [orderid]="orderId"></app-invoice-issue>
+						</td>
+					</tr>-->
+					<tr *ngIf="refundDisplay">
+						<td colspan="17">
+							<div class="form-row">
+								<div class="col-md-12">
+									<h5>退单状态（订单号：#{{orderId}}）</h5>
+								</div>
+							</div>
+							<form [formGroup]="form">
+								<div class="form-row">
+									<div class="form-group col-md-3">							
+										<input type="radio" value="1" name="refund_status" formControlName="refund_status" checked required>
+										<label>&nbsp;申请退单</label>
+									</div>
+									<div class="form-group col-md-3">									
+										<input type="radio" value="2" name="refund_status" formControlName="refund_status" >
+										<label>&nbsp;退单处理中</label>
+									</div>
+									<div class="form-group col-md-3">									
+										<input type="radio" value="3" name="refund_status" formControlName="refund_status" >
+										<label>&nbsp;退单完成</label>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-12">
+										<label>退单原因</label>
+										<textarea rows="3" class="form-control" formControlName="refund_reason" required>
+										</textarea>
+										<div *ngIf="form.controls.refund_reason.touched && form.controls.refund_reason.errors" class="alert alert-danger">
+											<div *ngIf="form.controls.refund_reason.errors.required">
+												必须输入退单原因
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-3">
+										<label>退单金额(单位：元人民币)</label>
+										<input type="text" name="amount" class="form-control" formControlName="refund_amount" required>
+										<div *ngIf="form.controls.refund_amount.touched && form.controls.refund_amount.errors" class="alert alert-danger">
+											<div *ngIf="form.controls.refund_amount.errors.required">
+												必须输入退单金额
+											</div>
+											<div *ngIf="form.controls.refund_amount.errors.pattern">
+												退单金额是含两位小数的数字，如：3.14
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group col-md-3">
+										<label>审批人</label>
+										<input type="text" name="amount" class="form-control" formControlName="approved_by"required>
+										<div *ngIf="form.controls.approved_by.touched && form.controls.approved_by.errors" class="alert alert-danger">
+											<div *ngIf="form.controls.approved_by.errors.required">
+												必须输入审批人
+											</div>
+										</div>
+									</div>
+									<div class="form-group col-md-3">
+										<label>审核人</label>
+										<input type="text" name="amount" class="form-control" formControlName="audited_by">
+									</div>
+								</div>
+							</form>
+							<div class="form-group col-md-3">
+								<label>处理日期</label>
+								<angular2-date-picker [settings]="settings" [(ngModel)]="date"></angular2-date-picker>
+							</div>
+							<div class="form-row" id="btn-0">
+								<div class="col-md-12">
+									<button type="button" class="btn btn-success btn-rect" [disabled]="!form.valid" (click)="save()">保存数据</button>
+								</div>
+							</div>
 						</td>
 					</tr>
 
@@ -120,15 +194,15 @@
 						<td>{{order?.order_date}}</td>
 						<td *ngIf="order.order_status==1" class="notpaid">未支付</td>
 						<td *ngIf="order.order_status==2" class="paid">已支付</td>
-						<td *ngIf="order.payment_method == 1">Wechat</td>
-						<td *ngIf="order.payment_method == 2">Alipay</td>
-
 						<td *ngIf="order.order_status==3" class="purchase-received">已收货</td>
 						<td *ngIf="order.order_status==4">已关闭</td>
 						<td *ngIf="order.order_status==5">已取消</td>
 						<td *ngIf="order.order_status==6">已评价</td>
 						<td *ngIf="order.order_status==7">未评价</td>
-						
+
+						<td *ngIf="order.payment_method == 1">Wechat</td>
+						<td *ngIf="order.payment_method == 2">Alipay</td>
+
 						<td *ngIf="order.delivery_status == 0">NA</td>
 						<td *ngIf="order.delivery_status == 1" class="delivery-waiting">待送货</td>
 						<td *ngIf="order.delivery_status == 2">送货中</td>
@@ -156,7 +230,7 @@
 						<td align="center" *ngIf="displayDetail && selectedOrder == i"><i class="fa fa-arrow-up" data-content="detail" (click)="toOrderDetail(i, 'up')"></i></td>
 						<td align="center" *ngIf="displayDetail && selectedOrder != i"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
 						<td align="center" *ngIf="!displayDetail"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
-						<td align="center"><button type="button" class="btn btn-primary btn-sm" [disabled]="invoiceBtnDisabled" (click)="toIssueInvoice(i)">{{invoiceBtnText}}</button></td>
+						<td align="center"><button type="button" class="btn btn-danger btn-sm" [disabled]="refundBtnDisabled" (click)="toProcessRefund(i)">{{refundBtnText}}</button></td>
 					</tr>
 
 				</tbody>
@@ -166,6 +240,13 @@
 </div>
 
 <style>
+	.ng-valid[required], .ng-valid.required {
+		border-left: 5px solid #42A948;
+	}
+
+	.ng-invalid:not(form) {
+		border-left: 5px solid #a94442;
+	}
 
 	.form-row {
 		align-items: center;
@@ -217,4 +298,10 @@
 		margin-top: 2rem;
 		margin-bottom: 2rem;
 	}
+
+	.btn-0 {
+		padding-bottom: 5rem;
+		margin-top: 3rem;
+	}
+
 </style>

@@ -16,6 +16,7 @@ import { MenuComponent } from './ui/menu/menu.component';
 import { CouponModule } from './coupon/coupon.module';
 import { OrderModule } from './order/order.module';
 import { InvoiceModule } from './invoice/invoice.module';
+import { PageModule } from './page/page.module';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { InvoiceModule } from './invoice/invoice.module';
     CouponModule,
     OrderModule,
     InvoiceModule,
+    PageModule,
   ],
   providers: [
   	VJAPI

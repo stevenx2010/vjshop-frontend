@@ -12,6 +12,7 @@ import { API_BASE_URL } from '../models/constants';
 import { CouponType } from '../models/coupon-type.model';
 import { Coupon } from '../models/coupon.model';
 import { Order } from '../models/order.model';
+import { Refund } from '../models/refund.model';
 
 @Injectable()
 export class VJAPI {
@@ -442,5 +443,77 @@ export class VJAPI {
 	
 		return this.http.post(API_BASE_URL + 'api/order/query/conditions/distributor',body, {headers:headers})
 			.pipe(map((data) => data.json()));				
+	}
+
+
+	/**
+	 *  Invoice  Related API
+	 */
+
+	public updateInvoice(body): Observable<Response> {
+		let headers = new Headers();
+	//	this.initAuthHeader(headers);
+		headers.append('Access-Control-Allow-Origin', '*');
+		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
+		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
+		headers.append('Authorization', 'Bearer ' + this.api_token);
+		headers.append('X-Acces-Token', this.access_token);
+		headers.append('Accept-language', 'en_US')
+	
+		return this.http.post(API_BASE_URL + 'api/invoice/updateOrCreate',body, {headers:headers});					
+	}
+
+	/**
+	 *  Refund  Related API
+	 */
+
+	public updateRefundInfo(body): Observable<Response> {
+		let headers = new Headers();
+	//	this.initAuthHeader(headers);
+		headers.append('Access-Control-Allow-Origin', '*');
+		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
+		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
+		headers.append('Authorization', 'Bearer ' + this.api_token);
+		headers.append('X-Acces-Token', this.access_token);
+		headers.append('Accept-language', 'en_US')
+	
+		return this.http.post(API_BASE_URL + 'api/refund/update',body, {headers:headers})		
+	}
+
+	public getRefundByOrderId(orderId): Observable<Refund[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/refund/get/' + orderId, {headers:headers})
+			.pipe(map((data) => data.json()));			
+	}
+
+	/**
+	 *  Home Page/New Comer Page  Related API
+	 */
+	public updateHomePageImages(body): Observable<Response> {
+		let headers = new Headers();
+	//	this.initAuthHeader(headers);
+		headers.append('Access-Control-Allow-Origin', '*');
+		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
+		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
+		headers.append('Authorization', 'Bearer ' + this.api_token);
+		headers.append('X-Acces-Token', this.access_token);
+		headers.append('Accept-language', 'en_US')
+	
+		return this.http.post(API_BASE_URL + 'api/page/homepage/update',body, {headers:headers})			
+	}
+
+	public updateNewComerPage(body): Observable<Response> {
+		let headers = new Headers();
+	//	this.initAuthHeader(headers);
+		headers.append('Access-Control-Allow-Origin', '*');
+		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
+		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
+		headers.append('Authorization', 'Bearer ' + this.api_token);
+		headers.append('X-Acces-Token', this.access_token);
+		headers.append('Accept-language', 'en_US')
+	
+		return this.http.post(API_BASE_URL + 'api/page/newcomerpage/update',body, {headers:headers})				
 	}
 }

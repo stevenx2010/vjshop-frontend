@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
 
@@ -10,6 +10,7 @@ import { InvoiceQueryComponent } from './invoice-query/invoice-query.component';
 import { invoiceRoutes} from './invoice.routing';
 
 import { ComponentsModule } from '../components/components.module';
+import { InvoiceIssueComponent } from './invoice-issue/invoice-issue.component';
 
 @NgModule({
   imports: [
@@ -17,8 +18,9 @@ import { ComponentsModule } from '../components/components.module';
     RouterModule.forChild(invoiceRoutes),
     FormsModule,
     AngularDateTimePickerModule,
-    ComponentsModule
+    ComponentsModule,
+    ReactiveFormsModule
   ],
-  declarations: [InvoiceProcessComponent, InvoiceQueryComponent, ]
+  declarations: [InvoiceProcessComponent, InvoiceQueryComponent, InvoiceIssueComponent, ]
 })
 export class InvoiceModule { }
