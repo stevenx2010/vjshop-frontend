@@ -17,13 +17,21 @@ import { CouponModule } from './coupon/coupon.module';
 import { OrderModule } from './order/order.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { PageModule } from './page/page.module';
+import { CustomerServiceModule } from './customer-service/customer-service.module';
+import { AuthModule } from './auth/auth.module';
+
+import { CookieService } from 'ngx-cookie-service';
+
+import { AuthGuard } from './auth/auth.guard';
+import { HomeComponent } from './home.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    MenuComponent, 
+    MenuComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,9 +43,17 @@ import { PageModule } from './page/page.module';
     OrderModule,
     InvoiceModule,
     PageModule,
+    CustomerServiceModule,
+    AuthModule
   ],
   providers: [
-  	VJAPI
+  	VJAPI,
+    CookieService,
+    AuthGuard
+  ],
+  exports: [
+    NavbarComponent,
+    MenuComponent,
   ],
   bootstrap: [AppComponent]
 })

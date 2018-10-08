@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { VJAPI } from '../../../services/vj.services';
+import { API_BASE_URL } from '../../../models/constants';
 
 @Component({
   selector: 'app-menu',
@@ -7,8 +10,17 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
+  @Input() username: string;
+  @Input() lastLogin: string;
+  @Input() imageUrl: string;
 
-  constructor(private router: Router) { }
+  count: number;
+  timer: any;
+  baseUrl: string;
+
+  constructor(private router: Router, private vjApi: VJAPI) { 
+    this.baseUrl = API_BASE_URL;
+  }
 
   ngOnInit() {
   }
@@ -84,5 +96,33 @@ export class MenuComponent implements OnInit {
 
   toNewComerPage() {
     this.router.navigate(['page/newcomerpage']);
+  }
+
+  toProcessConsulting() {
+    this.router.navigate(['customerservice/process']);
+  }
+
+  toQandA() {
+    this.router.navigate(['customerservice/qna']);
+  }
+
+  toCreateNewUser() {
+    this.router.navigate(['auth/new-user']);
+  }
+
+  toManageUser() {
+    this.router.navigate(['auth/manage-user']);
+  }
+
+  toAssignRoles() {
+    
+  }
+
+  toLogin() {
+    this.router.navigate(['auth/login']);
+  }
+
+  toDashboard() {
+    this.router.navigate(['home']);
   }
 }

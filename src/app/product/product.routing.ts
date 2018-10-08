@@ -9,8 +9,11 @@ import { ProductSubCategoryFormComponent } from './product-sub-category-form/pro
 import { ProductComponent } from './product/product.component';
 import { ProductFormComponent } from './product-form/product-form.component';
 
+import { LoginComponent } from '../auth/login/login.component';
+import { AuthGuard } from '../auth/auth.guard';
+
 export const productRoutes: Routes = [
-	{path: 'product/category', component: ProductCategoryComponent}, 
+	{path: 'product/category', component: ProductCategoryComponent }, 
 	{path: 'product/category/add', component: ProductCategoryFormComponent},
 	{path: 'product/category/edit/:id', component: ProductCategoryFormComponent},
 
@@ -20,6 +23,8 @@ export const productRoutes: Routes = [
 
 	{path: 'product/product', component: ProductComponent},
 	{path: 'product/product/add', component: ProductFormComponent},
-	{path: 'product/product/edit/:id', component: ProductFormComponent}
+	{path: 'product/product/edit/:id', component: ProductFormComponent},
+	
+
 
 ]

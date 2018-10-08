@@ -1,0 +1,83 @@
+<div class="form-row">
+	<div class="col-md-12">
+		<h3>常见问题与回答</h3>
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="col-md-12">
+		<button type="button" class="btn btn-primary btn-rect" (click)="add()">新增Q&A</button>
+	</div>
+
+	<div class="col-md-12">
+		<router-outlet></router-outlet>
+	</div>
+
+	<div class="col-md-12">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>问题</th>
+					<th>回答</th>
+					<th>编辑</th>
+					<th>删除</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let q of qna; let i = index" [class.active]="selectedItem == i">
+					<th scope="row">{{i+1}}</th>
+					<td>{{q?.question}}</td>
+					<td>{{q?.answer}}</td>
+					<td><i class="fa fa-edit" data-content="edit" (click)="edit(i)"></i></td>
+					<td><i class="fa fa-trash" data-content="delete" data-toggle="modal" data-target="#deleteConfirm" (click)="delete(i)"></i></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+	<!--Modal-->
+	<div class="modal fade" id="deleteConfirm">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认删除</h4>					
+				</div>
+
+				<div class="modal-body">
+					<p></p>
+					请确认是否真的要删除该记录？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<style>
+	[data-content="edit"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+
+	[data-content="delete"]:hover {
+		color: #ff4832;
+		cursor: pointer;
+	}
+
+	.active {
+		background-color: #c1c1c1;
+		color: red;
+	}
+
+	h3, button {
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+	}
+</style>

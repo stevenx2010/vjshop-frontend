@@ -1,0 +1,64 @@
+<div class="form-row">
+	<div class="col-md-12">
+		<h3>客户留言处理</h3>
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="col-md-4">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr align="center">
+					<th>#</th>
+					<th>手机号</th>
+					<th>去回应</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let n of numOfNewMessages; let i = index;" align="center" [class.active]="selectedItem == i">
+					<th scope="row">{{i+1}}</th>
+					<td>{{n?.mobile}}<span class="label label-danger user-label">{{n?.total}}</span></td>
+					<td><i data-content="chat" class="fa fa-comment" (click)="toChat(i)"></i></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="col-md-8">
+		<app-chat [mobile]='mobile'></app-chat>
+	</div>
+</div>
+
+<style>
+	.user-label {
+		postion: absolute;
+		margin-left: 5px;
+		margin-bottom: -20px;
+	}
+
+	.form-row {
+		align-items: center;
+	}
+
+	i {
+		color: green;
+		font-size: 2.5rem;
+	}
+
+	h3 {
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	[data-content="chat"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+
+	.active {
+		background-color: #c1c1c1;
+		color: red;
+	}
+
+</style>

@@ -1,7 +1,9 @@
 import { Routes } from '@angular/router';
-
-import { ProductCategoryComponent } from './product/product-category/product-category.component';
+import { LoginComponent } from './auth/login/login.component';
+import { HomeComponent } from './home.component';
 
 export const appRoutes: Routes = [
-	//	{path: 'product/category', component: ProductCategoryComponent}
+		{ path: 'home', component: HomeComponent },
+		{ path: 'login', component: LoginComponent },
+		{ path: '**', component: LoginComponent }
 	];

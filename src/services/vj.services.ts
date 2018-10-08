@@ -14,21 +14,54 @@ import { Coupon } from '../models/coupon.model';
 import { Order } from '../models/order.model';
 import { Refund } from '../models/refund.model';
 
+import { Message } from '../models/message.model';
+import { User } from '../models/user.model';
+
+import { CookieService } from 'ngx-cookie-service';
+
 @Injectable()
 export class VJAPI {
 	api_token: string;
 	access_token: string;
 
-	public constructor(private http: Http) {}
+	public constructor(private http: Http, private cs: CookieService) {
+
+	}
 
 	/**
 	 * Helper: create HTTP request headers
 	 */
 	private initAuthHeader(headers: Headers) {
+		if(this.api_token === undefined || this.api_token == null || (this.api_token && this.api_token.length == 0 )) {
+			console.log(this.cs.get('token'));
+			if(this.cs.check('token')) {
+				this.api_token = this.cs.get('token');
+				console.log(this.api_token);
+			}
+		}
 		headers.append('Authorization', 'Bearer ' + this.api_token);
 		headers.append('X-Acces-Token', this.access_token);
 		headers.append('Accept-language', 'en_US');
 		headers.append('Content-type', 'application/json');
+		headers.append('Access-Control-Allow-Origin', '*');
+		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
+		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
+	}
+	/**
+	 * Helper: create HTTP request headers form submit
+	 */
+	private initAuthHeaderForm(headers: Headers) {
+		if(this.api_token === undefined || this.api_token == null || (this.api_token && this.api_token.length == 0 )) {
+			console.log(this.cs.get('token'));
+			if(this.cs.check('token')) {
+				this.api_token = this.cs.get('token');
+				console.log(this.api_token);
+			}
+		}
+		headers.append('Authorization', 'Bearer ' + this.api_token);
+		headers.append('X-Acces-Token', this.access_token);
+		headers.append('Accept-language', 'en_US');
+	//	headers.append('Content-type', 'application/json');
 		headers.append('Access-Control-Allow-Origin', '*');
 		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
 		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
@@ -515,5 +548,125 @@ export class VJAPI {
 		headers.append('Accept-language', 'en_US')
 	
 		return this.http.post(API_BASE_URL + 'api/page/newcomerpage/update',body, {headers:headers})				
+	}
+
+	/**
+	 *  Customer Service Chat Message  Related API
+	 */
+	public getListOfMessagesByCondition(body): Observable<Message[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/CustomerService/get/', body, {headers:headers})
+			.pipe(map((data) => data.json()));					
+	}
+
+	public getMessagesByMobile(mobile): Observable<Message[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/CustomerService/message/get/' + mobile, {headers:headers})
+			.pipe(map((data) => data.json()));					
+	}
+
+	public checkNewMessages(): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/CustomerService/message/checknew/', {headers:headers});		
+	}
+
+	 public sendMessage(body): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.post(API_BASE_URL + 'api/CustomerService/message/update', body, {headers: headers});		 	
+	 }
+
+	 public getCountOfNewMessages(): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.post(API_BASE_URL + 'api/CustomerService/get/newcount', {headers: headers});			 	
+	 }
+
+	 public getQnA(): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.get(API_BASE_URL + 'api/CustomerService/qna/get/', {headers: headers})	 	
+	 }
+
+	 public updateQnA(body): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.post(API_BASE_URL + 'api/CustomerService/qna/update/', body, {headers: headers})	 		 	
+	 }
+
+	 public deleteQnA(id): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.get(API_BASE_URL + 'api/CustomerService/qna/delete/' + id, {headers: headers});	 		 	
+	 }
+
+	 public getQnAById(id): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.get(API_BASE_URL + 'api/CustomerService/qna/get/id/' + id, {headers: headers});		 	
+	 }
+
+	/**
+	 *  User Management  Related API
+	 */
+	public updateUser(body): Observable<Response> {
+		let headers = new Headers();
+	//	this.initAuthHeader(headers);
+		headers.append('Access-Control-Allow-Origin', '*');
+		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
+		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
+		headers.append('Authorization', 'Bearer ' + this.api_token);
+		headers.append('X-Acces-Token', this.access_token);
+		headers.append('Accept-language', 'en_US')
+
+		return this.http.post(API_BASE_URL + 'api/users/new/', body, {headers: headers})			
+	}
+
+	public getAllUsers(): Observable<User[]> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.get(API_BASE_URL + 'api/users/getAll', {headers: headers})
+			.pipe(map((data) =>data.json()));			
+	}
+
+	public deleteUserById(id): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.get(API_BASE_URL + 'api/users/delete/' + id, {headers: headers});				
+	}
+
+	public login(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeaderForm(headers);
+
+		return this.http.post(API_BASE_URL + 'api/users/login', body, {headers: headers});			
+	}
+
+	public updatePassword(body): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeaderForm(headers);
+
+		return this.http.post(API_BASE_URL + 'api/users/update/password', body, {headers: headers});			
+	}
+
+	public checkEmailUnique(email): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.get(API_BASE_URL + 'api/users/email/unique/' + email, {headers: headers});
 	}
 }
