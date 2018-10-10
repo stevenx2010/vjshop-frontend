@@ -19,11 +19,13 @@ import { InvoiceModule } from './invoice/invoice.module';
 import { PageModule } from './page/page.module';
 import { CustomerServiceModule } from './customer-service/customer-service.module';
 import { AuthModule } from './auth/auth.module';
+import { SettingModule } from './setting/setting.module';
 
 import { CookieService } from 'ngx-cookie-service';
 
 import { AuthGuard } from './auth/auth.guard';
 import { HomeComponent } from './home.component';
+import { AboutComponent } from './about.component';
 
 
 @NgModule({
@@ -32,6 +34,7 @@ import { HomeComponent } from './home.component';
     NavbarComponent,
     MenuComponent,
     HomeComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { HomeComponent } from './home.component';
     InvoiceModule,
     PageModule,
     CustomerServiceModule,
-    AuthModule
+    AuthModule,
+    SettingModule
   ],
   providers: [
   	VJAPI,

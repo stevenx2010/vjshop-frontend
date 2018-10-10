@@ -1,0 +1,167 @@
+<div class="form-row">
+	<div class="col-md-12">
+		<h3>运费计算公式设置</h3>
+		<h4>公式说明：</h4>
+		<p>运费计算公式包括三个参数：w, m, p，其中：w表示重量；m表示免单重量；p表示运费价格。必须使用且只能使用这三个参数符号来表示运费计算公式，不能含有其他数字或者符号。例如：(w-m)*p&nbsp;为合法的计算公式。仅可使用如下运算符：+、-、*、/，分别表示加、减、乘和除。
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="col-md-12">
+		<button id="btn-0" type="button" class="btn btn-primary btn-rect" (click)="add()">新增运费计算公式</button>
+	</div>
+</div>
+
+<div class="form-row" *ngIf="displayForm">
+	<div class="col-md-12">
+		<form [formGroup]="form" (ngSubmit)="submit()">
+			<div class="form-group col-md-12">
+				<label>公式描述</label>
+				<textarea rows="3" name="description" class="form-control" formControlName="description" required></textarea>
+			</div>
+
+			<div class="form-group col-md-12">
+				<label>运费计算公式</label>
+				<input type="text" class="form-control" name="formula" formControlName="formula" required>
+			</div>
+
+			<div class="form-row">
+				<div class="form-group col-md-3">
+					<label>m(免单重量：kg)</label>
+					<input type='text' class="form-control" name="freeweight" formControlName="parameter1" required>
+				</div>
+				<div class="form-group col-md-3">
+					<label>p(运费费率：元/kg)</label>
+					<input type='text' class="form-control" name="rate" formControlName="parameter2" required>
+				</div>
+				<div class="form-group col-md-3">
+					<label>适用重量范围：从(kg)</label>
+					<input type="text" class="form-control" name="weight1" formControlName="condition1" required>
+				</div>
+				<div class="form-group col-md-3">
+					<label>适用重量范围：到(kg)</label>
+					<input type="text" class="form-control" name="weight2" formControlName="condition2" required>
+				</div>
+			</div>
+
+			<button id="btn-1" type="submit" class="btn btn-success btn-rect" data-toggle="modal" data-target="#save" [disabled]="!form.valid">保存数据</button>
+			<button id="btn-2" type="button" class="btn btn-danger btn-rect" (click)="cancel()" *ngIf="displayForm">取消</button>
+		</form>
+
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="col-md-12">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>运费公式</th>
+					<th>m(免单重量：kg)</th>
+					<th>p(运费费率：元/kg)</th>
+					<th>从(适用重量范围：kg)</th>
+					<th>到(适用重量范围：kg)</th>
+					<th>公式描述</th>
+					<th>编辑</th>
+					<th>删除</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let s of settings; let i = index;" [class.active]="selectedItem == i">
+					<th scope="row">{{s?.id}}</th>
+					<td>{{s?.setting_value}}</td>
+					<td>{{s?.parameter1}}</td>
+					<td>{{s?.parameter2}}</td>
+					<td>{{s?.condition1}}</td>
+					<td>{{s?.condition2}}</td>
+					<td>{{s?.description}}</td>
+					<td><i class="fa fa-edit" data-content="edit" (click)="edit(i)"></i></td>
+					<td><i class="fa fa-trash" data-content="delete" (click)="delete(i)" data-toggle="modal" data-target="#deleteConfirm"></i></td>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+	<!--Modal-->
+	<div class="modal fade" id="deleteConfirm">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认删除</h4>					
+				</div>
+
+				<div class="modal-body">
+					<p></p>
+					请确认是否真的要删除该记录？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Modal-->
+	<div class="modal fade" id="save">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">数据保存提示</h4>					
+				</div>
+
+				<div class="modal-body">
+					<p></p>
+					数据已保存，请继续？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<style>
+	.ng-valid[required], .ng-valid.required {
+		border-left: 5px solid #42A948;
+	}
+
+	.ng-invalid:not(form) {
+		border-left: 5px solid #a94442;
+	}
+
+	[data-content="edit"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+
+	[data-content="delete"]:hover {
+		color: #ff4832;
+		cursor: pointer;
+	}
+
+	.active {
+		background-color: #c1c1c1;
+		color: red;
+	}
+
+	h3 {
+		margin-top: 3rem;
+		margin-bottom: 3rem;
+	}
+
+	#btn-0, #btn-1, #btn-2 {
+		margin-top: 2rem;
+		margin-bottom: 3rem;
+	}
+
+	#btn-1 {
+		margin-right: 3rem;
+	}
+</style>

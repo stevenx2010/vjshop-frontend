@@ -54,3 +54,7 @@ export class RefundStatus {
 	public static WAITING_FOR_REFUND = 2;
 	public static REFUNDED = 3;
 }
+
+export class SettingType {
+	public static SHIPPING_FEE_FORMULA = 1;
+}

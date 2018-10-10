@@ -30,7 +30,7 @@
 					必须输入用户密码
 				</div>
 				<div *ngIf="form.controls.password.errors.minlength && form.controls.password.errors.maxlength">
-					密码长度必须为6位
+					密码长度必须为6-12位
 				</div>
 				<div *ngIf="form.controls.password.errors.pattern">
 					密码长度必须为字母数字组合，包含大小写

@@ -623,13 +623,7 @@ export class VJAPI {
 	 */
 	public updateUser(body): Observable<Response> {
 		let headers = new Headers();
-	//	this.initAuthHeader(headers);
-		headers.append('Access-Control-Allow-Origin', '*');
-		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
-		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
-		headers.append('Authorization', 'Bearer ' + this.api_token);
-		headers.append('X-Acces-Token', this.access_token);
-		headers.append('Accept-language', 'en_US')
+		this.initAuthHeaderForm(headers);
 
 		return this.http.post(API_BASE_URL + 'api/users/new/', body, {headers: headers})			
 	}
@@ -668,5 +662,30 @@ export class VJAPI {
 	 	this.initAuthHeader(headers);
 
 		return this.http.get(API_BASE_URL + 'api/users/email/unique/' + email, {headers: headers});
+	}
+
+	/**
+	 *  Setting  Related API
+	 */
+
+	public getShippingSettingsAll(): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.get(API_BASE_URL + 'api/setting/shipping/get/all', {headers: headers});		
+	}
+
+	public updateShippingSettings(body): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeaderForm(headers);
+
+		return this.http.post(API_BASE_URL + 'api/setting/shipping/update', body, {headers: headers});			
+	}
+
+	public deleteShippingSettingById(id): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.get(API_BASE_URL + 'api/setting/shipping/delete/' + id, {headers: headers});				
 	}
 }

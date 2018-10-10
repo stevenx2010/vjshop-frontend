@@ -125,4 +125,8 @@ export class MenuComponent implements OnInit {
   toDashboard() {
     this.router.navigate(['home']);
   }
+
+  toSetShippingFee(){
+    this.router.navigate(['setting/shippingfee']);
+  }
 }

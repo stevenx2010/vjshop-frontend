@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { VJAPI } from '../../../services/vj.services';
 import { Message } from '../../../models/message.model';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-chat',
@@ -17,7 +18,7 @@ export class ChatComponent implements OnInit {
   message: string;
   timer: any;
 
-  constructor(private vjApi: VJAPI, private router: Router, private actRoute: ActivatedRoute) { 
+  constructor(private vjApi: VJAPI, private router: Router, private actRoute: ActivatedRoute, private cs: CookieService) { 
   	this.messages = new Array<Message>();
   }
 
@@ -47,7 +48,7 @@ export class ChatComponent implements OnInit {
   	let body = {
   		'mobile': this.mobile,
   		'message': this.message,
-  		'responder': 'vj',
+  		'responder': this.cs.get('username'),
   		'processed': true,
   		'who': 2
 
