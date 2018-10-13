@@ -6,18 +6,22 @@ import { DistributorAddressFormComponent } from './distributor-address-form/dist
 import { DistributorContactFormComponent } from './distributor-contact-form/distributor-contact-form.component';
 import { DistributorInventoryFormComponent } from './distributor-inventory-form/distributor-inventory-form.component';
 
+import { AuthGuard } from '../auth/auth.guard';
+import { RoleGuard } from '../auth/role.guard';
+import { Roles } from '../../models/user-role.model';
+
 export const distributorRoutes: Routes = [
-	{ path: 'distributor', component: DistributorComponent },
-	{ path: 'distributor/add/:id', component: DistributorFormComponent,
+	{ path: 'distributor', component: DistributorComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.DISTRIBUTOR_MANAGER}},
+	{ path: 'distributor/add/:id', component: DistributorFormComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.DISTRIBUTOR_MANAGER},
 	  children: [
 	  	{ path: 'address/:id', component: DistributorAddressFormComponent},
 	  	{ path: 'contact/:id', component: DistributorContactFormComponent}] },
-	{ path: 'distributor/edit/:id', component: DistributorFormComponent,
+	{ path: 'distributor/edit/:id', component: DistributorFormComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.DISTRIBUTOR_MANAGER},
 	  children: [
 	  	{ path: 'address/:id', component: DistributorAddressFormComponent},
 	  	{ path: 'contact/:id', component: DistributorContactFormComponent}] }, 
-	{ path: 'distributor/edit/address/:id/:addressId', component: DistributorAddressFormComponent},
-	{ path: 'distributor/edit/contact/:id/:contactId', component: DistributorContactFormComponent},
-	{ path: 'distributor/inventory', component: DistributorInventoryFormComponent },
+	{ path: 'distributor/edit/address/:id/:addressId', component: DistributorAddressFormComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.DISTRIBUTOR_MANAGER}},
+	{ path: 'distributor/edit/contact/:id/:contactId', component: DistributorContactFormComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.DISTRIBUTOR_MANAGER}},
+	{ path: 'distributor/inventory', component: DistributorInventoryFormComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.DISTRIBUTOR_MANAGER} },
 
 ];

@@ -64,6 +64,8 @@ export class LoginComponent implements OnInit {
         this.cs.set('username', this.user.name);
         this.cs.set('last_login', this.user.last_login);
         this.cs.set('image_url', this.user.image_url);
+        this.cs.set('roles', this.user.roles + '');
+        this.cs.set('email', this.user.email);
 
         if(this.user.first_login) {
           this.displayResetPassword = true;

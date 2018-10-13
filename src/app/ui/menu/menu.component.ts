@@ -13,6 +13,7 @@ export class MenuComponent implements OnInit {
   @Input() username: string;
   @Input() lastLogin: string;
   @Input() imageUrl: string;
+  @Input() email: string;
 
   count: number;
   timer: any;
@@ -115,7 +116,7 @@ export class MenuComponent implements OnInit {
   }
 
   toAssignRoles() {
-    
+    this.router.navigate(['auth/roles']);
   }
 
   toLogin() {

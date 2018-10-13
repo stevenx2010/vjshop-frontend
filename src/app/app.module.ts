@@ -26,6 +26,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthGuard } from './auth/auth.guard';
 import { HomeComponent } from './home.component';
 import { AboutComponent } from './about.component';
+import { WarningComponent } from './warning.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { AboutComponent } from './about.component';
     MenuComponent,
     HomeComponent,
     AboutComponent,
+    WarningComponent,
   ],
   imports: [
     BrowserModule,

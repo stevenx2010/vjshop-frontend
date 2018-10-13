@@ -9,6 +9,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 
 import { authRoutes } from './auth.routing';
 import { CreateNewUserComponent } from './create-new-user/create-new-user.component';
+import { UserRolesComponent } from './user-roles/user-roles.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,6 @@ import { CreateNewUserComponent } from './create-new-user/create-new-user.compon
   exports: [
   	LoginComponent
   ],
-  declarations: [LoginComponent, UserManagementComponent, ResetPasswordComponent, CreateNewUserComponent]
+  declarations: [LoginComponent, UserManagementComponent, ResetPasswordComponent, CreateNewUserComponent, UserRolesComponent]
 })
 export class AuthModule { }

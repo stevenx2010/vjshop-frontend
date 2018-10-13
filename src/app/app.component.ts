@@ -17,6 +17,7 @@ export class AppComponent {
   username: string;
   lastLogin: string;
   imageUrl: string;
+  email: string;
 
   constructor(private router: Router, private actRoute: ActivatedRoute, private cs: CookieService) {
 
@@ -37,5 +38,6 @@ export class AppComponent {
     this.username = this.cs.get('username');
     this.lastLogin = this.cs.get('last_login');
     this.imageUrl = this.cs.get('image_url');
+    this.email = this.cs.get('email');
   }
 }

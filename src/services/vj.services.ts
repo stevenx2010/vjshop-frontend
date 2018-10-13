@@ -664,6 +664,13 @@ export class VJAPI {
 		return this.http.get(API_BASE_URL + 'api/users/email/unique/' + email, {headers: headers});
 	}
 
+	public updateUserRoles(body): Observable<Response> {
+		let headers = new Headers();
+	 	this.initAuthHeader(headers);
+
+		return this.http.post(API_BASE_URL + 'api/users/roles/update', body, {headers: headers});		
+	}
+
 	/**
 	 *  Setting  Related API
 	 */
