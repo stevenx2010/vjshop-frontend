@@ -59,14 +59,3 @@ export class SettingType {
 	public static SHIPPING_FEE_FORMULA = 1;
 }
 
-export class UserRole {
-	public static NORMAL_USER			= 0x00000000;
-	public static ADMINISTRATOR 		= 0x00000001;
-	public static PRODUCT_MANAGER 		= 0x00000010;
-	public static DISTRIBUTOR_MANAGER	= 0x00000100;
-	public static COUPON_MANAGER		= 0x00001000;
-	public static ORDER_MANAGER			= 0x00010000;
-	public static INVOICE_MANAGER		= 0x00100000;
-	public static PAGE_MANAGER			= 0x01000000;
-	public static SETTING_MANAGER		= 0x10000000;
-}
