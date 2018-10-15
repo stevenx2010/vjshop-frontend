@@ -37,6 +37,8 @@ export class CreateNewUserComponent implements OnInit {
   displayError: boolean = false;
   emailNotUniqueError: boolean = false;
 
+  imageUploaded: boolean = false;
+
   constructor(private fb: FormBuilder, private vjApi: VJAPI, private renderer: Renderer2,
   				private router: Router, private actRoute: ActivatedRoute) { 
   	this.baseUrl = API_BASE_URL;
@@ -44,13 +46,13 @@ export class CreateNewUserComponent implements OnInit {
 
   ngOnInit() {
   	this.form = this.fb.group({
-  		username: ['', Validators.compose([Validators.maxLength(15), Validators.minLength(5), 
-  					Validators.required, Validators.pattern('^(?=.*[a-zA-Z])[a-zA-Z0-9]+$')])],
+  		username: ['', Validators.compose([Validators.maxLength(16), Validators.minLength(4),
+                  Validators.pattern('[a-zA-Z][a-zA-Z0-9]*[.]?[a-zA-Z0-9]*')])],
   		mobile: ['', Validators.compose([Validators.required, Validators.pattern('^1[0-9]{10}$')])],
   		email: ['', Validators.compose([Validators.required, Validators.email])],
-  		password: ['', Validators.compose([Validators.maxLength(6), Validators.minLength(6),
+  		password: ['', Validators.compose([Validators.maxLength(12), Validators.minLength(6),
   					Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')])],
-  		confirm_password: ['', Validators.compose([Validators.maxLength(6), Validators.minLength(6),
+  		confirm_password: ['', Validators.compose([Validators.maxLength(12), Validators.minLength(6),
   					Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')])],
   	});
 
@@ -98,14 +100,11 @@ export class CreateNewUserComponent implements OnInit {
   	if(this.userId) {
   		body.append('id', this.userId + '');
   	}
-
-
-
   	console.log(body);
   	
   	this.vjApi.updateUser(body).subscribe((resp) => {
   		console.log(resp);
-  		this.canceled.emit(2);
+  	//	this.canceled.emit(2);
   	}, (err) => {
   		this.error = err;
   		this.displayError = true;
@@ -128,11 +127,17 @@ export class CreateNewUserComponent implements OnInit {
   		this.renderer.setProperty(img, 'width', '200');
   		this.renderer.appendChild(this.preview.nativeElement, img);
   		this.image = img;
+      this.image_url = null;
+      this.imageUploaded = true;
   	}
   }
 
   doCancel() {
   	this.canceled.emit(1);
+  }
+
+  dataSaved() {
+    this.canceled.emit(2);
   }
 
   checked() {

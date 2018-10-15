@@ -61,7 +61,7 @@ export class VJAPI {
 		headers.append('Authorization', 'Bearer ' + this.api_token);
 		headers.append('X-Acces-Token', this.access_token);
 		headers.append('Accept-language', 'en_US');
-	//	headers.append('Content-type', 'application/json');
+//		headers.append('Content-type', 'application/x-www-form-urlencoded');
 		headers.append('Access-Control-Allow-Origin', '*');
 		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
 		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
@@ -434,13 +434,8 @@ export class VJAPI {
 
 	public updateOrCreateCoupon(body): Observable<Response> {
 		let headers = new Headers();
-	//	this.initAuthHeader(headers);
-		headers.append('Access-Control-Allow-Origin', '*');
-		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
-		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
-		headers.append('Authorization', 'Bearer ' + this.api_token);
-		headers.append('X-Acces-Token', this.access_token);
-		headers.append('Accept-language', 'en_US');		
+		this.initAuthHeaderForm(headers);
+	
 		return this.http.post(API_BASE_URL + 'api/coupon/update', body, {headers: headers});			
 	}
 
@@ -485,13 +480,7 @@ export class VJAPI {
 
 	public updateInvoice(body): Observable<Response> {
 		let headers = new Headers();
-	//	this.initAuthHeader(headers);
-		headers.append('Access-Control-Allow-Origin', '*');
-		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
-		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
-		headers.append('Authorization', 'Bearer ' + this.api_token);
-		headers.append('X-Acces-Token', this.access_token);
-		headers.append('Accept-language', 'en_US')
+		this.initAuthHeaderForm(headers);
 	
 		return this.http.post(API_BASE_URL + 'api/invoice/updateOrCreate',body, {headers:headers});					
 	}
@@ -502,13 +491,7 @@ export class VJAPI {
 
 	public updateRefundInfo(body): Observable<Response> {
 		let headers = new Headers();
-	//	this.initAuthHeader(headers);
-		headers.append('Access-Control-Allow-Origin', '*');
-		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
-		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
-		headers.append('Authorization', 'Bearer ' + this.api_token);
-		headers.append('X-Acces-Token', this.access_token);
-		headers.append('Accept-language', 'en_US')
+		this.initAuthHeaderForm(headers);
 	
 		return this.http.post(API_BASE_URL + 'api/refund/update',body, {headers:headers})		
 	}
@@ -526,26 +509,14 @@ export class VJAPI {
 	 */
 	public updateHomePageImages(body): Observable<Response> {
 		let headers = new Headers();
-	//	this.initAuthHeader(headers);
-		headers.append('Access-Control-Allow-Origin', '*');
-		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
-		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
-		headers.append('Authorization', 'Bearer ' + this.api_token);
-		headers.append('X-Acces-Token', this.access_token);
-		headers.append('Accept-language', 'en_US')
+		this.initAuthHeaderForm(headers);
 	
 		return this.http.post(API_BASE_URL + 'api/page/homepage/update',body, {headers:headers})			
 	}
 
 	public updateNewComerPage(body): Observable<Response> {
 		let headers = new Headers();
-	//	this.initAuthHeader(headers);
-		headers.append('Access-Control-Allow-Origin', '*');
-		headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, PUT,DELETE, OPTIONS, HEAD');
-		headers.append('Access-Control-Allow-Headers', 'Origin, Content-type, X-Auth-Token');
-		headers.append('Authorization', 'Bearer ' + this.api_token);
-		headers.append('X-Acces-Token', this.access_token);
-		headers.append('Accept-language', 'en_US')
+		this.initAuthHeaderForm(headers);
 	
 		return this.http.post(API_BASE_URL + 'api/page/newcomerpage/update',body, {headers:headers})				
 	}
@@ -625,7 +596,7 @@ export class VJAPI {
 		let headers = new Headers();
 		this.initAuthHeaderForm(headers);
 
-		return this.http.post(API_BASE_URL + 'api/users/new/', body, {headers: headers})			
+		return this.http.post(API_BASE_URL + 'api/users/new', body, {headers: headers})			
 	}
 
 	public getAllUsers(): Observable<User[]> {

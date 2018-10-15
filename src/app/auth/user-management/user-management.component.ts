@@ -58,7 +58,7 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  onCancel(event) {
+  onCancel(event) { 
     if(event == 1) {
       this.editUser = false;
     }
@@ -67,5 +67,9 @@ export class UserManagementComponent implements OnInit {
       this.editUser = false;
       this.getAllUsers();
     }
+  }
+
+  cancel() {
+    
   }
 }

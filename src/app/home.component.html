@@ -3,11 +3,11 @@
 	<div align="center"><h1>稳卓商城后台管理系统</h1></div>
 
 	<div class="col-md-12">
-		<div  align="center"><img src="{{currentImage}}"></div>
+		<div  align="center" class="welcome-images"><img src="{{assetsBaseUrl}}{{currentImage}}" width="{{pictureWidth}}"></div>
 	</div>
 
 	<div class="col-md-12" align="right">
-		<img src="../assets/img/logo.png">
+		<img src="{{assetsBaseUrl}}assets/img/logo.png">
 	</div>
 </div>
 
@@ -19,5 +19,11 @@
 	}
 	img {
 		margin-top: 4rem;
+	}
+
+	.welcom-images {
+		width: 100%;
+		display: block;
+		max-width: 800px;
 	}
 </style>

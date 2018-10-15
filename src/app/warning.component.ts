@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ASSETS_BASE_URL } from '../models/constants';
 
 @Component({
   selector: 'app-warning',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WarningComponent implements OnInit {
 
-  constructor() { }
+  assetsBaseUrl: string;
+
+  constructor() { 
+  		this.assetsBaseUrl = ASSETS_BASE_URL;
+  }
 
   ngOnInit() {
   }

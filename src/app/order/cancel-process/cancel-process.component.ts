@@ -194,4 +194,13 @@ export class CancelProcessComponent implements OnInit {
       this.query();
     })
   }
+
+
+  keywordChanged() {
+    if(this.keyword.length > 0) {
+      this.orderSerialDisabled = true;
+    } else {
+      this.orderSerialDisabled = false;
+    }
+  }
 }

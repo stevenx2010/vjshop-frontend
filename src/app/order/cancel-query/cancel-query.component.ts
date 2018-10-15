@@ -107,4 +107,13 @@ query() {
 
     return body;
   }
+
+
+  keywordChanged() {
+    if(this.keyword.length > 0) {
+      this.orderSerialDisabled = true;
+    } else {
+      this.orderSerialDisabled = false;
+    }
+  }
 }

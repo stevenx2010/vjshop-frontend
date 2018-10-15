@@ -7,6 +7,7 @@ import { Md5 } from 'md5-typescript';
 import { User } from '../../../models/user.model';
 
 import { CookieService } from 'ngx-cookie-service';
+import { ASSETS_BASE_URL } from '../../../models/constants';
 
 @Component({
   selector: 'app-login',
@@ -26,8 +27,11 @@ export class LoginComponent implements OnInit {
 
   displayError: boolean = false;
 
+  assetsBaseUrl: string;
+
   constructor(private fb: FormBuilder, private vjApi: VJAPI, private cs: CookieService, private router: Router, private actRoute: ActivatedRoute) { 
     this.user = new User();
+    this.assetsBaseUrl = ASSETS_BASE_URL;
   }
 
   ngOnInit() {
