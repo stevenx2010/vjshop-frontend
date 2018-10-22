@@ -89,6 +89,12 @@
 	</div>
 </div>
 
+<div class="form-row">
+	<div class="col-md-12">
+		<app-coupon-form [couponId]="couponIdToEdit" (finished)="editFinished($event)" *ngIf="displayForm"></app-coupon-form>
+	</div>
+</div>
+
 	<!--Modal-->
 	<div class="modal fade" id="deleteConfirm">
 		<div class="modal-dialog">
@@ -135,6 +141,10 @@
 	.active {
 		background-color: #c1c1c1;
 		color: red;
+	}
+
+	i {
+		font-size: 2rem;
 	}
 
 </style>

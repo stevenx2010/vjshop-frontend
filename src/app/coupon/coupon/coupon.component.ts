@@ -21,6 +21,8 @@ export class CouponComponent implements OnInit {
 
   selectedCouponTypeId: number;
   indexToBeDeleted: number;
+  couponIdToEdit: number;
+  displayForm: boolean = false;
 
   constructor(private vjApi: VJAPI, private router: Router, private actRoute: ActivatedRoute) { 
   	this.baseUrl = API_BASE_URL;
@@ -49,9 +51,10 @@ export class CouponComponent implements OnInit {
   	}
   	console.log(params);
   	this.vjApi.queryCoupon(JSON.stringify(params)).subscribe((c) => {
-  		console.log(c);
-  		if(c.length > 0) {
-  			this.coupons = c;
+  		console.log(c.json());
+      let temp = c.json();
+  		if(temp && temp.length > 0) {
+  			this.coupons = temp;
   		}
   	})  	
   }
@@ -62,7 +65,10 @@ export class CouponComponent implements OnInit {
   }
 
   edit(index: number) {
-    this.router.navigate(['edit/' + this.coupons[index].id], { relativeTo: this.actRoute});
+    //this.router.navigate(['edit/' + this.coupons[index].id], { relativeTo: this.actRoute});
+    this.couponIdToEdit = this.coupons[index].id;
+    this.displayForm = true;
+    console.log(this.couponIdToEdit);
   }
 
   delete(index:number) {
@@ -77,4 +83,10 @@ export class CouponComponent implements OnInit {
   	this.indexToBeDeleted = -1;
   }
 
+  editFinished(event) {
+    if(event) {
+      this.displayForm = false;
+      this.query();
+    }
+  }
 }

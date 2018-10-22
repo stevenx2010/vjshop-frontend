@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { VJAPI } from '../../../services/vj.services';
 import { Message } from '../../../models/message.model';
 import { CookieService } from 'ngx-cookie-service';
+import { ASSETS_BASE_URL } from '../../../models/constants';
 
 @Component({
   selector: 'app-chat',
@@ -17,9 +18,11 @@ export class ChatComponent implements OnInit {
   messages: Message[];
   message: string;
   timer: any;
+  assetsBaseUrl: string;
 
   constructor(private vjApi: VJAPI, private router: Router, private actRoute: ActivatedRoute, private cs: CookieService) { 
   	this.messages = new Array<Message>();
+    this.assetsBaseUrl = ASSETS_BASE_URL;
   }
 
   ngOnInit() {

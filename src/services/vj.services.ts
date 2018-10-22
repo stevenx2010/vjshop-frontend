@@ -424,12 +424,11 @@ export class VJAPI {
 		return this.http.delete(API_BASE_URL + 'api/coupon/type/delete/id/' + $couponTypeId, {headers:headers});	
 	}
 
-	public queryCoupon(params): Observable<Coupon[]> {
+	public queryCoupon(params): Observable<Response> {
 		let headers = new Headers();
 		this.initAuthHeader(headers);
 	
-		return this.http.post(API_BASE_URL + 'api/coupon/query/', params, {headers:headers})
-			.pipe(map((data) => data.json()));			
+		return this.http.post(API_BASE_URL + 'api/coupon/query', params, {headers:headers});			
 	}
 
 	public updateOrCreateCoupon(body): Observable<Response> {
@@ -528,7 +527,7 @@ export class VJAPI {
 		let headers = new Headers();
 		this.initAuthHeader(headers);
 	
-		return this.http.post(API_BASE_URL + 'api/CustomerService/get/', body, {headers:headers})
+		return this.http.post(API_BASE_URL + 'api/CustomerService/get', body, {headers:headers})
 			.pipe(map((data) => data.json()));					
 	}
 
@@ -544,7 +543,7 @@ export class VJAPI {
 		let headers = new Headers();
 		this.initAuthHeader(headers);
 	
-		return this.http.get(API_BASE_URL + 'api/CustomerService/message/checknew/', {headers:headers});		
+		return this.http.get(API_BASE_URL + 'api/CustomerService/message/checknew', {headers:headers});		
 	}
 
 	 public sendMessage(body): Observable<Response> {
@@ -565,14 +564,14 @@ export class VJAPI {
 		let headers = new Headers();
 	 	this.initAuthHeader(headers);
 
-		return this.http.get(API_BASE_URL + 'api/CustomerService/qna/get/', {headers: headers})	 	
+		return this.http.get(API_BASE_URL + 'api/CustomerService/qna/get', {headers: headers})	 	
 	 }
 
 	 public updateQnA(body): Observable<Response> {
 		let headers = new Headers();
 	 	this.initAuthHeader(headers);
 
-		return this.http.post(API_BASE_URL + 'api/CustomerService/qna/update/', body, {headers: headers})	 		 	
+		return this.http.post(API_BASE_URL + 'api/CustomerService/qna/update', body, {headers: headers})	 		 	
 	 }
 
 	 public deleteQnA(id): Observable<Response> {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, Input, EventEmitter, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -14,6 +14,9 @@ import { API_BASE_URL } from '../../../models/constants';
   styleUrls: ['./coupon-form.component.css']
 })
 export class CouponFormComponent implements OnInit {
+  @Input() couponId: number = 0;
+  @Output() finished = new EventEmitter<boolean>();
+
   @ViewChild('imageLocation') imageLocation: ElementRef;
   @ViewChild('newcomer') newcomer: ElementRef;
 
@@ -21,10 +24,11 @@ export class CouponFormComponent implements OnInit {
   formFunction: string = 'add';
 
   coupon: Coupon;
+//  couponId: number;
   couponTypes: CouponType[];
   couponTypeId: number;
 
-  couponId: number;
+//  couponId: number;
   baseUrl: string;
 
   form: FormGroup;
@@ -54,16 +58,18 @@ export class CouponFormComponent implements OnInit {
     this.dp = new DatePipe('en-US');
     this.baseUrl = API_BASE_URL;
 
-    this.couponId = this.actRoute.snapshot.params['id'];
+//    this.couponId = this.actRoute.snapshot.params['id'];
+
+  }
+
+  ngOnInit() {
     if(this.couponId) {
       this.formFunction = 'edit';
       this.caption = '编辑优惠券';
     }
 
     console.log(this.couponId);
-  }
 
-  ngOnInit() {
   	this.form = this.fb.group({
   		name: ['', Validators.required],
   		description: ['', Validators.required],
@@ -81,34 +87,36 @@ export class CouponFormComponent implements OnInit {
   		}
   	})
 
-    // populate the form with current coupon data
-    this.vjApi.queryCouponById(this.couponId).subscribe((c) => {
-      if(c.length) {
-        this.coupon = c[0];
-        if(this.formFunction == 'edit') {
-          this.form.controls.name.setValue(this.coupon.name);
-          this.form.controls.description.setValue(this.coupon.description);
-          this.form.controls.coupon_type_id.setValue(this.coupon.coupon_type_id);
-          this.form.controls.expire_date.setValue(this.coupon.expire_date);
-          this.form.controls.discount_method.setValue(this.coupon.discount_method);
-          this.form.controls.discount_percentage.setValue(this.coupon.discount_percentage);
-          this.form.controls.discount_value.setValue(this.coupon.discount_value);
-          this.form.controls.quantity_initial.setValue(this.coupon.quantity_initial);
-          this.for_new_comer = this.coupon.for_new_comer;
-          if(this.coupon.for_new_comer) {
-            this.newcomer.nativeElement.checked;
-          } else {
-            this.newcomer.nativeElement.unchecked;
-          }
+    if(this.formFunction == 'edit') {
+      // populate the form with current coupon data
+      this.vjApi.queryCouponById(this.couponId).subscribe((c) => {
+        if(c.length) {
+          this.coupon = c[0];
+          if(this.formFunction == 'edit') {
+            this.form.controls.name.setValue(this.coupon.name);
+            this.form.controls.description.setValue(this.coupon.description);
+            this.form.controls.coupon_type_id.setValue(this.coupon.coupon_type_id);
+            this.form.controls.expire_date.setValue(this.coupon.expire_date);
+            this.form.controls.discount_method.setValue(this.coupon.discount_method);
+            this.form.controls.discount_percentage.setValue(this.coupon.discount_percentage);
+            this.form.controls.discount_value.setValue(this.coupon.discount_value);
+            this.form.controls.quantity_initial.setValue(this.coupon.quantity_initial);
+            this.for_new_comer = this.coupon.for_new_comer;
+            if(this.coupon.for_new_comer) {
+              this.newcomer.nativeElement.checked;
+            } else {
+              this.newcomer.nativeElement.unchecked;
+            }
 
-          let imgElement = this.renderer.createElement('img');
-          this.renderer.setAttribute(imgElement, 'src', this.baseUrl + this.coupon.image_url);
-          this.renderer.setAttribute(imgElement, 'width', '200');
-          this.renderer.appendChild(this.imageLocation.nativeElement, imgElement);
-          this.element = imgElement;
+            let imgElement = this.renderer.createElement('img');
+            this.renderer.setAttribute(imgElement, 'src', this.baseUrl + this.coupon.image_url);
+            this.renderer.setAttribute(imgElement, 'width', '200');
+            this.renderer.appendChild(this.imageLocation.nativeElement, imgElement);
+            this.element = imgElement;
+          }
         }
-      }
-    })
+      });
+    }
         
   }
 
@@ -167,5 +175,11 @@ export class CouponFormComponent implements OnInit {
   checkboxSelected(event) {
     this.for_new_comer = !this.for_new_comer;
     console.log(this.for_new_comer ? 1:0);
+  }
+
+  confirmed() {
+    if(this.formFunction == 'edit') {
+      this.finished.emit(true);
+    }
   }
 }
