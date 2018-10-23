@@ -18,7 +18,6 @@ export class CouponFormComponent implements OnInit {
   @Output() finished = new EventEmitter<boolean>();
 
   @ViewChild('imageLocation') imageLocation: ElementRef;
-  @ViewChild('newcomer') newcomer: ElementRef;
 
   caption: string = '新增优惠券';
   formFunction: string = 'add';
@@ -102,11 +101,6 @@ export class CouponFormComponent implements OnInit {
             this.form.controls.discount_value.setValue(this.coupon.discount_value);
             this.form.controls.quantity_initial.setValue(this.coupon.quantity_initial);
             this.for_new_comer = this.coupon.for_new_comer;
-            if(this.coupon.for_new_comer) {
-              this.newcomer.nativeElement.checked;
-            } else {
-              this.newcomer.nativeElement.unchecked;
-            }
 
             let imgElement = this.renderer.createElement('img');
             this.renderer.setAttribute(imgElement, 'src', this.baseUrl + this.coupon.image_url);

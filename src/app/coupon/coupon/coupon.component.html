@@ -60,6 +60,7 @@
 						<th>面值(V)</th>
 						<th>总数量(张)</th>
 						<th>剩余数量(张)</th>
+						<th>新人券</th>
 						<th>图片</th>
 						<th>编辑</th>
 						<th>删除</th>
@@ -79,6 +80,7 @@
 						<td>{{coupon?.discount_value}}</td>
 						<td>{{coupon?.quantity_initial}}</td>
 						<td>{{coupon?.quantity_available}}</td>
+						<td>{{coupon?.for_new_comer}}</td>
 						<td><img src="{{baseUrl}}{{coupon?.image_url}}" width="100"></td>
 						<td><i class="fa fa-edit" data-content="edit" (click)="edit(i)"></i></td>
 						<td><i class="fa fa-trash" data-content="delete" data-toggle="modal" data-target="#deleteConfirm" (click)="delete(i)"></i></td>

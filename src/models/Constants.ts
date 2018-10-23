@@ -1,6 +1,7 @@
 
 //export const API_BASE_URL = 'http://localhost:8000/';
-export const API_BASE_URL = 'http://vjshop.yitongxun.cn:8080/api/';
+//export const API_BASE_URL = 'http://vjshop.yitongxun.cn:8080/api/';
+export const API_BASE_URL='/api/';
 export const ASSETS_BASE_URL = "./";
 export const COLOR_HIGHLIGHT_GREEN = '#33ff56';
 
