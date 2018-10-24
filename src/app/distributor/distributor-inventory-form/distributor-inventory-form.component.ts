@@ -198,11 +198,11 @@ export class DistributorInventoryFormComponent implements OnInit {
       "inventory": this.inventories[index]
     }
 
-    this.vjApi.increateDistributorInventory(JSON.stringify(body)).subscribe((r) => console.log(r));
-
+    this.vjApi.increateDistributorInventory(JSON.stringify(body)).subscribe((r) => {
+      console.log(r)
     //refresh inventory
     this.getDistributorInventory(this.distributorId);
     this.saveBtnDisabled = true;
-
+    });
   }
 }

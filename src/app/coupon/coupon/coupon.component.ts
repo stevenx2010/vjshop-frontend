@@ -76,7 +76,10 @@ export class CouponComponent implements OnInit {
   }
 
   deleteConfirmed() {
-
+    this.vjApi.deleteCouponById(this.coupons[this.indexToBeDeleted].id).subscribe((resp) => {
+      console.log(resp);
+      this.query();
+    });
   }
 
   cancel() {
