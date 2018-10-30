@@ -25,15 +25,26 @@
 		</div>	
 
 		<div class="form-group col-md-12">
+			<label>首页视频文件上传</label>
+			<input type="file" class="form-control" name="video" (change)="preview($event, 'video')">
+			<div #preview_video></div>
+		</div>
+
+		<div class="form-group col-md-12">
 			<label>首页底部图片文件上传</label>
 			<input type="file" class="form-control" name="bottomImages" multiple (change)="preview($event, 'bottom')">
 			<div #preview_bottom></div>
 		</div>
+
+			
 	</div>	
 
 	<div class="form-row">
 		<div class="col-md-12">
 			<button type="button" class="btn btn-success btn-rect" name="save" data-toggle="modal" data-target="#save-data" (click)="save()">保存数据</button>	
+
+			<button id="delete-video" type="button" class="btn btn-danger btn-rect" name="delete" data-toggle="modal" data-target="#deleteConfirm">删除首页视频
+			</button>
 		</div>
 	</div>
 </form>
@@ -59,6 +70,27 @@
 		</div>
 	</div>	
 
+	<!--Modal-->
+	<div class="modal fade" id="deleteConfirm">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认删除</h4>					
+				</div>
+
+				<div class="modal-body">
+					请确认是否真的要删除首页视频？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" (click)="deleteConfirmed()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 <style>
 	h3 {
 		margin-top: 2rem;
@@ -71,5 +103,6 @@
 
 	button {
 		margin-top: 3rem;
+		margin-right: 3rem;
 	}
 </style>

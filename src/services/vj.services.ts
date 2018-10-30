@@ -520,6 +520,13 @@ export class VJAPI {
 		return this.http.post(API_BASE_URL + 'api/front/page/homepage/update',body, {headers:headers})			
 	}
 
+	public deleteVideoOnHomePage(): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeaderForm(headers);
+	
+		return this.http.delete(API_BASE_URL + 'api/front/page/homepage/video/delete', {headers:headers})					
+	}
+
 	public updateNewComerPage(body): Observable<Response> {
 		let headers = new Headers();
 		this.initAuthHeaderForm(headers);

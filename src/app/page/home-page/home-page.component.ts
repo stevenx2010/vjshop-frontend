@@ -12,16 +12,19 @@ export class HomePageComponent implements OnInit {
   @ViewChild('preview_newcomer') preview_newcomer: ElementRef;
   @ViewChild('preview_coupon') preview_coupon: ElementRef;
   @ViewChild('preview_bottom') preview_bottom: ElementRef;
+  @ViewChild('preview_video') preview_video: ElementRef;
 
   topImageFiles: File[];
   newcomerImageFile: File;
   couponImageFile: File;
   bottomImageFiles: File[];
+  videoFile: File;
 
   topImages: any[];
   newcomerImage: any;
   couponImage: any;
   bottomImages: any[];
+  videoClip: any;
 
   numOfTopImages: number = 0;
   numOfBottomImages: number = 0;
@@ -40,7 +43,7 @@ export class HomePageComponent implements OnInit {
   preview(event, position) {
   	switch(position) {
   		case 'top':
-  			// remove previous selected images
+  			// remove previously selected images
   			console.log(this.topImages);
   			if(this.topImages.length > 0) {
   				for(let i = this.topImages.length - 1; i >= 0; i--) {
@@ -55,7 +58,7 @@ export class HomePageComponent implements OnInit {
   			break;
 
   		case 'newcomer':
-  			// remove previous selected images
+  			// remove previously selected images
   			if(this.newcomerImage) {
   				this.renderer.removeChild(this.preview_newcomer.nativeElement, this.newcomerImage);
   				this.newcomerImage = null;
@@ -67,7 +70,7 @@ export class HomePageComponent implements OnInit {
   			break;
 
   		case 'coupon':
-  			// remove previous selected images
+  			// remove previously selected images
   			if(this.couponImage) {
   				this.renderer.removeChild(this.preview_coupon.nativeElement, this.couponImage);
   				this.couponImage = null;
@@ -79,7 +82,7 @@ export class HomePageComponent implements OnInit {
   			break;
 
   		case 'bottom':
-  			// remove previous selected images
+  			// remove previously selected images
   			if(this.bottomImages.length) {
   				for(let i = this.bottomImages.length - 1; i >= 0; i--) {
   					this.renderer.removeChild(this.preview_bottom.nativeElement, this.bottomImages[i]);
@@ -89,6 +92,18 @@ export class HomePageComponent implements OnInit {
   			if(event.target.files) {
   				this.bottomImageFiles = event.target.files;
   			}
+        break;
+
+      case 'video':
+        // remove previously selected video
+        if(this.videoClip) {
+          this.renderer.removeChild(this.preview_video.nativeElement, this.videoClip);
+          this.videoClip = null;
+        }
+        if(event.target.files) {
+          this.videoFile = event.target.files[0];
+        }
+      break;
 
   	}
 
@@ -116,6 +131,21 @@ export class HomePageComponent implements OnInit {
 	            this.renderer.appendChild(this.preview_bottom.nativeElement, img);
 	            this.bottomImages.push(img);
 	            break;
+            case 'video':
+              const video = this.renderer.createElement('video');
+              this.renderer.setAttribute(video, 'controls', 'controls');
+              this.renderer.setAttribute(video, 'preload', 'metadata');
+              this.renderer.setAttribute(video, 'autoplay', 'autoplay');
+
+              const videoSource = this.renderer.createElement('source');
+              this.renderer.setAttribute(videoSource, 'src', URL.createObjectURL(event.target.files[i]));
+              this.renderer.setAttribute(videoSource, 'type', 'video/mp4');
+
+              this.renderer.appendChild(video, videoSource);
+              this.renderer.appendChild(this.preview_video.nativeElement, video);
+
+              this.videoClip = video;
+              break;
 	        }
   		}
   	}
@@ -146,6 +176,10 @@ export class HomePageComponent implements OnInit {
   		}
   	}
 
+    if(this.videoFile) {
+      body.append('video_clip', this.videoFile);
+    }
+
   	body.append('num_top_images', this.numOfTopImages + '');
   	body.append('num_bottom_images', this.numOfBottomImages + '');
 
@@ -156,5 +190,9 @@ export class HomePageComponent implements OnInit {
   	let body = this.prepareUpdateData();
 
   	this.vjApi.updateHomePageImages(body).subscribe((resp) => { console.log(resp)});
+  }
+
+  deleteConfirmed() {
+    this.vjApi.deleteVideoOnHomePage().subscribe((resp) => console.log(resp));
   }
 }
