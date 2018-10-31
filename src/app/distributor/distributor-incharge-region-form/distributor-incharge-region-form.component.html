@@ -1,0 +1,68 @@
+<div>
+	<div class="form-row">
+			<div class="col-md-12"></div>
+		</div>
+	<div class="form-row">
+		<div class="form-group col-md-12">
+			<label for="province">省/地区</label>
+			<select id="province" class="form-control" [(ngModel)]="selectedProvinceIndex" (change)="filterCities($event)" #p>
+				<option *ngFor="let province of provinces" value="{{province.value}}" >{{province.text}}</option>
+			</select>
+	     </div>     
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-4">
+			<select id="city" class="custom-select form-control" multiple size="18" [(ngModel)]="selectedCities" (change)="citySelected($event)" #c>
+				<option *ngFor="let city of filteredCities" value="{{city.value}}">{{city.text}}</option>
+			</select>
+		</div>
+		<div class="col-md-4" align="center">
+			<button class="btn btn-primary btn-rect" (click)="select()">选取--></button><br/>
+	     	<button class="btn btn-danger btn-rect" (click)="delete()"><--删除</button><br/>
+	     	<button id="save" class="btn btn-success btn-rect" (click)="save()" [disabled]="inchargeCities.length == 0">保存数据</button>
+	    </div>
+	    <div class="form-group col-md-4">
+			<select class="custom-select form-control" multiple size="18" [(ngModel)]="selectedInchargeOptions" (change)="inchargeCitySelected($event)">
+				<option *ngFor="let inchargeCity of inchargeCities" value="{{inchargeCity.value}}" >{{inchargeCity.text}}</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-row" *ngIf="conflict">		
+		<div class="col-md-12">
+			<h4 class="warning">警告：所选管辖区域与下述经销商冲突，数据未保存！</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>经销商名称</th>
+						<th>管辖区域</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let name of conflictedNames; let i=index;">
+						<th scope="row">{{i}}</th>
+						<td>{{name}}</td>
+						<td>{{conflictedRegions[i]}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</div>
+
+<style>
+	button {
+		margin-top: 3rem;
+	}
+
+	#save {
+		margin-top: 14rem;
+	}
+
+	.warning {
+		color: red;
+		font-weight: bold;
+	}
+</style>

@@ -6,6 +6,9 @@
 	</ol>
 	<form [formGroup]="form">
 		<div class="form-row">
+			<div class="col-md-12"></div>
+		</div>
+		<div class="form-row">
 			<div class="form-group col-md-4">
 				<label for="province">省</label>
 				<select id="province" class="form-control" formControlName="province" (change)="filterCities($event)" #p>

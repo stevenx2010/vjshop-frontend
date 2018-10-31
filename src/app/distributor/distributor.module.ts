@@ -10,6 +10,7 @@ import { DistributorAddressFormComponent } from './distributor-address-form/dist
 import { DistributorContactComponent } from './distributor-contact/distributor-contact.component';
 import { DistributorContactFormComponent } from './distributor-contact-form/distributor-contact-form.component';
 import { DistributorInventoryFormComponent } from './distributor-inventory-form/distributor-inventory-form.component';
+import { DistributorInchargeRegionFormComponent } from './distributor-incharge-region-form/distributor-incharge-region-form.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,7 @@ import { DistributorInventoryFormComponent } from './distributor-inventory-form/
   	DistributorAddressFormComponent, 
   	DistributorContactComponent, 
   	DistributorContactFormComponent, 
-  	DistributorInventoryFormComponent
+  	DistributorInventoryFormComponent, DistributorInchargeRegionFormComponent
   ]
 })
 export class DistributorModule { }

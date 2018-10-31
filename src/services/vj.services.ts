@@ -383,6 +383,27 @@ export class VJAPI {
 			.pipe(map((data) => data.json()));			
 	}
 
+	public updateDistributorInchargeRegions(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/front/distributor/incharge/region/update', body,{headers:headers});				
+	}
+
+	public getDistributorInchargeRegions(distributorId: number): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/front/distributor/incharge/region/get/' + distributorId,{headers:headers});			
+	}
+
+	public deleteDistributorInchargeRegions(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/front/distributor/incharge/region/delete', body, {headers:headers});			
+	}
+
 	/**
 	 *  Coupon  Related API
 	 */

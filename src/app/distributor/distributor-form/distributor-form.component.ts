@@ -19,6 +19,7 @@ export class DistributorFormComponent implements OnInit {
   distributorId: number;
   addAddressDisabled: boolean = true;
   addContactDisabled: boolean = true;
+  addInchargeRegionDisabled: boolean = true;
   distributor: Distributor;
   addressAdded: number = 1;
 
@@ -27,6 +28,9 @@ export class DistributorFormComponent implements OnInit {
 
   addressIndexToBeDeleted: number;
   contactIndexTobeDeleted: number;
+
+  inchargeRegions: any;
+  selectedInchargeRegions: any;
 
   constructor(private fb: FormBuilder, private vjApi: VJAPI, private router: Router, private actRoute: ActivatedRoute) {
     this.distributor = new Distributor();
@@ -56,7 +60,9 @@ export class DistributorFormComponent implements OnInit {
         this.formFunction = 'edit';
         this.distributorId = this.actRoute.snapshot.params['id'];
         this.getDistributorInfo();
-
+        this.addAddressDisabled = false;
+        this.addContactDisabled = false;
+        this.addInchargeRegionDisabled = false;
         break;
       }
     }
@@ -72,7 +78,19 @@ export class DistributorFormComponent implements OnInit {
           this.form.get('description').setValue(this.distributor.description);
         }
       }
-    });   
+    });
+
+    this.getDistributorInchargeRegions();   
+  }
+
+  getDistributorInchargeRegions() {
+    this.vjApi.getDistributorInchargeRegions(this.distributorId).subscribe((resp) => {
+      let temp = resp.json();
+
+      if(temp && temp.length > 0) {
+        this.inchargeRegions = temp;
+      }
+    });    
   }
 
   submitData() {
@@ -87,6 +105,7 @@ export class DistributorFormComponent implements OnInit {
   		if(data.json()) {
   			this.addAddressDisabled = false;
         this.addContactDisabled = false;
+        this.addInchargeRegionDisabled = false;
         this.distributor = data.json();
   		}
       this.getDistributorInfo();
@@ -99,6 +118,10 @@ export class DistributorFormComponent implements OnInit {
 
   addContact() {
     this.router.navigate(['contact', this.distributorId], {relativeTo: this.actRoute});
+  }
+
+  addInchargeRegion() {
+    this.router.navigate(['region', this.distributorId], {relativeTo: this.actRoute});
   }
 
   editAddress(index: number) {
@@ -131,5 +154,35 @@ export class DistributorFormComponent implements OnInit {
       console.log(resp);
     });
     this.getDistributorInfo();
+  }
+
+  deleteRegion() {
+
+  }
+
+  inchargeRegionSelected(event) {
+    this.selectedInchargeRegions = [];
+    let options = event.target.selectedOptions
+
+    for(let i = 0; i < options.length; i++) {
+      this.selectedInchargeRegions.push(options[i].text);
+    } 
+    
+    console.log(this.selectedInchargeRegions);
+  }
+
+  deleteConfirmedRegion() {
+    if(this.selectedInchargeRegions && this.selectedInchargeRegions.length > 0) {
+      let body = {
+        'distributor_id': this.distributorId,
+        'regions': this.selectedInchargeRegions
+      }
+
+      this.vjApi.deleteDistributorInchargeRegions(body).subscribe((resp) => {
+        console.log(resp);
+        this.inchargeRegions = [];
+        this.getDistributorInchargeRegions();
+      });
+    }
   }
 }
