@@ -1,7 +1,7 @@
 <form>
 	<div class="form-row">
 		<div class="col-md-12">
-			<h3>首页图片管理</h3>
+			<h3>首页资料管理</h3>
 		</div>
 	</div>
 
@@ -18,30 +18,41 @@
 			<div #preview_newcomer></div>
 		</div>	
 
-		<div class="form-group col-md-6">
+		<div class="form-group col-md-6">			
 			<label>购物券中心图片文件上传</label>
 			<input type="file" class="form-control" name="couponImage" (change)="preview($event, 'coupon')">
 			<div #preview_coupon></div>
 		</div>	
 
 		<div class="form-group col-md-12">
+			<h4 class="warning" *ngIf="saveBtnDisabled && videoClip == null">提示：修改或上传首页视频Poster图片文件时，必须同时上传对应的视频文件！</h4>
 			<label>首页视频文件上传</label>
 			<input type="file" class="form-control" name="video" (change)="preview($event, 'video')">
 			<div #preview_video></div>
 		</div>
 
 		<div class="form-group col-md-12">
+			<h4 class="warning" *ngIf="saveBtnDisabled && posterImage == null">提示：修改或上传首页视频时，必须同时上传对应的视频Poster图片文件！</h4>
+			<label>首页视频Poster文件上传</label>
+			<input type="file" class="form-control" name="posterImage" (change)="preview($event, 'poster')">
+			<div #preview_poster></div>
+		</div>
+
+		<div class="form-group col-md-12">
 			<label>首页底部图片文件上传</label>
 			<input type="file" class="form-control" name="bottomImages" multiple (change)="preview($event, 'bottom')">
 			<div #preview_bottom></div>
-		</div>
-
-			
+		</div>			
 	</div>	
 
 	<div class="form-row">
+		<div #progress_bar></div>
+		
+	</div>
+
+	<div class="form-row">
 		<div class="col-md-12">
-			<button type="button" class="btn btn-success btn-rect" name="save" data-toggle="modal" data-target="#save-data" (click)="save()">保存数据</button>	
+			<button type="button" class="btn btn-success btn-rect" name="save" (click)="save()" [disabled]="saveBtnDisabled">保存数据</button>	
 
 			<button id="delete-video" type="button" class="btn btn-danger btn-rect" name="delete" data-toggle="modal" data-target="#deleteConfirm">删除首页视频
 			</button>
@@ -49,6 +60,7 @@
 	</div>
 </form>
 
+	
 
 	<!--Modal-->
 	<div class="modal fade" id="save-data">
@@ -104,5 +116,10 @@
 	button {
 		margin-top: 3rem;
 		margin-right: 3rem;
+	}
+
+	.warning {
+		color: red;
+		font-weight: bold;
 	}
 </style>

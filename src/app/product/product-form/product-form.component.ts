@@ -168,7 +168,10 @@ export class ProductFormComponent implements OnInit {
 
     switch(position) {
       case 'thumbnail':
-        if(this.thumbnailImage) this.renderer.removeChild(this.previewThumbnail.nativeElement, this.thumbnailImage);
+        if(this.thumbnailImage) {
+          this.renderer.removeChild(this.previewThumbnail.nativeElement, this.thumbnailImage);
+          this.thumbnailImage = null;
+        }
 
         if(event.target.files) this.thumbnailFile = event.target.files[0];
         console.log(this.thumbnailFile);
@@ -272,6 +275,7 @@ export class ProductFormComponent implements OnInit {
 
     let body = this.prepareFormData();
 
+    console.log('------------------');
     console.log(body);
     this.vjApi.updateOrCreateProduct(body).subscribe((data)=> {
       console.log(data);

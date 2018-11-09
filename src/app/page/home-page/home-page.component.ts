@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
+import { ProgressHttp } from 'angular-progress-http';
 
 import { VJAPI } from '../../../services/vj.services';
+import { API_BASE_URL } from '../../../models/constants';
 
 @Component({
   selector: 'app-home-page',
@@ -13,23 +15,34 @@ export class HomePageComponent implements OnInit {
   @ViewChild('preview_coupon') preview_coupon: ElementRef;
   @ViewChild('preview_bottom') preview_bottom: ElementRef;
   @ViewChild('preview_video') preview_video: ElementRef;
+  @ViewChild('preview_poster') preview_poster: ElementRef;
+  @ViewChild('progress_bar') progress_bar: ElementRef;
 
   topImageFiles: File[];
   newcomerImageFile: File;
   couponImageFile: File;
   bottomImageFiles: File[];
   videoFile: File;
+  posterImageFile: File;
 
   topImages: any[];
   newcomerImage: any;
   couponImage: any;
   bottomImages: any[];
   videoClip: any;
+  posterImage: any;
 
   numOfTopImages: number = 0;
   numOfBottomImages: number = 0;
 
-  constructor(private vjApi: VJAPI, private renderer: Renderer2) { 
+  saveBtnDisabled: boolean = false;
+
+  url: string = API_BASE_URL + 'api/front/page/homepage/update';
+  progressBar: any;
+  percentage: number = 0;
+  videoWidth: number;
+
+  constructor(private vjApi: VJAPI, private renderer: Renderer2, private http: ProgressHttp) { 
   	this.topImageFiles = new Array<File>();
   	this.bottomImageFiles = new Array<File>();
 
@@ -38,6 +51,12 @@ export class HomePageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.resizeVideo();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.resizeVideo();
   }
 
   preview(event, position) {
@@ -105,6 +124,22 @@ export class HomePageComponent implements OnInit {
         }
       break;
 
+      case 'poster':
+        // remove previously selected video
+        if(this.posterImage) {
+          this.renderer.removeChild(this.preview_poster.nativeElement, this.posterImage);
+          this.posterImage = null;
+        }
+        if(event.target.files) {
+          this.posterImageFile = event.target.files[0];
+        }
+      break;      
+    }
+      
+    if(this.progressBar) {
+      this.renderer.removeChild(this.progress_bar.nativeElement, this.progressBar);
+      this.progressBar = null;
+      this.percentage = 0;
   	}
 
    	if(event.target.files) {
@@ -136,6 +171,7 @@ export class HomePageComponent implements OnInit {
               this.renderer.setAttribute(video, 'controls', 'controls');
               this.renderer.setAttribute(video, 'preload', 'metadata');
               this.renderer.setAttribute(video, 'autoplay', 'autoplay');
+              this.renderer.setAttribute(video, 'width', this.videoWidth + '');
 
               const videoSource = this.renderer.createElement('source');
               this.renderer.setAttribute(videoSource, 'src', URL.createObjectURL(event.target.files[i]));
@@ -145,6 +181,22 @@ export class HomePageComponent implements OnInit {
               this.renderer.appendChild(this.preview_video.nativeElement, video);
 
               this.videoClip = video;
+
+              if(this.posterImage == null) {
+                this.saveBtnDisabled = true;
+              } else {
+                this.saveBtnDisabled = false;
+              }
+              break;
+            case 'poster':
+              this.renderer.appendChild(this.preview_poster.nativeElement, img);
+              this.posterImage = img;
+
+              if(this.videoClip == null) {
+                this.saveBtnDisabled = true;
+              } else {
+                this.saveBtnDisabled = false;
+              }
               break;
 	        }
   		}
@@ -180,6 +232,10 @@ export class HomePageComponent implements OnInit {
       body.append('video_clip', this.videoFile);
     }
 
+    if(this.posterImage) {
+      body.append('poster_image', this.posterImageFile);
+    }
+
   	body.append('num_top_images', this.numOfTopImages + '');
   	body.append('num_bottom_images', this.numOfBottomImages + '');
 
@@ -189,10 +245,49 @@ export class HomePageComponent implements OnInit {
   save() {
   	let body = this.prepareUpdateData();
 
-  	this.vjApi.updateHomePageImages(body).subscribe((resp) => { console.log(resp)});
+  	//this.vjApi.updateHomePageImages(body).subscribe((resp) => { console.log(resp)});
+    this.updateHomePageImagesWithProgressHttp(body);
   }
 
   deleteConfirmed() {
     this.vjApi.deleteVideoOnHomePage().subscribe((resp) => console.log(resp));
+  }
+
+  updateHomePageImagesWithProgressHttp(body) {
+    this.progressBar = this.renderer.createElement('div');
+    this.renderer.addClass(this.progressBar, 'progress-bar');
+    this.renderer.addClass(this.progressBar, 'progress-bar-info');
+    this.renderer.addClass(this.progressBar, 'progress-bar-striped');
+    this.renderer.addClass(this.progressBar, 'active')
+    this.renderer.setAttribute(this.progressBar, 'role', 'progressbar');
+    this.renderer.setAttribute(this.progressBar, 'aria-valuenow', this.percentage + '');
+    this.renderer.setAttribute(this.progressBar, 'aria-valuemin', '0');
+    this.renderer.setAttribute(this.progressBar, 'aria-valuemax', '100');
+    this.renderer.setAttribute(this.progressBar, 'style', 'width:' + this.percentage + '%');
+    let text = this.renderer.createText(this.percentage + '%');
+    this.renderer.appendChild(this.progressBar, text);
+    this.renderer.appendChild(this.progress_bar.nativeElement, this.progressBar);
+
+
+    this.http.withUploadProgressListener(progress => { 
+      this.percentage = progress.percentage;    
+      this.renderer.setAttribute(this.progressBar, 'style', 'width:' + this.percentage + '%');
+      this.renderer.removeChild(this.progressBar, text);
+      if(this.percentage < 100)
+        text = this.renderer.createText(this.percentage + '%');
+      else
+        text = this.renderer.createText('Uploading Done: ' + this.percentage + '%');
+      this.renderer.appendChild(this.progressBar, text);
+    })
+      .post(this.url, body)
+      .subscribe((resp) => console.log(resp));
+  }
+
+  resizeVideo() {
+    if(window.innerWidth <= 1340) {
+      this.videoWidth = 960 * (window.innerWidth / 1500); 
+    } else {
+      this.videoWidth = 960;
+    }  
   }
 }

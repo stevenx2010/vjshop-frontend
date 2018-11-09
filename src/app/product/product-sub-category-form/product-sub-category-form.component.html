@@ -5,6 +5,14 @@
 		<div class="form-group">
 			<label for="name">子类名称</label>
 			<input type="text" id="name" class="form-control" formControlName="name" required>
+			<div *ngIf="form.controls.name.touched && !form.controls.name.valid" class="alert alert-danger">
+				<div *ngIf="form.controls.name.errors.required">
+					产品子类名称不能为空!
+				</div>
+				<div *ngIf="form.controls.name.errors.maxlength">
+					产品子类名称最长30个字符！
+				</div>
+			</div>
 		</div>
 		<div class="form-group">
 			<label for="description">子类描述</label>

@@ -28,6 +28,8 @@ import { HomeComponent } from './home.component';
 import { AboutComponent } from './about.component';
 import { WarningComponent } from './warning.component';
 
+import { ProgressHttpModule } from 'angular-progress-http';
+
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { WarningComponent } from './warning.component';
     PageModule,
     CustomerServiceModule,
     AuthModule,
-    SettingModule
+    SettingModule,
+    ProgressHttpModule,
   ],
   providers: [
   	VJAPI,

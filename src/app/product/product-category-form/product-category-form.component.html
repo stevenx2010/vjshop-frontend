@@ -10,7 +10,12 @@
 				<label for="name">产品分类名称</label>
 				<input type="text" id="name" class="form-control" formControlName="name" required>
 				<div *ngIf="form.controls.name.touched && !form.controls.name.valid" class="alert alert-danger">
-					产品分类名称不能为空!
+					<div *ngIf="form.controls.name.errors.required">
+						产品分类名称不能为空!
+					</div>
+					<div *ngIf="form.controls.name.errors.maxlength">
+						产品名称最长20个字符！
+					</div>
 				</div>
 			</div>
 

@@ -29,7 +29,7 @@ export class ProductSubCategoryFormComponent implements OnInit {
   ngOnInit() {
   	// step 1: create the form
   	this.form = this.fb.group({
-  		name: ['', Validators.required],
+  		name: ['', Validators.compose([Validators.required, Validators.maxLength(30)])],
   		description: [''],
   		sort_order: [99, Validators.compose([Validators.required, Validators.min(0), Validators.pattern('^[0-9]{1,2}$')])]
   	});
