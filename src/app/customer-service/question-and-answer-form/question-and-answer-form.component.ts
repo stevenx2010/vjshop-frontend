@@ -41,13 +41,18 @@ export class QuestionAndAnswerFormComponent implements OnInit {
 
   submit() {
   	let body = {
+      'id': this.qId,
   		'question': this.form.get('question').value,
   		'answer': this.form.get('answer').value
   	}
 
   	this.vjApi.updateQnA(body).subscribe((resp) => {
  // 		console.log(resp)
-  		this.router.navigate(['../'], {relativeTo: this.actRoute});
+  		if(this.formFunction == 'edit') {
+      this.router.navigate(['../../'], {relativeTo: this.actRoute});
+    } else {
+      this.router.navigate(['../'], {relativeTo: this.actRoute});
+    }
   	});
   }
 

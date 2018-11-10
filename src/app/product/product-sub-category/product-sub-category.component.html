@@ -37,6 +37,10 @@
 		<button id="btn-1" class="btn btn-primary" (click)="swap()" [disabled]="swapBtnDisabled">交换排序序号</button>
 		<button class="btn btn-success" (click)="update()" [disabled]="updateBtnDisabled">保存更新</button>
 	</div>
+
+	<div *ngIf="displaySubCatForm">
+		<app-product-sub-category-form [id]="id" [formFunction]="formFunction" (finished)="formStatus($event)"></app-product-sub-category-form>
+	</div>
 </div>
 
 

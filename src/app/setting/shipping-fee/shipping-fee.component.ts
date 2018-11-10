@@ -45,9 +45,9 @@ export class ShippingFeeComponent implements OnInit {
   submit() {
   	let body = new FormData();
 
-  	if(this.id) {
+ // 	if(this.id) {
   		body.append('id', this.id + '');
-  	}
+ // 	}
 
   	body.append('type', SettingType.SHIPPING_FEE_FORMULA + '');
   	body.append('description', this.form.get('description').value);

@@ -29,6 +29,10 @@ export class ProductSubCategoryComponent implements OnInit {
   currentSelectedCategoryId: number = 0;
   currentDeleteIndex: number;
 
+  id: number;
+  formFunction: string
+  displaySubCatForm: boolean = false;
+
   constructor(private vjApi: VJAPI, private router: Router, private route: ActivatedRoute) {
   	this.productCategories = new Array<ProductCategory>();
   	this.productSubCategories = new Array<ProductSubCategory>();
@@ -69,11 +73,17 @@ export class ProductSubCategoryComponent implements OnInit {
 
   add() {
   	console.log(this.currentSelectedCategoryId);
-  	this.router.navigate(['./add/' + this.currentSelectedCategoryId], {relativeTo: this.route});
+    this.id = this.currentSelectedCategoryId;
+    this.formFunction = 'add';
+    this.displaySubCatForm = true;
+  	//this.router.navigate(['./add/' + this.currentSelectedCategoryId], {relativeTo: this.route});
   }
 
   edit(index: number) {
-	  this.router.navigate(['edit/' + this.productSubCategories[index].id], {relativeTo: this.route});
+    this.id = this.productSubCategories[index].id;
+    this.formFunction = 'edit';
+    this.displaySubCatForm = true;
+	  //this.router.navigate(['edit/' + this.productSubCategories[index].id], {relativeTo: this.route});
   }
 
   delete(index: number) {
@@ -136,6 +146,13 @@ export class ProductSubCategoryComponent implements OnInit {
     this.populateData();
   }
 
-
+  formStatus(event) {
+    if(event == true) {
+      this.displaySubCatForm = false;
+      this.populateData();
+    } else {
+      this.displaySubCatForm = false;
+    }
+  }
 
 }
