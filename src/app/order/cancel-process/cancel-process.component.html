@@ -215,8 +215,8 @@
 						<td *ngIf="!order.is_invoice_required">N</td>
 
 						<td *ngIf="!order.is_invoice_required">NA</td>
-						<td *ngIf="order.invoice_type == 1 && order.is_invoice_required">个人</td>
-						<td *ngIf="order.invoice_type == 2 && order.is_invoice_required">发票抬头：{{order?.invoice_head}}<br>税号：{{order?.invoice_tax_number}}</td>
+						<td *ngIf="order.invoice_type == 1 && order.is_invoice_required">个人<br>邮箱：{{order?.email}}</td>
+						<td *ngIf="order.invoice_type == 2 && order.is_invoice_required">发票抬头：{{order?.invoice_head}}<br>税号：{{order?.invoice_tax_number}}<br>邮箱：{{order?.email}}</td>
 
 						<td *ngIf="order.invoice_status == 0">NA</td>
 						<td *ngIf="order.invoice_status == 1">未开票</td>
