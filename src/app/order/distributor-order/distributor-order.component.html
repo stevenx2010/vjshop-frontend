@@ -70,9 +70,9 @@
 			<label>订单配送状态</label>
 			<select class="form-control" name="delivery" (change)="deliveryStatusSelected($event)">
 				<option value="0"></option>
-				<option value="1">待配送</option>
-				<option value="2">已配送待确认</option>
-				<option value="3">已确认</option>
+				<option value="1">待送货</option>
+				<option value="2">已送货待确认</option>
+				<option value="4">已确认</option>
 			</select>
 		</div>
 
@@ -163,15 +163,15 @@
 						<td>{{order?.order_date}}</td>
 						<td *ngIf="order.order_status==1" class="notpaid">未支付</td>
 						<td *ngIf="order.order_status==2" class="paid">已支付</td>
+						<td *ngIf="order.order_status==3" class="purchase-received">已收货</td>
+			<!--			<td *ngIf="order.order_status==4">已关闭</td>
+						<td *ngIf="order.order_status==5">已取消</td>-->
+						<td *ngIf="order.order_status==6">已评价</td>
+						<td *ngIf="order.order_status==7">未评价</td>
+
 						<td *ngIf="order.payment_method == 1">Wechat</td>
 						<td *ngIf="order.payment_method == 2">Alipay</td>
 
-						<td *ngIf="order.order_status==3" class="purchase-received">已收货</td>
-						<td *ngIf="order.order_status==4">已关闭</td>
-						<td *ngIf="order.order_status==5">已取消</td>
-						<td *ngIf="order.order_status==6">已评价</td>
-						<td *ngIf="order.order_status==7">未评价</td>
-						
 						<td *ngIf="order.delivery_status == 0">NA</td>
 						<td *ngIf="order.delivery_status == 1" class="delivery-waiting">待送货</td>
 						<td *ngIf="order.delivery_status == 2">送货中</td>

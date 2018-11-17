@@ -29,6 +29,7 @@ import { AboutComponent } from './about.component';
 import { WarningComponent } from './warning.component';
 
 import { ProgressHttpModule } from 'angular-progress-http';
+import { MaxValidatorDirective } from './shared/max-validator.directive';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ProgressHttpModule } from 'angular-progress-http';
     HomeComponent,
     AboutComponent,
     WarningComponent,
+    MaxValidatorDirective,
   ],
   imports: [
     BrowserModule,

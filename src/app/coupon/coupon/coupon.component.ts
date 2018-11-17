@@ -55,8 +55,15 @@ export class CouponComponent implements OnInit {
       let temp = c.json();
   		if(temp && temp.length > 0) {
   			this.coupons = temp;
+        this.coupons.sort(this.couponSortByType);
   		}
   	})  	
+  }
+
+  couponSortByType(a: Coupon, b: Coupon) {
+    if(a.coupon_type_id > b.coupon_type_id) return 1;
+    if(a.coupon_type_id < b.coupon_type_id) return -1;
+    return 0;
   }
 
   selected(event) {

@@ -46,7 +46,7 @@
 				<select id="discount-method" class="form-control" formControlName="discount_method" required>
 					<option value="1">折扣券</option>
 					<option value="2">面值券</option>
-					<option value="3">免运费</option>
+			<!--		<option value="3">免运费</option>-->
 				</select>
 			</div>
 
@@ -70,7 +70,7 @@
 			<div class="form-group col-md-2">
 				<label for="value">折扣券面值(元)</label>
 				<input type="text" name="value" class="form-control" formControlName="discount_value" required>
-				<div *ngIf="form.controls.discount_value.touched && form.controls.discount_value.errors" class="aler alert-danger">
+				<div *ngIf="form.controls.discount_value.touched && form.controls.discount_value.errors" class="alert alert-danger">
 					<div *ngIf="form.controls.discount_value.errors.required">
 						必须输入折扣券面值
 					</div>
@@ -82,11 +82,27 @@
 		</div>	
 
 		<div class="form-row">
-			<div class="form-group col-md-8">
+			<div class="form-group col-md-4">
 				<label for="initial-qty">优惠券总数量(-1：不限量)(张)</label>
 				<input type="text" name="initial-qty" class="form-control" formControlName="quantity_initial" required>
 			</div>
 		</div>
+
+		<div class="form-row">
+			<div class="form-group col-md-4">
+				<label for="min-purchased-amount">适用购买金额（元）>=</label>
+				<input type="text" name="min-purchased-amount" class="form-control" formControlName="min_purchased_amount" required>
+				<div *ngIf="form.controls.min_purchased_amount.touched && form.controls.min_purchased_amount.errors" class="alert alert-danger">
+					<div *ngIf="form.controls.min_purchased_amount.errors.required">
+						必须输入适用购买金额
+					</div>
+					<div *ngIf="form.controls.min_purchased_amount.errors.pattern">
+						适用购买金额为带两位小数的数字，如: 1.23
+					</div>
+				</div>
+			</div>
+		</div>
+
 
 		<div class="form-row">
 			<div class="form-group col-md-4  new_comer">

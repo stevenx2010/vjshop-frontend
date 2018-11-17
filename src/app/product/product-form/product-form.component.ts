@@ -50,6 +50,8 @@ export class ProductFormComponent implements OnInit {
   bottomImages: ProductImage[];
   baseUrl: string;
 
+  off_shelf: boolean = false;
+
   constructor(private fb: FormBuilder, private renderer: Renderer2, private vjApi: VJAPI, private router: Router,
               private actRoute: ActivatedRoute) 
   { 
@@ -142,6 +144,8 @@ export class ProductFormComponent implements OnInit {
             this.form.controls['brand'].setValue(this.product.brand);
             this.form.controls['inventory'].setValue(this.product.inventory);
             this.form.controls['sort_order'].setValue(this.product.sort_order);
+
+            this.off_shelf = this.product.off_shelf;
 
             // Get product images
             this.vjApi.queryProductImagesByProductId(this.productId).subscribe((imgs) => {
@@ -249,6 +253,7 @@ export class ProductFormComponent implements OnInit {
     body.append('brand', this.form.get('brand').value);
     body.append('inventory', this.form.get('inventory').value);
     body.append('sort_order',  this.form.get('sort_order').value);
+    body.append('off_shelf', (this.off_shelf ? 1 : 0) + '');
     if(this.thumbnailFile)
       body.append('thumbnail', this.thumbnailFile);
     else
@@ -318,6 +323,11 @@ export class ProductFormComponent implements OnInit {
     }   
 
     console.log(this.product);
+  }
+
+  checkboxSelected(event) {
+    this.off_shelf = !this.off_shelf;
+    console.log(this.off_shelf);
   }
 
 }

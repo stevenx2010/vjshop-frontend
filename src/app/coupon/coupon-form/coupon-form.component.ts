@@ -78,6 +78,7 @@ export class CouponFormComponent implements OnInit {
   		discount_percentage: [100, Validators.compose([Validators.required, Validators.pattern('^[0-9]+$'), Validators.max(100), Validators.min(0)])],
   		discount_value: [0, Validators.compose([Validators.required, Validators.pattern('^[0-9]+$')])],
   		quantity_initial: [-1, Validators.compose([Validators.required, Validators.pattern('^-?[0-9]+$')])],
+      min_purchased_amount: ['0.00', Validators.compose([Validators.required, Validators.pattern('^[0-9]+[.][0-9]{2}$')])],
   	});
 
   	this.vjApi.getCouponTypeAll().subscribe((cts) => {
@@ -100,6 +101,7 @@ export class CouponFormComponent implements OnInit {
             this.form.controls.discount_percentage.setValue(this.coupon.discount_percentage);
             this.form.controls.discount_value.setValue(this.coupon.discount_value);
             this.form.controls.quantity_initial.setValue(this.coupon.quantity_initial);
+            this.form.controls.min_purchased_amount.setValue(this.coupon.min_purchased_amount);
             this.for_new_comer = this.coupon.for_new_comer;
 
             let imgElement = this.renderer.createElement('img');
@@ -155,6 +157,8 @@ export class CouponFormComponent implements OnInit {
     body.append('discount_percentage', this.form.controls.discount_percentage.value);
     body.append('discount_value', this.form.controls.discount_value.value);
     body.append('quantity_initial', this.form.controls.quantity_initial.value);
+    console.log(this.form.controls.min_purchased_amount.value);
+    body.append('min_purchased_amount', this.form.controls.min_purchased_amount.value);
     body.append('for_new_comer', (this.for_new_comer ? 1 : 0) + '');
 
     if(this.imageFile) {

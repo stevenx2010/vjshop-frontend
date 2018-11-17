@@ -230,7 +230,8 @@
 						<td align="center" *ngIf="displayDetail && selectedOrder == i"><i class="fa fa-arrow-up" data-content="detail" (click)="toOrderDetail(i, 'up')"></i></td>
 						<td align="center" *ngIf="displayDetail && selectedOrder != i"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
 						<td align="center" *ngIf="!displayDetail"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
-						<td align="center"><button type="button" class="btn btn-danger btn-sm" [disabled]="refundBtnDisabled" (click)="toProcessRefund(i)">{{refundBtnText}}</button></td>
+						<td align="center" *ngIf="selectedOrder == i"><button type="button" class="btn btn-danger btn-sm" [disabled]="refundBtnDisabled" (click)="toProcessRefund(i)">{{refundBtnText}}</button></td>
+						<td align="center" *ngIf="selectedOrder != i"><button type="button" class="btn btn-primary btn-sm" [disabled]="refundBtnDisabled" (click)="toProcessRefund(i)">去退单</button></td>
 					</tr>
 
 				</tbody>

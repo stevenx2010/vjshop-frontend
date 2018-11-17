@@ -13,6 +13,7 @@ export class Coupon {
 	public quantity_initial: number = -1;
 	public quantity_availabe: number = -1; 		// -1 represents unlimited
 	public for_new_comer: boolean = false;
+	public min_purchased_amount: number = 0;
 	public image_url: string = '';
 
 	constructor(obj?) {
@@ -29,6 +30,7 @@ export class Coupon {
 			this.quantity_initial = obj.quantity_initial || -1;
 			this.quantity_availabe = obj.quantity_available || -1;
 			this.for_new_comer = obj.for_new_comer || false;
+			this.min_purchased_amount = obj.min_purchased_amount || 0;
 			this.image_url = obj.image_url || '';
 		}
 	}

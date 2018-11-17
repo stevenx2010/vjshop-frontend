@@ -33,15 +33,20 @@ export class DistributorInventoryFormComponent implements OnInit {
 
   filterProductCategories: ProductCategory[];
   filterProductSubCategories: ProductSubCategory[];
-  filterProductInventories: Product[];
+  filterProductInventories: any[]; //Product[];
   filterCategoryId: number;
   filterSubCategoryId: number;
   filterKeyword: string;
 
   tableDisplay: boolean = false;
   productShow: boolean = false;
-  saveBtnDisabled: boolean = true;
+  saveBtnDisabled: boolean[];
   filterBtnDisabled: boolean = true;
+
+  tempInventory: number[];
+
+  inventoryError: boolean = false;
+  selectedItem: number;
 
   constructor(private vjApi: VJAPI) { 
   	this.distributors = new Array<Distributor>();
@@ -50,10 +55,11 @@ export class DistributorInventoryFormComponent implements OnInit {
     this.products = new Array<Product>();
     this.inventories = new Array<number>();
     this.productInventories = new Array<Product>();
+    this.tempInventory = new Array<number>();
 
     this.filterProductCategories = new Array<ProductCategory>();
     this.filterProductSubCategories = new Array<ProductSubCategory>();   
-    this.filterProductInventories = new Array<Product>();
+    this.filterProductInventories = new Array<any>();
   }
 
   ngOnInit() {
@@ -181,12 +187,41 @@ export class DistributorInventoryFormComponent implements OnInit {
       console.log(p);
       if(p.length > 0) {
         this.products = p;
+        this.saveBtnDisabled = new Array<boolean>(true);
+        for(let i = 0; i < p.length; i++) {
+          this.saveBtnDisabled[i] = true;
+          this.tempInventory[i] = this.products[i].inventory;
+        }
       }
     })
   }
 
   inventoryChange(index) {
-    this.saveBtnDisabled = false;
+    this.tempInventory[index] = this.products[index].inventory;
+    this.selectedItem = index;
+
+    let thisProductInventory: number = 0;
+    if(this.filterProductInventories.length > 0) {
+      for(let i = 0; i < this.filterProductInventories.length; i++) {
+        if(this.filterProductInventories[i].id == this.products[index].id) {
+          thisProductInventory = this.filterProductInventories[i].pivot.inventory;
+          break;
+        }
+      }
+    }
+      console.log(this.inventories[index]);
+      console.log(this.products[index].inventory);
+      console.log(thisProductInventory);
+    if((this.inventories[index] >= 0 && this.inventories[index] <= this.products[index].inventory) ||
+       (this.inventories[index] <= 0 && Math.abs(this.inventories[index]) <= thisProductInventory)) {
+
+      this.tempInventory[index] -= Number(this.inventories[index]);
+      this.saveBtnDisabled[index] = false;
+      this.inventoryError = false;
+    } else {
+      this.saveBtnDisabled[index] = true;
+      this.inventoryError = true;
+    }
   }
 
   increateInventory(index: number): void {
@@ -201,8 +236,11 @@ export class DistributorInventoryFormComponent implements OnInit {
     this.vjApi.increateDistributorInventory(JSON.stringify(body)).subscribe((r) => {
       console.log(r)
     //refresh inventory
-    this.getDistributorInventory(this.distributorId);
-    this.saveBtnDisabled = true;
+    //this.getDistributorInventory(this.distributorId);
+    this.products[index].inventory = this.tempInventory[index];
+    this.queryInventory();
+//    this.queryProduct();
+    this.saveBtnDisabled[index] = true;
     });
   }
 }

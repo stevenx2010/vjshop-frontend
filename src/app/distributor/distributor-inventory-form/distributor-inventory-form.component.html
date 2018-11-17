@@ -155,6 +155,7 @@
 							<th>价格(元)</th>
 							<th>重量(Kg)</th>
 							<th>包装单位</th>
+							<th>VJ库存</th>
 							<th>为当前经销商增(+)/减(-)库存量</th>
 							<th>保存</th>
 						</tr>
@@ -167,15 +168,20 @@
 							<td>{{product?.price}}</td>
 							<td>{{product?.weight}}</td>
 							<td>{{product?.package_unit}}</td>
+							<td>{{product?.inventory}}</td>
 							<td>
-								<input type="text" id="name" #name="ngModel" class="form-control" [(ngModel)]="inventories[i]" (change)="inventoryChange(i)" pattern="^-?[0-9]*">
-								<div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-									<div *ngIf="name.erros.pattern">
+								<input id="inventory" name="inventory" #inventory="ngModel" class="form-control" [(ngModel)]="inventories[i]" (change)="inventoryChange(i)" pattern="^[-]?[0-9]*" appMax>
+								<div *ngIf="inventory.errors && (inventory.dirty || inventory.touched)" class="alert alert-danger">
+									<div *ngIf="inventory.errors.pattern">
 										只能输入正负数字！
 									</div>
+									
+								</div>
+								<div *ngIf="inventoryError && selectedItem == i" class="alert alert-danger">
+										数据不能超过当前库存范围!
 								</div>
 							</td>
-							<td><button class="btn btn-success"  (click)="increateInventory(i)" [disabled]="saveBtnDisabled"><i class="material-icons" data-content="save">save</i></button></td>
+							<td><button class="btn btn-success"  (click)="increateInventory(i)" [disabled]="saveBtnDisabled[i]"><i class="material-icons" data-content="save">save</i></button></td>
 						</tr>
 					</tbody>
 				</table>

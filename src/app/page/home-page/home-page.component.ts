@@ -36,6 +36,7 @@ export class HomePageComponent implements OnInit {
   numOfBottomImages: number = 0;
 
   saveBtnDisabled: boolean = false;
+  deleteBtnDisabled: boolean = false;
 
   url: string = API_BASE_URL + 'api/front/page/homepage/update';
   progressBar: any;
@@ -273,10 +274,16 @@ export class HomePageComponent implements OnInit {
       this.percentage = progress.percentage;    
       this.renderer.setAttribute(this.progressBar, 'style', 'width:' + this.percentage + '%');
       this.renderer.removeChild(this.progressBar, text);
-      if(this.percentage < 100)
+      if(this.percentage < 100) {
         text = this.renderer.createText(this.percentage + '%');
-      else
+        this.saveBtnDisabled = true;
+        this.deleteBtnDisabled = true;
+      }
+      else {
         text = this.renderer.createText('Uploading Done: ' + this.percentage + '%');
+        this.saveBtnDisabled = false;
+        this.deleteBtnDisabled = false;
+      }
       this.renderer.appendChild(this.progressBar, text);
     })
       .post(this.url, body)

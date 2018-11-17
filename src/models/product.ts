@@ -13,6 +13,7 @@ export class Product {
 	public inventory: number = 0;
 	public thumbnail_url: string = '';
 	public sold_amount:number = 0;
+	public off_shelf: boolean = false;
 	public sort_order: number = 999;
 
 	constructor(obj?) {
@@ -30,6 +31,7 @@ export class Product {
 			this.inventory = obj.inventory || 0;
 			this.thumbnail_url = obj.thumbnail_url || '';
 			this.sold_amount = obj.sold_amount || 0;
+			this.off_shelf = obj.off_shelf || false;
 			this.sort_order = obj.sort_order || 999;
 	}	
 	}
