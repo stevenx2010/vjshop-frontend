@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NewComerPageComponent } from './new-comer-page/new-comer-page.component';
 import { pageRoutes } from './page.routing';
+import { AboutPageComponent } from './about-page/about-page.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,6 @@ import { pageRoutes } from './page.routing';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [HomePageComponent, NewComerPageComponent]
+  declarations: [HomePageComponent, NewComerPageComponent, AboutPageComponent]
 })
 export class PageModule { }

@@ -20,10 +20,12 @@ export class OrderDetailComponent implements OnInit {
   distributor: any;
   distributorAddress: any;
   distributorContact: any;
+  coupons: any;
 
   baseUrl: string = API_BASE_URL;
 
   invoice_issued: boolean = false;
+  coupons_used: boolean = false;
   invoice: any;
   z_index: number = -1;
 
@@ -77,6 +79,14 @@ export class OrderDetailComponent implements OnInit {
 	  				this.invoice_issued = true;
 	  			} else {
 	  				this.invoice_issued = false;
+	  			}
+
+	  			let coupons = this.orderDetail.coupons;
+	  			if(coupons.length > 0) {
+	  				this.coupons = coupons;
+	  				this.coupons_used = true;
+	  			} else {
+	  				this.coupons_used = false;
 	  			}
 	  		}
 	  	});

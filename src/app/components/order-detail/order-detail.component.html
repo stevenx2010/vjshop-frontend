@@ -53,6 +53,39 @@
 						<td>{{product?.pivot.quantity}}</td>
 				</tbody>
 			</table>
+			<div *ngIf="coupons_used">
+				<h5>使用的优惠券</h5>
+				<table class="table">
+					<thead>
+						<th>#</th>
+						<th>优惠券图片</th>
+						<th>名称</th>
+						<th>描述</th>
+						<th>类型</th>
+						<th>折扣(%)</th>
+						<th>面值(元)</th>
+						<th>有效期</th>
+						<th>新人券</th>
+						<th>满额可用</th>
+					</thead>
+					<tbody>
+						<tr *ngFor="let coupon of coupons">
+							<th scope="row">{{coupon?.id}}</th>
+							<td><img src="{{baseUrl}}{{coupon?.image_url}}" width="50"></td>
+							<td>{{coupon?.name}}</td>
+							<td>{{coupon?.description}}</td>
+							<td *ngIf="coupon.discount_method == 1">折扣券</td>
+							<td *ngIf="coupon.discount_method == 2">面值券</td>
+							<td>{{coupon?.discount_percentage}}</td>
+							<td>{{coupon?.discount_value}}</td>
+							<td>{{coupon?.expire_date}}</td>
+							<td *ngIf="coupon.for_new_comer == 0">N</td>
+							<td *ngIf="coupon.for_new_comer == 1">Y</td>
+							<td>{{coupon?.min_purchased_amount}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 
 			<h5>配送/拟配送的经销商信息</h5>
 			<table class="table">

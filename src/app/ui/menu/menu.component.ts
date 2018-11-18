@@ -99,6 +99,10 @@ export class MenuComponent implements OnInit {
     this.router.navigate(['page/newcomerpage']);
   }
 
+  toAboutPage() {
+    this.router.navigate(['page/about']);
+  }
+
   toProcessConsulting() {
     this.router.navigate(['customerservice/process']);
   }
