@@ -1,6 +1,6 @@
 
-//export const API_BASE_URL = 'http://192.168.1.66:8000/';
-export const API_BASE_URL='/api/';
+export const API_BASE_URL = 'http://192.168.1.66:8000/';
+//export const API_BASE_URL='/api/';
 export const ASSETS_BASE_URL = "./";
 export const COLOR_HIGHLIGHT_GREEN = '#33ff56';
 
@@ -61,3 +61,8 @@ export class SettingType {
 	public static SHIPPING_FEE_FORMULA = 1;
 }
 
+export enum ACCESS_TYPE {
+	WRITE = 1,
+	READ,
+	MODIFY
+}

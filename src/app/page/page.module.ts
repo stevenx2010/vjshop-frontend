@@ -7,6 +7,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { NewComerPageComponent } from './new-comer-page/new-comer-page.component';
 import { pageRoutes } from './page.routing';
 import { AboutPageComponent } from './about-page/about-page.component';
+import { AgreementPageComponent } from './agreement-page/agreement-page.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { AboutPageComponent } from './about-page/about-page.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [HomePageComponent, NewComerPageComponent, AboutPageComponent]
+  declarations: [HomePageComponent, NewComerPageComponent, AboutPageComponent, AgreementPageComponent]
 })
 export class PageModule { }

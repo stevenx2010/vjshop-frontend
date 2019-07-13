@@ -12,6 +12,7 @@ import { DistributorOrderComponent } from './distributor-order/distributor-order
 import { ComponentsModule } from '../components/components.module';
 import { CancelProcessComponent } from './cancel-process/cancel-process.component';
 import { CancelQueryComponent } from './cancel-query/cancel-query.component';
+import { OrderPriceComponent } from './order-price/order-price.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,9 @@ import { CancelQueryComponent } from './cancel-query/cancel-query.component';
     ComponentsModule,
     ReactiveFormsModule
   ],
-  declarations: [UserOrderComponent, DistributorOrderComponent, CancelProcessComponent, CancelQueryComponent]
+  declarations: [UserOrderComponent, DistributorOrderComponent, CancelProcessComponent, CancelQueryComponent, OrderPriceComponent],
+  providers: [
+  	{ provide: 'MODULE_NAME', useValue: '订单管理模块'}
+  ]
 })
 export class OrderModule { }

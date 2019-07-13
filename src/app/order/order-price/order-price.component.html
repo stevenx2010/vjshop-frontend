@@ -1,0 +1,258 @@
+
+<div>
+	<div class="form-row">
+		<div class="col-md-12">
+			<h3>订单价格修改</h3>
+		</div>
+	</div>
+
+	<div class="form-row search">
+		<div class="col-md-4">
+			<div class="input-group">
+				<input type="text" id="order-serial" name="order_serial" class="form-control" 
+					[(ngModel)]="orderSerial" pattern="[0-9]{16}" maxlength="16" #orderserial="ngModel" 
+					(keyup)="orderSerialChanged()" required
+					placeholder="订单号(16位数字)...">
+						    <span class="input-group-btn">
+	                <button class="btn btn-primary text-muted" type="button" (click)="search()" [disabled]="btnSearchDisabled">
+	                 	<i class="fa fa-search"></i>
+	                </button>
+	            </span>
+			</div>
+		</div>
+		<div *ngIf="displayModification">
+			<div class="col-md-4 warning">
+				<div align="right">
+					当前总价：<span id="old-price">{{totalPrice}}元</span>&nbsp;修改为：
+				</div>
+			</div>
+			<div class="col-md-3">
+				<input type="text" class="form-control" [(ngModel)]="newPrice"
+					pattern="^[0-9]+\.[0-9]{2}$" placeholder="0.00" required (keyup)="priceChanged($event)" #price>
+			</div>
+			<div class="col-md-1">
+				<button class="btn btn-danger" [disabled]="btnModDisabled" data-toggle="modal" data-target="#modifyConfirm">修改</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-12">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>订单编号</th>
+						<th>总价</th>
+						<th>总重</th>
+						<th>运费</th>
+						<th>下单日期</th>
+						<th>订单状态</th>
+						<th>支付方式</th>
+
+						<th>配送状态</th>
+						<th>配送日期</th>
+						<th>配送确认日期</th>
+																							
+						<th>需要发票</th>
+						<th>发票信息</th>
+						<th>开票状态</th>
+						<th>退单状态</th>
+						<th>订单详情</th>
+					</tr>
+				</thead>
+				<tbody>					
+					<tr *ngFor="let order of orders; let i = index;" [class.active]="selectedOrder == i">
+						<th scope="row">{{order?.id}}</th>
+						<td>{{order?.order_serial}}</td>
+						<td id="total-price">{{order?.total_price}}</td>
+						<td>{{order?.total_weight}}</td>
+						<td>{{order?.shipping_charges}}</td>
+						<td>{{order?.order_date}}</td>
+						<td *ngIf="order.order_status==1" class="notpaid">未支付</td>
+						<td *ngIf="order.order_status==2" class="paid">已支付</td>
+						<td *ngIf="order.order_status==3" class="purchase-received">已收货</td>
+						<td *ngIf="order.order_status==4">已关闭</td>
+						<td *ngIf="order.order_status==5">已取消</td>
+						<td *ngIf="order.order_status==6">已评价</td>
+						<td *ngIf="order.order_status==7">未评价</td>
+
+						<td *ngIf="order.payment_method == 1">Wechat</td>
+						<td *ngIf="order.payment_method == 2">Alipay</td>
+
+						<td *ngIf="order.delivery_status == 0">NA</td>
+						<td *ngIf="order.delivery_status == 1" class="delivery-waiting">待送货</td>
+						<td *ngIf="order.delivery_status == 2">送货中</td>
+						<td *ngIf="order.delivery_status == 3" class="deliveried">已送货未确认</td>
+						<td *ngIf="order.delivery_status == 4" class="delivery-confirmed">已确认</td>
+						<td>{{order?.delivery_date}}</td>
+						<td>{{order?.delivery_confirm_date}}</td>
+												
+						<td *ngIf="order.is_invoice_required">Y</td>
+						<td *ngIf="!order.is_invoice_required">N</td>
+
+						<td *ngIf="!order.is_invoice_required">NA</td>
+						<td *ngIf="order.invoice_type == 1 && order.is_invoice_required">个人<br>邮箱：{{order?.email}}</td>
+						<td *ngIf="order.invoice_type == 2 && order.is_invoice_required">发票抬头：{{order?.invoice_head}}<br>税号：{{order?.invoice_tax_number}}<br>邮箱：{{order?.email}}</td>
+
+						<td *ngIf="order.invoice_status == 0">NA</td>
+						<td *ngIf="order.invoice_status == 1">未开票</td>
+						<td *ngIf="order.invoice_status == 2">已开票</td>
+
+						<td *ngIf="order.refund_status == -1">NA</td>
+						<td *ngIf="order.refund_status == 1">申请退单</td>
+						<td *ngIf="order.refund_status == 2">退单处理中</td>
+						<td *ngIf="order.refund_status == 3">退单完成</td>
+
+						<td align="center" *ngIf="displayDetail && selectedOrder == i"><i class="fa fa-arrow-up" data-content="detail" (click)="toOrderDetail(i, 'up')"></i></td>
+						<td align="center" *ngIf="displayDetail && selectedOrder != i"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
+						<td align="center" *ngIf="!displayDetail"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
+					</tr>
+					<tr *ngIf="displayDetail">
+						<td colspan="16">
+							<app-order-detail [orderid]="orderId"></app-order-detail>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-12 seperator">
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-12">
+			<h3>订单价格修改历史查询</h3>
+		</div>
+	</div>
+
+	<div class="form-group col-md-3">
+		<label for="date1">日期从：</label>
+		<angular2-date-picker [settings]="settings" [(ngModel)]="date1"></angular2-date-picker>
+	</div>
+	<div class="form-group col-md-3">
+		<label for="date2">到日期：</label>
+		<angular2-date-picker [settings]="settings" [(ngModel)]="date2"></angular2-date-picker>
+	</div>
+
+	<div class="col-md-4">
+		<div class="form-group datecheck">				
+			<input type="checkbox" name="queryByDate" (change)="checkboxSelected($event)" unchecked #checkbox>
+			<label for="queryByDate">&nbsp;&nbsp;添加上述时间段到查询中</label>
+		</div>
+	</div>
+
+	<div class="col-md-2 query-btn" align="center">
+		<button class="btn btn-primary btn-rect" (click)="query()">开始查询</button>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-12">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>修改人用户名</th>
+						<th>修改人email</th>
+						<th>模块名称</th>
+						<th>操作类型</th>
+						<th>修改前内容：订单号(价格)</th>
+						<th>修改后内容：订单号(价格)</th>
+						<th>修改时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let accessLog of accessLogs">
+						<td>{{ accessLog?.id }}</td>
+						<td>{{ accessLog?.user }}</td>
+						<td>{{ accessLog?.email }}</td>
+						<td>{{ accessLog?.module_name }}</td>
+						<td *ngIf="accessLog.access_type == 1">WRITE</td>
+						<td *ngIf="accessLog.access_type == 2">READ</td>
+						<td *ngIf="accessLog.access_type == 3">MODIFY</td>
+						<td>{{ accessLog?.previous_content }}</td>
+						<td>{{ accessLog?.current_content }}</td>
+						<td>{{ accessLog?.created_at }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!--Modal-->
+	<div class="modal fade" id="modifyConfirm">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">价格修改确认</h4>					
+				</div>
+
+				<div class="modal-body">
+					请确认是否真的要修改该订单价格？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" (click)="modify()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+
+<style>
+	.search, table {
+		margin-top: 2em;
+	}
+
+	.ng-valid[required], .ng-valid.required  {
+	  border-left: 5px solid #42A948; /* green */
+	}
+
+	.ng-invalid:not(form)  {
+	  border-left: 5px solid #a94442; /* red */
+	}
+
+	input {
+		font-size: 2rem;
+		font-weight: bolder;
+	}
+
+	[data-content="detail"]:hover {
+		color: #33ff56;
+		cursor: pointer;
+
+	}
+
+	#total-price {
+		font: bolder;
+		color: white;
+		background-color: red;
+	}
+
+	.warning {
+		font-size: 2rem;
+	}
+
+	#old-price {
+		font: bolder;
+		color: red;
+		font-size: 2.5rem;
+	}
+
+	.datecheck, .query-btn {
+		margin-top: 2em;
+	}
+
+	.seperator {
+		border-bottom: 1px solid pink;
+		margin-top: 3em;
+	}
+</style>

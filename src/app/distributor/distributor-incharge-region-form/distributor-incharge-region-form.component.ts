@@ -106,7 +106,7 @@ export class DistributorInchargeRegionFormComponent implements OnInit {
   	for(let i = 0; i < options.length; i++) {
   		let value = (options[i].value).split("'");
   		if(!this.checkIfDuplicated(this.inchargeCities, options[i])) {
-  			this.inchargeCities.push({"text": options[i].text, "value": value[1]});
+  			this.inchargeCities.push({"text": this.provinceSelected + ' ' + options[i].text, "value": value[1]});
   		}
   	} 	
   }
@@ -124,8 +124,11 @@ export class DistributorInchargeRegionFormComponent implements OnInit {
   }
 
   save() {
+    console.log(this.inchargeCities);
+    
   	let cities = this.inchargeCities.map((c) => {
-  		return this.provinceSelected + ' ' + c.text;
+  		//return this.provinceSelected + ' ' + c.text;
+      return c.text;
   	});
 
   	console.log(cities);

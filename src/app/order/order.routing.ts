@@ -4,6 +4,7 @@ import { UserOrderComponent } from './user-order/user-order.component';
 import { DistributorOrderComponent } from './distributor-order/distributor-order.component';
 import { CancelProcessComponent } from './cancel-process/cancel-process.component';
 import { CancelQueryComponent } from './cancel-query/cancel-query.component';
+import { OrderPriceComponent } from './order-price/order-price.component';
 
 import { AuthGuard } from '../auth/auth.guard';
 import { RoleGuard } from '../auth/role.guard';
@@ -13,5 +14,6 @@ export const orderRoutes: Routes = [
 	{ path: 'order/user/query', component: UserOrderComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.ORDER_MANAGER}},
 	{ path: 'order/distributor/query', component: DistributorOrderComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.ORDER_MANAGER}},
 	{ path: 'order/cancel/process', component: CancelProcessComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.ORDER_MANAGER}},
-	{ path: 'order/cancel/query', component: CancelQueryComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.ORDER_MANAGER}}
+	{ path: 'order/cancel/query', component: CancelQueryComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.ORDER_MANAGER}},
+	{ path: 'order/price/modify', component: OrderPriceComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: Roles.PRICE_MANAGER}}
 ]; 

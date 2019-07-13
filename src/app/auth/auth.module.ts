@@ -22,6 +22,6 @@ import { UserRolesComponent } from './user-roles/user-roles.component';
   exports: [
   	LoginComponent
   ],
-  declarations: [LoginComponent, UserManagementComponent, ResetPasswordComponent, CreateNewUserComponent, UserRolesComponent]
+  declarations: [LoginComponent, UserManagementComponent, ResetPasswordComponent, CreateNewUserComponent, UserRolesComponent],
 })
 export class AuthModule { }

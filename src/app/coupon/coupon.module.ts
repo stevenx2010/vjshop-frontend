@@ -18,6 +18,6 @@ import { CouponFormComponent } from './coupon-form/coupon-form.component';
     FormsModule,
     AngularDateTimePickerModule,
   ],
-  declarations: [CouponTypeComponent, CouponTypeFormComponent, CouponComponent, CouponFormComponent]
+  declarations: [CouponTypeComponent, CouponTypeFormComponent, CouponComponent, CouponFormComponent],
 })
 export class CouponModule { }

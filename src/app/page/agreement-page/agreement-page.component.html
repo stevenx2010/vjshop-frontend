@@ -1,0 +1,111 @@
+<form>
+	<div class="form-row">
+		<div class="col-md-12">
+			<h3>用户注册协议编辑</h3><br>
+			<h4>协议内容格式编辑说明：</h4>
+			<p>注：所有合法的HTML符号都可以用来编辑协议文本的格式</p>
+			<ol>
+				<li><b>段落分段：</b>在每个文本段落开始添加符号&lt;p&gt;，结束添加&lt;/p&gt;，例如：&lt;p&gt;本协议是....&lt;/p&gt;</li>
+				<li><b>粗体文字：</b>在需要变为粗体文字的前后分别添加符号&lt;b&gt;和&lt;/b&gt; ，例如：&lt;b&gt;第一条：适用范围&lt;/b&gt;</li>
+				<li><b>换行：</b>在需要换行的文本位置添加符号&lt;br&gt;</li>
+			</ol>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-12">
+			<textarea rows="20" name="agreement" id="agreement" class="form-control" [(ngModel)]="agreement" (keyup)="onChange()"></textarea>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-3">
+			<span *ngIf="contentChanged">
+				<button class="btn btn-danger btn-rect" data-toggle="modal" data-target="#deleteConfirm">清空</button>
+			</span>
+			<span *ngIf="!contentChanged">
+				<button class="btn btn-danger btn-rect" (click)="clearContent()">清空</button>
+			</span>
+
+			<span *ngIf="contentChanged">
+				<button class="btn btn-primary btn-rect" data-toggle="modal" data-target="#reloadConfirm">重新加载</button>
+			</span>
+			<span *ngIf="!contentChanged">
+				<button class="btn btn-primary btn-rect" (click)="reload()">重新加载</button>
+			</span>
+		</div>
+		<div class="col-md-9">			
+			<button class="btn btn-success btn-rect" name="save" [disabled]="btnSaveDisabled"  data-toggle="modal" data-target="#save-data">保存数据</button>
+		</div>
+	</div>
+</form>
+
+	<!--Modal-->
+	<div class="modal fade" id="save-data">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">提示</h4>					
+				</div>
+
+				<div class="modal-body">
+					请确定是否保存当前数据？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" data-dismiss="modal"  (click)="save()">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+
+	<!--Modal-->
+	<div class="modal fade" id="deleteConfirm">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认清空</h4>					
+				</div>
+
+				<div class="modal-body">
+					请确认是否真的要清空当前内容？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" (click)="clearContent()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!--Modal-->
+	<div class="modal fade" id="reloadConfirm">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">确认重新加载</h4>					
+				</div>
+
+				<div class="modal-body">
+					数据已修改，请确认是否重新加载，重新加载将导致当前修改内容丢失？
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" (click)="reload()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<style>
+.btn {
+	 	margin: 1em 1em 0 0;
+	}
+
+</style>

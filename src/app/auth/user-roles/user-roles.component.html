@@ -38,6 +38,10 @@
 		<input type="checkbox" name="setting-management" (change)="settingManageCheck($event)" [checked]="settingManageChecked">
 		<label>&nbsp;设置管理(T)</label>
 	</div>	
+	<div class="form-group col-md-3">
+		<input type="checkbox" name="price-management" (change)="priceManageCheck($event)" [checked]="priceManageChecked">
+		<label>&nbsp;订单价格修改管理(R)</label>
+	</div>	
 	<div class="col-md-12">
 		<button id="btn-0" type="button" class="btn btn-success btn-rect" (click)="save()">保存数据</button>
 		<button type="button" class="btn btn-danger btn-rect" (click)="cancel()">取消</button>
@@ -61,6 +65,7 @@
 					<th>I</th>
 					<th>G</th>
 					<th>T</th>
+					<th>R</th>
 					<th>选取</th>
 				</tr>
 			</thead>
@@ -92,6 +97,9 @@
 					
 					<td *ngIf="bitwise(user.roles, role.SETTING_MANAGER)">1</td>
 					<td *ngIf="!bitwise(user.roles, role.SETTING_MANAGER)">0</td>
+
+					<td *ngIf="bitwise(user.roles, role.PRICE_MANAGER)">1</td>
+					<td *ngIf="!bitwise(user.roles, role.PRICE_MANAGER)">0</td>
 
 					<td><i class="fa fa-check" (click)="select(i)" data-content="select"></i></td>
 				</tr>

@@ -17,6 +17,9 @@ import { Refund } from '../models/refund.model';
 import { Message } from '../models/message.model';
 import { User } from '../models/user.model';
 
+import { CustomerProfile } from '../models/customer-profile.model';
+import { AccessLog } from '../models/access-log-model';
+
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
@@ -500,6 +503,20 @@ export class VJAPI {
 			.pipe(map((data) => data.json()));				
 	}
 
+	public changeOrderPrice(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/front/order/change/price',body, {headers:headers});		
+	}
+
+	public queryOrderPriceChangeHistory(body):Observable<AccessLog[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/front/order/price/change/history',body, {headers:headers})
+			.pipe(map((data) => data.json()));			
+	}
 
 	/**
 	 *  Invoice  Related API
@@ -532,7 +549,7 @@ export class VJAPI {
 	}
 
 	/**
-	 *  Home Page/New Comer Page  Related API
+	 *  Home Page, New Comer Page, Agreemnet Page  Related API
 	 */
 	public updateHomePageImages(body): Observable<Response> {
 		let headers = new Headers();
@@ -553,6 +570,20 @@ export class VJAPI {
 		this.initAuthHeaderForm(headers);
 	
 		return this.http.post(API_BASE_URL + 'api/front/page/newcomerpage/update',body, {headers:headers})				
+	}
+
+	public getAgreement(): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeaderForm(headers);
+	
+		return this.http.get(API_BASE_URL + 'api/front/page/get/agreement', {headers:headers});			
+	}
+
+	public updateAgreement(body): Observable<Response> {
+		let headers = new Headers();
+		this.initAuthHeaderForm(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/front/page/agreement/update',body, {headers:headers})		
 	}
 
 	/**
@@ -621,6 +652,18 @@ export class VJAPI {
 	 	this.initAuthHeader(headers);
 
 		return this.http.get(API_BASE_URL + 'api/front/CustomerService/qna/get/id/' + id, {headers: headers});		 	
+	 }
+
+
+	/**
+	 *  Customer Service Chat Message  Related API
+	 */
+	 public getCustomerProfile(body): Observable<CustomerProfile[]> {
+		let headers = new Headers();
+		this.initAuthHeader(headers);
+	
+		return this.http.post(API_BASE_URL + 'api/front/CustomerManage/profile', body, {headers:headers})
+				.pipe(map((data) => data.json()));		
 	 }
 
 	/**

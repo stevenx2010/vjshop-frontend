@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
 
   assetsBaseUrl: string;
 
-  constructor(private fb: FormBuilder, private vjApi: VJAPI, private cs: CookieService, private router: Router, private actRoute: ActivatedRoute) { 
+  constructor(private fb: FormBuilder, private vjApi: VJAPI, private cs: CookieService, private router: Router, 
+              private actRoute: ActivatedRoute) { 
     this.user = new User();
     this.assetsBaseUrl = ASSETS_BASE_URL;
   }
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
     this.form.valueChanges.subscribe((f) => {
       this.displayError = false;
 
-    })
+    });
   }
 
   submit() {

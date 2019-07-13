@@ -10,6 +10,9 @@ export class Product {
 	public weight_unit: string = '';
 	public price: number = 0;
 	public brand: string = '';
+	public package: string = '';
+	public coating: string = '';
+	public quality: string = '';
 	public inventory: number = 0;
 	public thumbnail_url: string = '';
 	public sold_amount:number = 0;
@@ -28,6 +31,9 @@ export class Product {
 			this.weight_unit = obj.weight_unitj || '';
 			this.price = obj.price || 0;
 			this.brand = obj.brand || '';
+			this.package = obj.package || '';
+			this.coating = obj.coating || '';
+			this.quality = obj.quality || '';
 			this.inventory = obj.inventory || 0;
 			this.thumbnail_url = obj.thumbnail_url || '';
 			this.sold_amount = obj.sold_amount || 0;

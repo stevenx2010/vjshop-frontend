@@ -26,6 +26,7 @@ export class UserRolesComponent implements OnInit {
   invoiceManageChecked: boolean = false;
   pageManageChecked: boolean = false;
   settingManageChecked: boolean = false;
+  priceManageChecked: boolean = false;
 
   users: User[];
   role: UserRole;
@@ -84,6 +85,10 @@ export class UserRolesComponent implements OnInit {
   	this.settingManageChecked = !this.settingManageChecked;
   }
 
+  priceManageCheck(event) {
+    this.priceManageChecked = !this.priceManageChecked;
+  }
+
   bitwise(a, b) {
   	return (a & b) ? 1 : 0;
   }
@@ -105,7 +110,7 @@ export class UserRolesComponent implements OnInit {
   	if(this.invoiceManageChecked) roles |= this.role.INVOICE_MANAGER;
   	if(this.pageManageChecked) roles |= this.role.PAGE_MANAGER;
   	if(this.settingManageChecked) roles |= this.role.SETTING_MANAGER;
-
+    if(this.priceManageChecked) roles |= this.role.PRICE_MANAGER;
 
 
   	let body = {
@@ -134,5 +139,6 @@ export class UserRolesComponent implements OnInit {
   	this.invoiceManageChecked = this.bitwise(user.roles, this.role.INVOICE_MANAGER) ? true : false;
   	this.pageManageChecked = this.bitwise(user.roles, this.role.PAGE_MANAGER) ? true : false;
   	this.settingManageChecked = this.bitwise(user.roles, this.role.SETTING_MANAGER) ? true : false;
+    this.priceManageChecked = this.bitwise(user.roles, this.role.PRICE_MANAGER) ? true : false;
   }
 }

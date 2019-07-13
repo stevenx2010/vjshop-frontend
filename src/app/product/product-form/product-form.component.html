@@ -67,21 +67,19 @@
 		</div>
 
 		<div class="form-row">
-			<div class="form-group">
-				<div class="col-md-3">
-					<label for="package_unit">产品包装单位</label>
-					<select id="package_unit" class="form-control" formControlName="package_unit" required>
-						<option value="盒" selected>盒</option>
-						<option value="箱">箱</option>
-						<option valeu="块">块</option>
-						<option value="条">条</option>
-					</select>
-				</div>
-			</div>
+			
 			<div class="form-group">
 				<div class="col-md-3">
 					<label for="weight">产品重量</label>
-					<input type="text" id="weight" class="form-control" formControlName="weight" required>
+					<input type="text" id="weight" name="weight" class="form-control" formControlName="weight" required>
+					<div *ngIf="form.controls.weight.touched && form.controls.weight.errors" class="alert alert-danger">
+						<div *ngIf="form.controls.weight.errors.required">
+							必须输入重量
+						</div>
+						<div *ngIf="form.controls.weight.errors.pattern">
+							重量只能是数字，可包含小数点
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
@@ -96,13 +94,29 @@
 		
 			<div class="form-group">
 				<div class="col-md-3">
-					<label for="price">价格</label>
-					<div class="input-group">
-						<input type="text" id="price" class="form-control" formControlName="price" required>
-						<div class="input-group-append">
-							<span class="input-group-text">元</span>
+					<label for="price">价格(元)</label>
+					<input type="text" id="price" name="price" class="form-control" formControlName="price" required>		
+					<div *ngIf="form.controls.price.touched && form.controls.price.errors" class="alert alert-danger">
+						<div *ngIf="form.controls.price.errors.required">
+							必须输入价格
+						</div>
+						<div *ngIf="form.controls.price.errors.pattern">
+							价格只能是包含两位小数的数字，如：3.14
 						</div>
 					</div>
+				</div>
+
+				<div class="form-group col-md-3">
+					<label for="inventory">库存</label>				
+					<input type="number" id="inventory" name="inventory" class="form-control" formControlName="inventory" required>	
+					<div *ngIf="form.controls.inventory.touched && form.controls.inventory.errors" class="alert alert-danger">
+						<div *ngIf="form.controls.inventory.errors.required">
+							必须输入库存
+						</div>
+						<div *ngIf="form.controls.inventory.errors.pattern">
+							库存只能是整数，如：1500
+						</div>
+					</div>			
 				</div>
 			</div>
 		</div>
@@ -110,18 +124,54 @@
 		<div class="form-row">
 			<div class="form-group col-md-3">
 				<label for="brand">品牌</label>
-				<input type="text" id="brand" class="form-control" formControlName="brand">
+				<select id="brand" class="form-control" formControlName="brand" required>
+					<option value="稳卓" selected>稳卓</option>
+					<option value="Hofmann">Hofmann</option>
+				</select>
 			</div>
-			<div class="form-group col-md-3">
-				<label for="inventory">库存</label>
-				
-				<input type="number" id="inventory" class="form-control" formControlName="inventory" required>
+			
+			<div class="form-group">
+				<div class="col-md-3">
+					<label for="package">包装</label>
+					<select id="package" class="form-control" formControlName="package" required>
+						<option value="盒装" selected>盒装</option>
+						<option value="盘装">盘装</option>
+					</select>
+				</div>
+			</div>
 
-				
+			<div class="form-group">
+				<div class="col-md-3">
+					<label for="coating">涂层</label>
+					<select id="coating" class="form-control" formControlName="coating" required>
+						<option value="镀锌" selected>镀锌</option>
+						<option value="彩色">彩色</option>
+					</select>
+				</div>
 			</div>
-			<div class="form-group col-md-3">
-				<label for="sort_order">排序序号</label>
-				<input type="text" id="sort_order" class="form-control" formControlName="sort_order" required>
+
+			<div class="form-group">
+				<div class="col-md-3">
+					<label class="quality">品质</label>
+					<select id="quality" class="form-control" formControlName="quality" required>
+						<option value="售后" selected>售后</option>
+						<option value="OEM原厂">OEM原厂</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="col-md-12">
+			</div>
+		</div>
+
+		<div class="form-row">			
+			<div class="form-group">
+				<div class="col-md-3">
+					<label for="sort_order">排序序号</label>
+					<input type="text" id="sort_order" class="form-control" formControlName="sort_order" required>
+				</div>
 			</div>
 			<div class="form-group col-md-3 off-shelf">
 				<label for="off_shelf">是否下架产品？</label>

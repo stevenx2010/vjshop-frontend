@@ -119,6 +119,11 @@
           </div>
         </li>
         <li>
+          <div class="call" (click)="toOrderPriceModify()">
+            <i class="fa fa-angle-right"></i>&nbsp; 客户订单价格修改
+          </div>
+        </li>
+        <li>
           <div class="call" (click)="toDistributorOrder()">
             <i class="fa fa-angle-right"></i>&nbsp; 经销商订单查询
           </div>
@@ -191,8 +196,30 @@
             <i class="fa fa-angle-right"></i>&nbsp; 关于页管理
           </div>
         </li>
+        <li>
+          <div class="call" (click)="toAgreementPage()">
+            <i class="fa fa-angle-right"></i>&nbsp; 协议页管理
+          </div>
+        </li>
       </ul>
     </li>
+
+<!-- Customer Management-->
+    <li>
+      <a href="javascript:;">
+        <i class="fa fa-user-o"></i>
+        <span class="link-title">&nbsp;客户管理</span>
+        <span class="fa arrow"></span>
+      </a>
+      <ul class="collapse">
+        <li>
+          <div class="call" (click)="toQueryCustomer()">
+            <i class="fa fa-angle-right"></i>&nbsp; 客户信息查询
+          </div>
+        </li>
+      </ul>
+    </li>
+
 <!-- Customer Service-->
     <li>
       <a href="javascript:;">

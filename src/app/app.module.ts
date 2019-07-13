@@ -20,6 +20,7 @@ import { PageModule } from './page/page.module';
 import { CustomerServiceModule } from './customer-service/customer-service.module';
 import { AuthModule } from './auth/auth.module';
 import { SettingModule } from './setting/setting.module';
+import { CustomerManagementModule } from './customer-management/customer-management.module';
 
 import { CookieService } from 'ngx-cookie-service';
 
@@ -56,6 +57,7 @@ import { MaxValidatorDirective } from './shared/max-validator.directive';
     AuthModule,
     SettingModule,
     ProgressHttpModule,
+    CustomerManagementModule,
   ],
   providers: [
   	VJAPI,

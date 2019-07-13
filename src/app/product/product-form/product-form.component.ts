@@ -89,12 +89,15 @@ export class ProductFormComponent implements OnInit {
   		name: ['', Validators.required],
   		model: ['', Validators.required],
   		description: ['', Validators.compose([Validators.required, Validators.maxLength(600)])],
-  		package_unit: ['盒', Validators.required],
-  		weight: [0, Validators.required],
+  		
+  		weight: [0, Validators.compose([Validators.required, Validators.pattern('^[0-9]+[0-9]*[.]{0,1}[0-9]*')])],
   		weight_unit: ['kg', Validators.required],
-  		price: [0.00, Validators.required],
-  		brand: ['Venjong'],
-  		inventory: [0, Validators.required],
+  		price: [0.00, Validators.compose([Validators.required, Validators.pattern('^[0-9]+\.[0-9]{2}$')])],
+  		brand: ['稳卓', Validators.required],
+      package: ['盒装', Validators.required],
+      coating: ['镀锌', Validators.required],
+      quality: ['售后', Validators.required],
+  		inventory: [0, Validators.compose([Validators.required, Validators.pattern('^[0-9]+$')])],
   		sort_order: [999, Validators.required],
   	});
 
@@ -105,9 +108,6 @@ export class ProductFormComponent implements OnInit {
     });
 
     this.populateProductData();
-
-    console.log('--------------------');
-    console.log(this.thumbnailFile);
     console.log(this.bottomImageQueue);
   }
 
@@ -137,11 +137,14 @@ export class ProductFormComponent implements OnInit {
             this.form.controls['name'].setValue(this.product.name);
             this.form.controls['model'].setValue(this.product.model);
             this.form.controls['description'].setValue(this.product.description);
-            this.form.controls['package_unit'].setValue(this.product.package_unit);
+            //this.form.controls['package_unit'].setValue(this.product.package_unit);
             this.form.controls['weight'].setValue(this.product.weight);
             this.form.controls['weight_unit'].setValue(this.product.weight_unit);
             this.form.controls['price'].setValue(this.product.price);
             this.form.controls['brand'].setValue(this.product.brand);
+            this.form.controls['package'].setValue(this.product.package);
+            this.form.controls['coating'].setValue(this.product.coating);
+            this.form.controls['quality'].setValue(this.product.quality);
             this.form.controls['inventory'].setValue(this.product.inventory);
             this.form.controls['sort_order'].setValue(this.product.sort_order);
 
@@ -246,11 +249,14 @@ export class ProductFormComponent implements OnInit {
     body.append('name',this.form.controls.name.value);
     body.append('description', this.form.get('description').value);
     body.append('model',this.form.get('model').value);
-    body.append('package_unit', this.form.get('package_unit').value);
+    //body.append('package_unit', this.form.get('package_unit').value);
     body.append('weight', this.form.get('weight').value);
     body.append('weight_unit', this.form.get('weight_unit').value);
     body.append('price', this.form.get('price').value);
     body.append('brand', this.form.get('brand').value);
+    body.append('package', this.form.get('package').value);
+    body.append('coating', this.form.get('coating').value);
+    body.append('quality', this.form.get('quality').value);
     body.append('inventory', this.form.get('inventory').value);
     body.append('sort_order',  this.form.get('sort_order').value);
     body.append('off_shelf', (this.off_shelf ? 1 : 0) + '');

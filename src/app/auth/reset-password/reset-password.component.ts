@@ -15,7 +15,8 @@ export class ResetPasswordComponent implements OnInit {
   form: FormGroup;
   passwordMatches: boolean = false; 
 
-  constructor(private fb: FormBuilder, private vjApi: VJAPI) { }
+  constructor(private fb: FormBuilder, private vjApi: VJAPI) { 
+  }
 
   ngOnInit() {
   	this.form = this.fb.group({

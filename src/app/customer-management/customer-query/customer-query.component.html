@@ -1,0 +1,79 @@
+<div>
+	<h3>客户信息查询</h3>
+	
+	<div class="query">
+		<form [formGroup]="form">
+			<div class="form-row">
+				<div class="form-group col-md-3">
+					<label for="mobile">手机号：</label>
+					<input type="text" id="mobile" class="form-control" formControlName="mobile">
+					<div *ngIf="form.controls.mobile.touched && form.controls.mobile.errors" class="alert alert-danger">
+						<div *ngIf="form.controls.mobile.errors.pattern">
+							手机号码必须是1抬头的11位数字
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</form>
+
+		<div class="form-group col-md-3">
+			<label for="date1">日期从：</label>
+			<angular2-date-picker [settings]="settings" [(ngModel)]="date1"></angular2-date-picker>
+		</div>
+		<div class="form-group col-md-3">
+			<label for="date2">到日期：</label>
+			<angular2-date-picker [settings]="settings" [(ngModel)]="date2"></angular2-date-picker>
+		</div>
+
+		<div class="col-md-3">
+			<div class="form-group datecheck">				
+				<input type="checkbox" name="queryByDate" (change)="checkboxSelected($event)" unchecked #checkbox>
+				<label for="queryByDate">&nbsp;&nbsp;添加上述时间段到查询中</label>
+			</div>
+		</div>
+
+		<div class="col-md-12" align="center">
+			<button class="btn btn-primary btn-rect" (click)="query()">开始查询</button>
+		</div>
+	</div>
+
+	<div class="form-row table">		
+		<div class="col-md-12">
+			<p>查询的客户总数：{{ totalRecords }}</p>
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>手机号</th>
+						<th>注册地址</th>
+						<th>注册时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let profile of profiles">
+						<td>{{ profile.id }}</td>
+						<td>{{ profile.mobile }}</td>
+						<td>{{ profile.register_location }}</td>
+						<td>{{ profile.register_date }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<style>
+.datecheck {
+	margin-top: 2em;
+}
+
+.query {
+	margin-top: 2em;
+}
+
+.table {
+	margin-top: 2em;
+}
+
+</style>

@@ -103,6 +103,10 @@ export class MenuComponent implements OnInit {
     this.router.navigate(['page/about']);
   }
 
+  toAgreementPage() {
+    this.router.navigate(['page/agreementpage']);
+  }
+
   toProcessConsulting() {
     this.router.navigate(['customerservice/process']);
   }
@@ -133,5 +137,13 @@ export class MenuComponent implements OnInit {
 
   toSetShippingFee(){
     this.router.navigate(['setting/shippingfee']);
+  }
+
+  toQueryCustomer() {
+    this.router.navigate(['customer-manage/query']);
+  }
+
+  toOrderPriceModify() {
+    this.router.navigate(['order/price/modify']);
   }
 }
