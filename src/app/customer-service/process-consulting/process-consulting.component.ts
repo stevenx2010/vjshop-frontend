@@ -20,7 +20,7 @@ export class ProcessConsultingComponent implements OnInit {
   ngOnInit() {
   	this.timer = setInterval(()=>{
   		this.getListOfMessages()
-  	}, 1000);
+  	}, 2500);
   }
 
   ngOnDestroy() {

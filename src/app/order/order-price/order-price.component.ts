@@ -59,7 +59,8 @@ export class OrderPriceComponent implements OnInit {
   }
 
   orderSerialChanged() {
-  	if(this.orderSerial.length == 16) this.btnSearchDisabled = false;
+    let regex = /^[0-9]{16}$/;
+  	if(regex.test(this.orderSerial)) this.btnSearchDisabled = false;
   	else this.btnSearchDisabled = true;
   }
 

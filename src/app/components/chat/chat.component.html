@@ -7,7 +7,9 @@
 				<div class="left-bubble chat-message">
 					<span class="msg-name">{{msg?.mobile}}</span>
 					<span class="msg-date">{{msg?.updated_at}}</span>
-					<p text-wrap>{{msg?.message}}</p>
+					<p class="from-customer" text-wrap (dblclick)="copyToClipboard($event)">{{msg?.message}}
+						<span *ngIf="msgCopied == msg.message"><i class="fa fa-copy" id="copy"></i></span>
+					</p>
 				</div>
 			</div>
 
@@ -16,7 +18,7 @@
 				<div class="right-bubble chat-message">
 					<span class="msg-name">{{msg?.responder}}</span>
 					<span class="msg-date">{{msg?.updated_at}}</span>
-					<p text-wrap>{{msg?.message}}</p>					
+					<p text-wrap>{{msg?.message}} </p>				
 				</div>
 				
 			</div>	
@@ -58,6 +60,16 @@ table {
  	i {
  		font-size: 2.5rem;
  		color: orange;
+ 	}
+
+ 	#copy {
+ 		font-size: 1.3rem;
+ 		color: red;
+ 		margin-left: 1em;
+ 	}
+
+ 	.from-customer {
+ 		cursor: pointer;
  	}
 
 </style>

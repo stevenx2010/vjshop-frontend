@@ -20,6 +20,8 @@ export class ChatComponent implements OnInit {
   timer: any;
   assetsBaseUrl: string;
 
+  msgCopied: string;
+
   constructor(private vjApi: VJAPI, private router: Router, private actRoute: ActivatedRoute, private cs: CookieService) { 
   	this.messages = new Array<Message>();
     this.assetsBaseUrl = ASSETS_BASE_URL;
@@ -62,5 +64,18 @@ export class ChatComponent implements OnInit {
   		this.message = '';
   		this.getMessages();
   	})
+  }
+
+  copyToClipboard(event) {
+    console.log(event.target.innerText);
+    this.msgCopied = event.target.innerText.trim();
+    
+    let listener = (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', this.msgCopied);
+      e.preventDefault();
+    }
+    document.addEventListener('copy', listener);
+    document.execCommand('copy');
+    document.removeEventListener('copy', listener);
   }
 }

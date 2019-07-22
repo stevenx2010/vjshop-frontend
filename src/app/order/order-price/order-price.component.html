@@ -11,7 +11,7 @@
 			<div class="input-group">
 				<input type="text" id="order-serial" name="order_serial" class="form-control" 
 					[(ngModel)]="orderSerial" pattern="[0-9]{16}" maxlength="16" #orderserial="ngModel" 
-					(keyup)="orderSerialChanged()" required
+					(keyup)="orderSerialChanged()" (blur)="orderSerialChanged()" required
 					placeholder="订单号(16位数字)...">
 						    <span class="input-group-btn">
 	                <button class="btn btn-primary text-muted" type="button" (click)="search()" [disabled]="btnSearchDisabled">
