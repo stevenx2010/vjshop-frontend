@@ -157,8 +157,8 @@ export class CancelProcessComponent implements OnInit {
 
   prepareQueryData() {
     let body = {
-      'order_id': this.orderSerial ? this.orderSerial : '',
-      'mobile': this.mobile ? this.mobile : '',
+      'order_serial': this.orderSerial ? this.orderSerial : null,
+      'mobile': this.mobile ? this.mobile : null,
       'query_by_date': this.queryByDate,
       'date1': this.dp.transform(this.date1, 'yyyy-MM-dd 00:00:00'),
       'date2': this.dp.transform(this.date2, 'yyyy-MM-dd 23:59:59'),

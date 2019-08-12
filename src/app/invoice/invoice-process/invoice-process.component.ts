@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Order } from '../../../models/order.model';
 
 import  { VJAPI } from '../../../services/vj.services';
-
+import { InvoiceStatus } from '../../../models/constants';
 
 @Component({
   selector: 'app-invoice-process',
@@ -116,7 +116,8 @@ query() {
       'date1': this.dp.transform(this.date1, 'yyyy-MM-dd 00:00:00'),
       'date2': this.dp.transform(this.date2, 'yyyy-MM-dd 23:59:59'),
       'keyword': this.keyword ? this.keyword.trim() : '',
-      'invoice_required': true
+      'is_invoice_required': true,
+      'invoice_status': InvoiceStatus.NOT_ISSUED
     }
 
     return body;

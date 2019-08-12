@@ -156,7 +156,7 @@
 						<td align="center" *ngIf="displayDetail && selectedOrder == i"><i class="fa fa-arrow-up" data-content="detail" (click)="toOrderDetail(i, 'up')"></i></td>
 						<td align="center" *ngIf="displayDetail && selectedOrder != i"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
 						<td align="center" *ngIf="!displayDetail"><i class="fa fa-arrow-down" data-content="detail" (click)="toOrderDetail(i, 'down')"></i></td>
-						<td align="center"><button type="button" class="btn btn-primary btn-sm" [disabled]="invoiceBtnDisabled" (click)="toIssueInvoice(i)">{{invoiceBtnText}}</button></td>
+						<td align="center"><button type="button" class="btn btn-primary btn-sm" [disabled]="order.delivery_status >=3 ? false : true" (click)="toIssueInvoice(i)">{{invoiceBtnText}}</button></td>
 					</tr>
 
 				</tbody>
