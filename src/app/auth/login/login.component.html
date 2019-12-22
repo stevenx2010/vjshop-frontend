@@ -5,6 +5,9 @@
 	<div class="form-row">
 		<div class="col-md-12">
 			<h3 align="center"><img src="{{assetsBaseUrl}}assets/img/logo.png">用户登录</h3>
+			<div align="center">
+				<h5>Powered by Akamai&trade; HybridApp of YTRJ</h5>
+			</div>
 		</div>
 	<div>
 
@@ -46,6 +49,7 @@
 	</form>
 	
 	<div algin="center" *ngIf="displayError" class="error">用户名或密码错误</div>	
+
 </div>
 
 <app-reset-password *ngIf="displayResetPassword" [userid]="userId" (reset)="resetStatus($event)"></app-reset-password>
